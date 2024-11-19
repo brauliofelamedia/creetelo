@@ -50,7 +50,7 @@
                                 <span><i class="bi bi-bookmark-dash"></i></span>
                             </div>
                             <div class="Profile-name pt-30 d-flex flex-column">
-                                <h4 class="mt-20 mb-20">{{$contact['firstName']}} {{@$contact['lastName']}}</h4>
+                                <h4 class="mt-20 mb-20">{{@$contact['firstName']}} {{@$contact['lastName']}}</h4>
                                 <small>Sr. UX/UI Designer</small>
                                 <div class="social-link">
                                     <ul>
@@ -93,7 +93,7 @@
                                     <img src="images/team/team-25.png" alt="">
                                 </div>
                                 <div class="Candidate-name d-flex align-items-start justify-content-center flex-column">
-                                    <h4 class="mb-20">{{$contact['firstName']}} {{@$contact['lastName']}}</h4>
+                                    <h4 class="mb-20">{{@$contact['firstName']}} {{@$contact['lastName']}}</h4>
                                     <span>Sr. UX/UI Designer</span>
                                     <div class="mb-20"></div>
                                     <span><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><strong>(5.00)</strong></span>
