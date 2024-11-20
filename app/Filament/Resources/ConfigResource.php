@@ -10,6 +10,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -23,25 +28,25 @@ class ConfigResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('logo')
+                FileUpload::make('logo')
                     ->default('default.png'),
-                Forms\Components\ColorPicker::make('color_primary')
+                ColorPicker::make('color_primary')
                     ->required()
                     ->default('#000000'),
-                Forms\Components\ColorPicker::make('color_secundary')
+                ColorPicker::make('color_secundary')
                     ->required()
                     ->default('#000000'),
-                Forms\Components\TextInput::make('client_id'),
-                Forms\Components\TextInput::make('client_secret_id'),
-                Forms\Components\TextInput::make('company_id')
+                TextInput::make('client_id'),
+                TextInput::make('client_secret_id'),
+                TextInput::make('company_id')
                     ->disabled(),
-                Forms\Components\TextInput::make('location_id')
+                TextInput::make('location_id')
                     ->disabled(),
-                Forms\Components\TextInput::make('code')
+                TextInput::make('code')
                     ->disabled(),
-                Forms\Components\TextArea::make('refresh_token')
+                TextArea::make('refresh_token')
                     ->disabled(),
-                Forms\Components\TextArea::make('access_token')
+                TextArea::make('access_token')
                     ->disabled(),
             ]);
     }
@@ -50,31 +55,31 @@ class ConfigResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('logo')
+                TextColumn::make('logo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('color_primary')
+                TextColumn::make('color_primary')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('color_secundary')
+                TextColumn::make('color_secundary')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('code')
+                TextColumn::make('code')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('client_id')
+                TextColumn::make('client_id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('client_secret_id')
+                TextColumn::make('client_secret_id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('company_id')
+                TextColumn::make('company_id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('location_id')
+                TextColumn::make('location_id')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('base_url')
+                TextColumn::make('base_url')
                     ->searchable(),
             ])
             ->filters([
