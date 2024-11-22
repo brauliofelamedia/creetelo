@@ -24,7 +24,7 @@
         <div class="feature-job-grid-rapper">
             <div class="container">
                 <div class="row px-0 d-flex align-items-center">
-                    @if(count($data) >= 1)
+                    @if(count($data['contacts']) >= 1)
                         <div class="row job-grid-heading">
                             <div class="col-lg-8 md-pb-20" data-aos="zoom-in">
                                 <div class="left-grid">
