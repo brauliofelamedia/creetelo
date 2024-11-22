@@ -23,7 +23,7 @@ class FrontController extends Controller
 
         //$paginate = $data['meta'];
 
-        return view('front.home', compact('data','name','paginate'));
+        return view('front.home', compact('data','name'));
     }
 
     public function about()
