@@ -28,7 +28,7 @@
                         <div class="row job-grid-heading">
                             <div class="col-lg-8 md-pb-20" data-aos="zoom-in">
                                 <div class="left-grid">
-                                    <span class="">Mostrando {{count($data['contacts'])}} candidatos</span>
+                                    <span class="">Mostrando {{count($data['contacts'])}} de {{number_format($data['meta']['total'])}} candidatos</span>
                                 </div>
                             </div>
                             <div class="col-lg-4" data-aos="zoom-in">

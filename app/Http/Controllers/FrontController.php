@@ -21,7 +21,8 @@ class FrontController extends Controller
             $data = $contactServices->getContacts();
         }
 
-        //$paginate = $data['meta'];
+        $jsonString = json_encode($data);
+        $data = json_decode($jsonString, true);
 
         return view('front.home', compact('data','name'));
     }
