@@ -44,9 +44,10 @@
                             </div>
                         </div>
                         @foreach($data['contacts'] as $contact)
+
                             <div class="col-lg-4">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
-                                    <div class="round-pic"><img src="images/team/team-10.png" alt=""></div>
+                                    <div class="round-pic"><img src="{{Gravatar::get($contact['email'])}}" alt=""></div>
                                     <div class="Candidates-grid">
                                         <div class=" mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
                                             <div class=" d-flex flex-column align-items-center justify-content-center ">
@@ -71,6 +72,12 @@
                                 </div>
                             </div>
                         @endforeach
+
+                        <div class="pagination d-flex align-items-center justify-content-center">
+                            <button class="btn">Anterior</button>
+                            <button class="btn">Siguiente</button>
+                        </div>
+
                     @else
                         <h4 class="text-center mb-20">No hay candidados relacionados con tu búsqueda.</h4>
                         <div class="explore-btn" style="padding:0;">

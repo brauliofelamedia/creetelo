@@ -272,7 +272,7 @@ h6.heading-6{
     padding-right: 40px;
 }
 .right-wiget .sign-up .custom-btn {
-    background: #d17d24;
+    background: #292775;
     border-radius: 5px;
     color: #ffffff;
     padding: 10px 30px;
@@ -286,7 +286,7 @@ h6.heading-6{
 }
 .right-wiget .sign-up .custom-btn:hover{
   color:#ffffff;
-  background:#d17d24;
+  background:#3430a0;
 }
 .right-wiget .people a{
     padding: 0px 20px;
@@ -2485,7 +2485,7 @@ line-height: normal;
     font-style: normal;
     font-weight: 700;
     /*font-size: 66px;*/
-    font-size: 46px;
+    font-size: 40px;
     line-height: 1.1em;
     /*color:rgba(17, 29, 59, 1);*/
     color: white;
@@ -4235,11 +4235,11 @@ button.custom-btn:hover {
 
 .btn-search {
     padding: 20px 25px;
-    background-color: #292775;
+    background-color: #d17d24;
     color: white;
     font-weight: 700;
 }
 
 .btn-search:hover {
-    background-color: #282589;
+    background-color: #ab6318;
 }

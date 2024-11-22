@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Services\ContactServices;
 use Illuminate\Http\Request;
-
+use Creativeorange\Gravatar\Facades\Gravatar;
 class FrontController extends Controller
 {
     /**
@@ -21,7 +21,9 @@ class FrontController extends Controller
             $data = $contactServices->getContacts();
         }
 
-        return view('front.home', compact('data','name'));
+        $paginate = $data['meta'];
+
+        return view('front.home', compact('data','name','paginate'));
     }
 
     public function about()
