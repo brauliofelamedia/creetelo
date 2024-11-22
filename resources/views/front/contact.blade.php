@@ -5,24 +5,19 @@
     ===========================  -->
     <div class="about-us-banner">
         <div class="about-three-rapper position-relative">
-            <img src="images/shape/shape-2.png" alt="" class="shape shape-12">
-            <img src="images/shape/shape-3.png" alt="" class="shape shape-13">
+            <img src="{{asset('images/shape/shape-2.png')}}" alt="" class="shape shape-12">
+            <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
             <div class="container">	
                 <div class="row d-flex align-items-center justify-content-center flex-column text-center">
                     <div class="d-flex align-items-center justify-content-center mt-240 md-mt-100 pb-60">
-                        <h1 class="mb-30">Contact Us.</h1>
+                        <h1 class="mb-30">Contacto.</h1>
                     </div>
                 </div>  
             </div>
         </div>
     </div>
-    <!--================================
-    banner section end
-    ===========================  -->
-    <!-- =========================================
-    .map
-    ============================================= -->
-    <div class="map mb-160 md-mb-80">
+    
+    <div class="map">
         <div class="container-fluid">
             <div class="mapouter">
                 <div class="gmap_canvas">
@@ -32,51 +27,13 @@
             </div>
         </div>
     </div>
-    <!-- =========================================
-    map
-    ============================================= -->
-    <!-- =========================================
-    get in toutch
-    ============================================= -->
-    <section class="get-touch mb-160 md-mb-80">
-        <div class="container">
-            <div class="text-center mb-50">
-                <h2 class="heading-2">Get In Touch</h2>
-            </div>
-            <div class="row px0 g-5 d-flex align-items-center justify-content-center">
-                <div class="col-lg-4">
-                    <div class="touch-1 d-flex align-items-center justify-content-center flex-column mt-40 mb-40">
-                        <div class="top-touch d-flex align-items-center justify-content-center"><i class="bi bi-telephone"></i></div>
-                        <div class="bottom-touch pt-30"><span>(207) 555-0119</span></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="touch-2 d-flex align-items-center justify-content-center flex-column mt-40 mb-40">
-                        <div class="top-touch d-flex align-items-center justify-content-center"><i class="bi bi-geo-alt"></i></div>
-                        <div class="bottom-touch pt-30"><span>2118 Thornridge , NY , USA</span></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="touch-3 d-flex align-items-center justify-content-center flex-column mt-40 mb-40">
-                        <div class="top-touch d-flex align-items-center justify-content-center"><i class="bi bi-envelope-open"></i></div>
-                        <div class="bottom-touch pt-30"><span>ckctm12@gmail.com</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- =========================================
-    get in toutch
-    ============================================= -->
-    <!-- =========================================
-    get in toutch
-    ============================================= -->
-    <section class="contact-form mb-160 md-mb-80">
+
+    <section class="contact-form pt-60 pb-60">
         <div class="container">
             <div class="text-center">
-                <h2 class="heading-2">Send us Message</h2>
+                <h2 class="heading-2 mb-20">Envíanos mensaje</h2>
             </div>
-            <div class="row pt-60 g-5">
+            <div class="row  g-5">
                 <div class="col-lg-4">
                     <label class="form-label mb-10">Name</label>
                     <input type="text" class="form-control" placeholder="Enter Name" aria-label="First name">
@@ -354,13 +311,8 @@
             </div>
         </div>
     </section>
-    <!-- =========================================
-    get in toutch
-    ============================================= -->
-    <!-- =========================================
-    Customers 10
-    ============================================= -->
-    <section class="Customer-one mb-160 md-mb-80">
+    
+    <section class="Customer-one">
         <div class="container">
             <div class="customer_rapper">
                 <img src="images/shape/shape-4.png" alt="">

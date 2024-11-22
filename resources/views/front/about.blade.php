@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-    <div class="about-us-banner mb-160 md-mb-100">
+    <div class="about-us-banner pb-60 mb-160 md-mb-100">
         <div class="about-three-rapper position-relative">
             <img src="images/shape/shape-2.png" alt="" class="shape shape-12">
             <img src="images/shape/shape-3.png" alt="" class="shape shape-13">
@@ -8,25 +8,6 @@
                 <div class="row d-flex align-items-center justify-content-center flex-column text-center">
                     <div class="d-flex align-items-center justify-content-center mt-240 md-mt-100">
                         <h1 class="mb-30">Obtenga solicitudes de los mejores talentos del mundo.</h1>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mt-60">
-                        <form class="form-3 d-flex align-items-center justify-content-between">
-                            <div class="item_1"><img src="images/icon/search.svg" alt=""></div>
-                            <div class="placeholder">
-                                <input type="text" id="username" placeholder="Job title" required>
-                            </div>
-                            <div class="location d-flex">
-                                <img src="images/icon/map.svg" alt="">
-                                <select class="nice-select">
-                                    <option value="0" data-display="Location..">Location..</option>
-                                    <option value="1">Bangladesh</option>
-                                    <option value="2">India</option>
-                                    <option value="3">America</option>
-                                    <option value="4">Canada</option>
-                                </select>
-                                </div>
-                            <div class="button"><a href="custom-btn" class=""><span>Search Now</span></a></div>	
-                        </form>
                     </div>
                 </div>  
             </div>
@@ -70,7 +51,7 @@
         </div>
     </section>
 
-    <section class="about-us mb-160 md-mb-80">
+    <section class="about-us mb-160 md-mb-80 pt-20 pb-20" style="background-color: #88b9d7;">
         <div class="container">
             <div class="about-us-rapper position-relative">
                 <img src="images/shape/shape-5.png" alt="" class="shape shape-5">
@@ -80,19 +61,16 @@
                     <div class="col-lg-6 col-xl-6">
                         <div class="left-about left-about-us position-relative">
                             <img src="images/banner/banner-14.png" alt="" class="">
-                            <img src="images/banner/banner-13.png" alt="" class="">
-                            <img src="images/screen/screen-14.png" alt="" class="">
-                            <img src="images/screen/screen-24.png" alt="" class="">
+                            <img src="{{asset('images/michelle.webp')}}" alt="" class="">
                             <img src="images/screen/screen-9.png" alt="" class="">
                         </div>
                     </div>
                     <div class="col-lg-5 col-xl-5 offset-lg-1 offset-xl-1 md-mt-80">
                         <div class="right-about-two">
-                            <span class="span-two">About Us</span>
-                            <h2 class="heading-2 mt-20 mb-30">Find Your Perfect Job Based on Experience</h2>
-                            <p>Dynamically matrix holistic e-tailers rather than seamless mindshare. Efficiently incentivize realtime information with interoperable.</p>
-                            <p class="mt-20 mb-30">Efficiently enhance low-risk high yield relationships visa state of the art cat change. </p>
-                            <a href="About_Us.html">More Details</a>
+                            <img src="{{asset('images/logo.png')}}" alt="{{env('APP_NAME')}}" style="margin-block: 30px;">
+                            <p>Créetelo es una comunidad que empodera a emprendedoras auténticas que quieren aportar a la vida de otros desde su propósito y sus conocimientos, ser reconocidas por su valor, hacer buen dinero de su pasión y conectar con otras mujeres exitosas.</p>
+                            <p>No es para personas que creen que se merecen el mundo sin hacer el mínimo esfuerzo, es para gente buena vibra, talentosa, profunda, auténtica, de mente abierta, potencial infinito y dispuestas a darlo TODO para comerse el mundo.</p>
+                            <p>A través de sesiones de mentoría, programas como “Vender(te) Sin Miedo”, clases y retos mensuales, Michelle usa su autenticidad, su valentía y su transparencia, con un tono positivo y real, para que más mujeres vean su valor y se atrevan a EMPRENDER con CONFIANZA.</p>
                         </div>
                     </div>
                 </div>

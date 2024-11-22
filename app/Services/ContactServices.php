@@ -3,6 +3,7 @@
 namespace App\Services;
 use GuzzleHttp\Client;
 use App\Models\Config;
+use Exception;
 use Illuminate\Support\Facades\Crypt;
 
 class ContactServices
@@ -18,32 +19,98 @@ class ContactServices
         ]);
     }
 
+    public function checkToken()
+    {
+        try {
+            $response = $this->client->get('contacts', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Version' => '2021-07-28',
+                    'Authorization' => 'Bearer ' . $this->config->access_token,
+                ],
+                'query' => [
+                    'locationId' => $this->config->location_id
+                ]
+            ]);
+            
+            return json_decode($response->getBody(), true);
+
+        } catch (Exception $e) {
+            if ($e->getCode() == 401) {
+                return response()->json(['error' => 'Unauthorized request'], 401);
+            }
+
+            return response()->json(['error' => 'Request failed'], 500);
+        }
+    }
+
     public function getContacts()
     {   
-        $response = $this->client->get('contacts', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Version' => '2021-07-28',
-                'Authorization' => 'Bearer ' . $this->config->access_token,
-            ],
-            'query' => [
-                'locationId' => $this->config->location_id
-            ]
-        ]);
-        
-        return json_decode($response->getBody(), true);
+        try {     
+            $response = $this->client->get('contacts', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Version' => '2021-07-28',
+                    'Authorization' => 'Bearer ' . $this->config->access_token,
+                ],
+                'query' => [
+                    'locationId' => $this->config->location_id
+                ]
+            ]);
+            return json_decode($response->getBody(), true);
+        } catch (Exception $e) {
+            if ($e->getCode() == 401) {
+                return response()->json(['error' => 'Unauthorized request'], 401);
+            }
+            return response()->json(['error' => 'Request failed'], 500);
+        }
+    }
+
+    public function searchContact($name)
+    {   
+        try {     
+            $response = $this->client->get('contacts', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Version' => '2021-07-28',
+                    'Authorization' => 'Bearer ' . $this->config->access_token,
+                ],
+                'query' => [
+                    'query' => $name,
+                    'locationId' => $this->config->location_id
+                ]
+            ]);
+            return json_decode($response->getBody(), true);
+        } catch (Exception $e) {
+            if ($e->getCode() == 401) {
+                return response()->json(['error' => 'Unauthorized request'], 401);
+            }
+            return response()->json(['error' => 'Request failed'], 500);
+        }
     }
 
     public function getContact($id)
     {
-        $response = $this->client->get('contacts/'.$id, [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Version' => '2021-07-28',
-                'Authorization' => 'Bearer ' . $this->config->access_token,
-            ],
-        ]);
-        
-        return json_decode($response->getBody(), true);
+        try {
+            $response = $this->client->get('contacts/'.$id, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Version' => '2021-07-28',
+                    'Authorization' => 'Bearer ' . $this->config->access_token,
+                ],
+            ]);
+            return json_decode($response->getBody(), true);
+        } catch (Exception $e) {
+            if ($e->getCode() == 401) {
+                return response()->json(['error' => 'Unauthorized request'], 401);
+            }
+            return response()->json(['error' => 'Request failed'], 500);
+        }
     }
+
+    //SyncContact
+    public function putContact()
+    {
+    }
+    
 }

@@ -79,4 +79,34 @@ class ConfigController extends Controller
             return response()->json(['error' => 'Error exchanging code'], 500);
         }
     }
+
+    public function getAuthorizationRefreshToken(Request $request)
+    {
+        $config = Config::where('id',1)->first();
+
+        try {
+            $response = Http::asForm()->post('https://services.leadconnectorhq.com/oauth/token', [
+                'client_id' => $config->client_id,
+                'client_secret' => $config->client_secret_id,
+                'grant_type' => $config->refresh_token,
+                'code' => $config->code,
+                'user_type' => 'Company'
+            ]);
+
+            $response->throw();
+            $data = $response->json();
+
+            // Handle successful response and return access token
+            $config->access_token =$data['access_token'];
+            $config->refresh_token = $data['refresh_token'];
+            $config->company_id = $data['companyId'];
+            $config->location_id = $data['locationId'];
+            $config->save();
+
+        } catch (\Throwable $exception) {
+            Log::error('Error exchanging authorization code:', [$exception->getMessage()]);
+            return $exception->getMessage();
+            return response()->json(['error' => 'Error exchanging code'], 500);
+        }
+    }
 }

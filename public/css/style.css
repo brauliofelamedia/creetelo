@@ -82,7 +82,7 @@ button{
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    color:rgba(25, 164, 99, 1);
+    color:#292775;
     text-align: center;
 }
 .span-three{
@@ -91,7 +91,7 @@ button{
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    color:rgba(25, 164, 99, 1);
+    color:#292775;
     text-align: center;
     border-radius: 20px;
     background:rgba(25, 164, 99, 0.1);
@@ -137,7 +137,7 @@ h6.heading-6{
 
 ::-webkit-scrollbar{ width: 5px; }
 ::-webkit-scrollbar-track { background: #fff;}
-::-webkit-scrollbar-thumb { background:#19A463;border-radius: 0;}
+::-webkit-scrollbar-thumb { background:#292775;border-radius: 0;}
 /*** 
 ====================================================================
   Loading Transition
@@ -175,7 +175,7 @@ h6.heading-6{
   font-size: 66px;
   line-height: 90px;
   overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: .15em solid #19A463; /* The typwriter cursor */
+  border-right: .15em solid #292775; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: .30em; /* Adjust as needed */
@@ -199,7 +199,7 @@ h6.heading-6{
 /* The typewriter cursor effect */
 @keyframes blink-caret {
   from { border-color: transparent; }
-  to { border-color: #19A463;}
+  to { border-color: #292775;}
 }
 /*** 
 ====================================================================
@@ -272,7 +272,7 @@ h6.heading-6{
     padding-right: 40px;
 }
 .right-wiget .sign-up .custom-btn {
-    background: rgba(25 164 99 / 100%);
+    background: #d17d24;
     border-radius: 5px;
     color: #ffffff;
     padding: 10px 30px;
@@ -286,7 +286,7 @@ h6.heading-6{
 }
 .right-wiget .sign-up .custom-btn:hover{
   color:#ffffff;
-  background:rgba(28 116 75 / 100%);
+  background:#d17d24;
 }
 .right-wiget .people a{
     padding: 0px 20px;
@@ -313,7 +313,7 @@ h6.heading-6{
   color: #111D3B;
 }
 .banner-one .hero-heading span {
-  color:#19A463;
+  color:#292775;
 }
 .banner-one form {
     position: relative;
@@ -376,7 +376,7 @@ h6.heading-6{
     color: #505050;
 }
 .banner-one form .item_4 a {
-    background: #19a463;
+    background: #292775;
     color: #ffffff;
     text-align: center;
     margin-right: 5px;
@@ -463,7 +463,7 @@ h6.heading-6{
 }
 .heading span{
   padding:0 5px;
-  color: #19A463;
+  color: #292775;
 }
 .main-content .content-flex .item{
   padding-right:98px;
@@ -524,11 +524,11 @@ category
 .job-category-one:hover .category-link{color: rgba(255, 255, 255, 1);}
 .job-category-three:hover,
 .job-category-one:hover{
-    background: rgba(25, 164, 99, 1);
+    background: #292775;
     color: rgba(255, 255, 255, 1);
 }
 .job-category-one.active{
-    background: rgba(25, 164, 99, 1);
+    background: #292775;
     color: rgba(255, 255, 255, 1);
 }
 .job-category-one.active a {
@@ -639,7 +639,7 @@ category
     padding-bottom:30px;
 }
 .right-about a {
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     color: #ffffff;
     font-family: 'Inter';
@@ -711,7 +711,7 @@ category
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #19A463;
+    color: #292775;
     border-radius: 5px;
     transition: all 0.3s ease-in-out; 
 }
@@ -740,7 +740,7 @@ category
   padding-right: 10px;
 }
 .job-type span i{
-  color: #19A463;
+  color: #292775;
 }
 .job-sallary {
     display: flex;
@@ -772,11 +772,11 @@ category
     font-weight: 500;
     font-size: 16px;
     line-height: 23px;
-    color: #19A463;
+    color: #292775;
     transition: all 0.3s ease-in-out;
     padding: 16px 30px;
 }
-.job-sallary a:hover{color:#ffffff;background: #19A463;}
+.job-sallary a:hover{color:#ffffff;background: #292775;}
 .explore-btn{
   padding-top:60px;
   display: flex;
@@ -790,7 +790,7 @@ category
     font-size: 16px;
     line-height: 30px;
     color: #FFFFFF;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
     padding: 12px 30px;
@@ -836,7 +836,7 @@ category
   line-height: 68px;
   color: rgba(17, 29, 59, 1);
  }
-.choose-us-heading h2 span{color: #19A463;}
+.choose-us-heading h2 span{color: #292775;}
 .choose-us-heading p{
   font-family: 'Gordita';
   font-style: normal;
@@ -864,7 +864,7 @@ category
     height: 40px;
     background: rgba(25, 164, 99, .1);
     display: flex;
-    color: rgba(25, 164, 99, 1);
+    color: #292775;
     border-radius: 50%;
     flex-direction: column;
     align-items: center;
@@ -883,7 +883,7 @@ category
     color:rgba(28 116 75 / 100%);
 }
 .choose-us-heading .custom-btn {
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     color: #ffffff;
     font-family: 'Inter';
@@ -936,7 +936,7 @@ category
     opacity: 0.2;
     width: 19.8rem;
     height: 19.8rem;
-    background: rgba(25, 164, 99, 1);
+    background: #292775;
 }
 button.item1 {
     font-size: 24px;
@@ -1016,7 +1016,7 @@ testimonial start
 }
 #testimonial_slider i.bi-chevron-left:hover,
 #testimonial_slider i.bi-chevron-right:hover{
-    background: rgba(25, 164, 99, 1);
+    background: #292775;
     color: #ffff;
 }
 .testimonial-item {
@@ -1190,7 +1190,7 @@ Download Apps
     width: 50%;
   }
 .customer_content .custom-btn {
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     font-style: normal;
     font-weight: 600;
@@ -1201,7 +1201,7 @@ Download Apps
     padding: 12px 30px;
 }
 .customer_content .custom-btn:hover{
-    background: rgba(28 116 75 / 100%);
+    background: #292775;
 }
 /*=======================
 SUBSCRIBE
@@ -1241,7 +1241,7 @@ SUBSCRIBE
     margin-left: 5px;
 }
 .subscriber-content-right form .custom_btn {
-    background: #19A463;
+    background: #292775;
     border-radius: 50px;
     color: #FFFFFF;
     box-shadow: 0px 2px 8px rgb(25 164 99 / 50%);
@@ -1282,7 +1282,7 @@ footer
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    color: #19A463;
+    color: #292775;
     transition: all 0.3s ease-in-out;
 }
  .social_group ul li a:hover{
@@ -1311,7 +1311,7 @@ footer
     color: #726B7A;
     transition: all 0.3s ease-in-out;
 }
-.footer-one_2 ul li a:hover {color:#19A463;}
+.footer-one_2 ul li a:hover {color:#292775;}
 .copy-right h5{
   font-family: 'Gordita';
   font-style: normal;
@@ -1386,7 +1386,7 @@ footer
     padding-right: 15px;
 }
 .left_banner-two .bannerTwo-form .item_4-button a {
-    background: #19a463;
+    background: #292775;
     color: #ffffff;
     text-align: center;
     border-radius: 30px;
@@ -1447,7 +1447,7 @@ Get Your Dream Job*/
   font-weight: 500;
   font-size: 18px;
   line-height: 19px;
-  color: #19A463;
+  color: #292775;
 }
 .dream-job2 .text-center .heading-text3 {
     font-family: 'Gordita';
@@ -1459,7 +1459,7 @@ Get Your Dream Job*/
     color:rgba(17, 29, 59, 1);
 }
 .dream-job2 .dream-heading .heading-text3 .span-color{
-  color:#19A463;;
+  color:#292775;;
 }
 .dreamitem-1 {
     max-width: 380px;
@@ -1474,7 +1474,7 @@ Get Your Dream Job*/
 .dreamitem-1 .dream-icon {
     width: 100px;
     height: 100px;
-    background: #19A463;
+    background: #d17d24;
     color: #ffffff;
     border-radius: 50px;
     display: flex;
@@ -1493,7 +1493,7 @@ Get Your Dream Job*/
     font-weight: 500;
 }
 .dreamitem-1 a:hover{
-   color:#19A463;
+   color:#292775;
 }
 /*=========================slider two======================== */
 .top-border,
@@ -1558,7 +1558,7 @@ Get Your Dream Job*/
     position: absolute;
     width: 552px;
     height: 640px;
-    background: linear-gradient(180deg, #19A463 0%, rgba(25, 164, 99, 0.00) 100%);
+    background: linear-gradient(180deg, #292775 0%, rgba(25, 164, 99, 0.00) 100%);
     bottom: 0;
     left: -41px;
     z-index: -1;
@@ -1568,7 +1568,7 @@ Get Your Dream Job*/
     position: absolute;
     width: 351px;
     height: 313px;
-    background: linear-gradient(180deg, #19A463 0%, rgba(25, 164, 99, 0.00) 100%);
+    background: linear-gradient(180deg, #292775 0%, rgba(25, 164, 99, 0.00) 100%);
     bottom: -47px;
     right: -68px;
     z-index: -1;
@@ -1580,16 +1580,23 @@ Get Your Dream Job*/
     font-weight: 500;
     font-size: 18px;
     line-height: 19px;
-    color: #19A463;
+    color: #292775;
 }
 .about-us-rapper .right-about-two h2.heading-2>.big{
-    color: #19A463;
+    color: #292775;
     font-family: 'Gordita';
     font-style: normal;
     font-weight: 700;
     font-size: 48px;
 }
-.about-us-rapper .right-about-two p:nth-child(3){
+
+.about-us-rapper .right-about-two p {
+    margin-bottom: 20px;
+    line-height: 1.3em;
+    color: white;
+    font-weight: 500;
+}
+/*.about-us-rapper .right-about-two p:nth-child(3){
     max-width:424px;
     position: relative;
     font-family: 'Gordita';
@@ -1600,12 +1607,13 @@ Get Your Dream Job*/
     margin-left: 30px;
 }
 .about-us-rapper .right-about-two p:nth-child(3)::before {
+    display: none;
     position: absolute;
     content: '';
     left:-27px;
     width: 5px;
     height: 86px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     margin: auto 0;
     top: 9px;
@@ -1621,7 +1629,7 @@ Get Your Dream Job*/
 .about-us-rapper .right-about-two a:nth-child(5) {
     width: 158px;
     height: 54px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
@@ -1634,7 +1642,7 @@ Get Your Dream Job*/
     font-size: 16px;
     line-height: 30px;
     transition: all 0.3s ease-in-out;
-}
+}*/
 .about-us-rapper .right-about-two a:nth-child(5):hover{
   color:#ffffff;
   background:rgba(28 116 75 / 100%);
@@ -1690,7 +1698,7 @@ Get Your Dream Job*/
     line-height: normal;
     background: rgba(25, 164, 99, 0.1);
     display: inline-block;
-    color: #19A463;
+    color: #292775;
     margin-right: 20px;
     padding: 12px 30px;
     border-radius: 20px;
@@ -1826,7 +1834,7 @@ font-size: 18px;
 font-style: normal;
 font-weight: 500;
 line-height: normal;
-    color:#19A463;
+    color:#292775;
 }
 .testimonial-item-inner-two .left-side {
     position: relative;
@@ -1925,9 +1933,9 @@ line-height: normal;
     left: 54%;
     position: absolute;
     top:15%;
-    background:rgba(25, 164, 99, 0.1);
+    background:#292775;
     z-index: 9999;
-    color: rgba(25, 164, 99, 1);
+    color: #292775;
     border-radius:50px;
     transition: all 0.3s ease-in-out;
 }
@@ -1942,13 +1950,13 @@ line-height: normal;
     top: 15%;
     background:rgba(25, 164, 99, 0.1);
     z-index: 9999;
-    color: rgba(25, 164, 99, 1);
+    color: #292775;
     border-radius:50px;
     transition: all 0.3s ease-in-out;
 }
 #testimonial_slider-two .bi-chevron-left:hover,
 #testimonial_slider-two .bi-chevron-right:hover{
-    background:rgba(25, 164, 99, 1);
+    background:#292775;
     color: #ffff;
 }
 .apps-download-two{
@@ -2036,7 +2044,7 @@ line-height: normal;
       color:rgba(28 116 75 / 100%);
 }
 .banner-three-rapper .form-3 .button a {
-    background: #19A463;
+    background: #292775;
     color: #ffffff;
     font-family: 'Inter';
     font-style: normal;
@@ -2228,7 +2236,7 @@ line-height: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 30px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     color: #ffffff;
     display: flex;
@@ -2288,7 +2296,7 @@ line-height: normal;
     padding-bottom:50px;
 }
 #testimonial_slider-three .slick-dots li{list-style:none;}
-#testimonial_slider-three .slick-dots li.slick-active{background:#19A463; border: none;}
+#testimonial_slider-three .slick-dots li.slick-active{background:#292775; border: none;}
 #testimonial_slider-three .slick-dots li{
     font-size: 0;
     line-height: 0;
@@ -2318,9 +2326,9 @@ line-height: normal;
 .dream-job-three .dreamitem-1 .dream-icon-two,
 .dream-job-three .dreamitem-1 .dream-icon-three{
     position: relative;
-    background: rgba(25, 164, 99, 0.2);
+    background: #d17d24;
 }
-.dream-job-three .dreamitem-1 .dream-icon i{color: rgba(25, 164, 99, 1);}
+.dream-job-three .dreamitem-1 .dream-icon i{color: #292775;}
 .dream-job-three .dreamitem-1 .dream-icon:before {
     content: '';
     position: absolute;
@@ -2328,7 +2336,7 @@ line-height: normal;
     left: -16px;
     height: 40px;
     width: 40px;
-    background: rgba(25, 164, 99, 1);
+    background: #292775;
     border-radius: 40px;
     line-height:40px;
     text-align: center;
@@ -2360,7 +2368,7 @@ line-height: normal;
     font-size: 18px;
     line-height: 19px;
     text-align: center;
-    color: #19A463;
+    color: #292775;
 }
 .home-blog-three .blog-heading h3{
     font-family: 'Gordita';
@@ -2389,7 +2397,7 @@ line-height: normal;
 #home-three-blog-slider .card-body {
     margin-top: 30px;
 }
-.blog-main-content .card-body .blog-item1 i{color:#19A463;padding-right: 5px;}
+.blog-main-content .card-body .blog-item1 i{color:#292775;padding-right: 5px;}
 .blog-main-content .card-body h6 {
     font-family: 'Gordita';
     font-style: normal;
@@ -2412,7 +2420,7 @@ line-height: normal;
     padding-bottom:100px;
 }
 #home-three-blog-slider .slick-dots li{list-style:none;}
-#home-three-blog-slider .slick-dots li.slick-active{background:#19A463; border: none;}
+#home-three-blog-slider .slick-dots li.slick-active{background:#292775; border: none;}
 #home-three-blog-slider .slick-dots li{
     font-size: 0;
     line-height: 0;
@@ -2431,7 +2439,10 @@ line-height: normal;
 /*===========================================About Us page================================*/
 .about-us-banner{
     position: relative;
-    background:rgba(25, 164, 99, 0.05) url('../images/bg/bg-1.png') left top no-repeat;
+    /*background:rgba(25, 164, 99, 0.05) url('../images/bg/bg-1.png') left top no-repeat;*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 .about-three-rapper .shape-12 {
     right: 5%;
@@ -2443,8 +2454,24 @@ line-height: normal;
     bottom: 14%;
     width: 6%;
 }
+
+.about-us-banner {
+    position: relative;
+}
+
+.about-us-banner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(41,39,115,0.8), rgba(41,39,115,0.2));
+}
+
 .about-us-banner .form-3{position: relative;}
 .about-us-banner .form-3:after{
+    display: none;
     content:'';
     position: absolute;
     height: 100%;
@@ -2457,9 +2484,11 @@ line-height: normal;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
-    font-size: 66px;
+    /*font-size: 66px;*/
+    font-size: 46px;
     line-height: 1.1em;
-    color:rgba(17, 29, 59, 1);
+    /*color:rgba(17, 29, 59, 1);*/
+    color: white;
     max-width: 832px;
     text-align: center;
 }
@@ -2500,7 +2529,7 @@ line-height: normal;
     padding-left: 30px;
 }
 .about-three-rapper .form-3 .button a {
-    background: #19A463;
+    background: #292775;
     color: #ffffff;
     font-family: 'Inter';
     font-style: normal;
@@ -2550,7 +2579,7 @@ line-height: normal;
     color: #ffffff;
     max-width: 579px;
     max-height: 187px;
-    background: #19A463;
+    background: #292775;
     position: absolute;
     left: 12px;
     top: -15%;
@@ -2583,7 +2612,7 @@ line-height: normal;
     z-index: 1;
     top: 5%;
     left: 39%;
-    color: #19A463;
+    color: #292775;
     padding: 20px;
     transition: .3s ease-in-out;
     line-height: 20px;
@@ -2605,7 +2634,7 @@ line-height: normal;
     font-weight: 500;
     font-size: 18px;
     line-height: 19px;
-    color: #19A463;
+    color: #292775;
 }
 .our_team .team-heading h3{
     font-family: 'Gordita';
@@ -2690,12 +2719,12 @@ line-height: normal;
 .card .social_group ul li a{
     display: none;
     background: #ffffff;
-    color:rgba(25, 164, 99, 1);
+    color:#292775;
     transition:.3s ease-in-out;
 }
 .card .social_group ul li a:hover{
     color:#ffffff;
-    background:rgba(25, 164, 99, 1);
+    background:#292775;
 }
 .our_team_item .card img{
     position: relative;
@@ -2704,7 +2733,7 @@ line-height: normal;
 }
 .our_team_item .card:hover img{
     background: rgba(255, 255, 255, 0.6);
-    border: 6px solid #19A463;
+    border: 6px solid #292775;
     opacity:.6;
 }
 .our_team_item .card:hover .social_group ul li a{
@@ -2736,7 +2765,7 @@ line-height: normal;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
-    color: #19A463;
+    color: #292775;
     padding: 10px 20px;
     display: block;
     border: none;
@@ -2788,7 +2817,7 @@ line-height: normal;
     transition: .3s ease-in-out;
 }
 #range-slider .form-range {
-    background-color: #19A463;
+    background-color: #292775;
     height: 0;
     margin-top: 60px;
     transition: .3s ease-in-out;
@@ -2811,7 +2840,7 @@ line-height: normal;
     color: #111D3B;
 }
 .left-list .experience .left-side .form-check .form-check-input{
-    background-color: #19A463;
+    background-color: #292775;
 }
 .left-list .experience .left-side .form-check .form-check-label{
     font-family: 'Gordita';
@@ -2849,14 +2878,14 @@ line-height: normal;
     color: #111D3B;
 }
 .right-job-list .job-list-heading .sort-list strong{padding-right: 40px;}
-.right-job-list .job-list-heading .sort-list .form-select{color: #19A463;min-width: 122px;}
+.right-job-list .job-list-heading .sort-list .form-select{color: #292775;min-width: 122px;}
 .right-job-list .job-list-heading .sort-list .form-select option{
     font-family: 'Gordita';
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
     line-height: 19px;
-    color: #19A463;
+    color: #292775;
     padding-top: 10px;
 }
 
@@ -2898,7 +2927,7 @@ line-height: normal;
     line-height: 26px;
     color: #505050;
 }
-.right-job-list .job-list-1 .job-list-name span i{color: rgba(25, 164, 99, 1);}
+.right-job-list .job-list-1 .job-list-name span i{color: #292775;}
 .right-job-list .job-list-1 .job-list-name .job-apply a {
     background: rgba(25, 164, 99, 0.1);
     border-radius: 5px;
@@ -2909,12 +2938,12 @@ line-height: normal;
     line-height: 17px;
     display: block;
     padding: 16px 30px;
-    color: #19A463;
+    color: #292775;
     transition: .3s ease-in-out;
 }
 .right-job-list .job-list-1 .job-list-name .job-apply a:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 .job-list-pagination ul.pagination .page-item{margin-right:20px;}
 .job-list-pagination ul.pagination .page-item .page-link {
@@ -2934,7 +2963,7 @@ line-height: normal;
 }
 .job-list-pagination ul.pagination .page-item .page-link:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 /*blog-grid page*/
 .blog-grid .explore a{
@@ -2945,7 +2974,7 @@ line-height: normal;
     line-height: 30px;
     width: 162px;
     height: 54px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     color:#ffffff;
     transition: .3s ease-in-out;
@@ -3046,7 +3075,7 @@ line-height: normal;
 button.custom-btn {
     width: 174px;
     height: 54px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     transition: .3s ease-in-out;
     font-family: 'Inter';
@@ -3109,7 +3138,7 @@ button.custom-btn:hover {
     font-size: 16px;
     line-height: 30px;
     color: #FFFFFF;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     padding:12px 30px;
     transition: .3s ease-in-out; 
@@ -3160,7 +3189,7 @@ button.custom-btn:hover {
     line-height: 40px;
     color: #111D3B;
 }
-.job-details-right .job-list-1 span i{color:rgba(25, 164, 99, 1);}
+.job-details-right .job-list-1 span i{color:#292775;}
 .job-details-right .job-list-1 .list-company{border-bottom:2px solid rgba(17, 29, 59, 0.02);}
 .job-details-right .job-list-1 .job-apply a {
     width: 144px;
@@ -3170,7 +3199,7 @@ button.custom-btn:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #19A463;
+    color: #292775;
     font-family: 'Gordita';
     font-style: normal;
     font-weight: 500;
@@ -3180,7 +3209,7 @@ button.custom-btn:hover {
 }
 .job-details-right .job-list-1 .job-apply a:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 .job-details-right .job-list-details h4{
     font-family: 'Gordita';
@@ -3213,7 +3242,7 @@ button.custom-btn:hover {
 }
 .job-details-right .job-list-details .btn-group .btn {
     background: rgba(25, 164, 99, 0.1);
-    color: #19A463;
+    color: #292775;
     margin: 10px 10px;
     border: none;
     padding: 15px 30px;
@@ -3226,10 +3255,10 @@ button.custom-btn:hover {
 }
 .job-details-right .job-list-details .btn-group .btn:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 .job-details-right .job-list-details .apply-btn{
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     font-family: 'Inter';
     font-style: normal;
@@ -3256,14 +3285,14 @@ button.custom-btn:hover {
     width: 40px;
     height: 40px;
     background: rgba(25, 164, 99, 0.1);
-    color: #19A463;
+    color: #292775;
     margin: 0 15px;
     border-radius: 50px;
     transition: .3s ease-in-out;
     line-height: 40px;  
 }
 .job-details-right .job-list-details .social-link:hover {
-    background: #19A463;
+    background: #292775;
     color: #ffffff;
 }
 .job-details-right .job-list-details .social-link i {
@@ -3299,7 +3328,7 @@ button.custom-btn:hover {
 }
 #recent-job-slider i.bi-chevron-left:hover,
 #recent-job-slider i.bi-chevron-right:hover {
-    background: #19A463;
+    background: #292775;
     color: #ffffff;
 }
 #recent-job-slider .recent-job-item{
@@ -3335,7 +3364,7 @@ button.custom-btn:hover {
     border-radius:80px;
 }
 .Candidates-grid {
-    min-width: 100%;
+    min-width: 90%;
     position: relative;
     border: 1px solid rgba(17, 29, 59, 0.1);
     border-radius: 15px;
@@ -3345,10 +3374,11 @@ button.custom-btn:hover {
     font-family: 'Gordita';
     font-style: normal;
     font-weight: 700;
-    font-size: 28px;
+    font-size: 25px;
     line-height: 30px;
     text-align: center;
     color: #111D3B;
+    text-transform: capitalize;
 }
 .Candidates-grid .top-grid-1 span{
     font-family: 'Gordita';
@@ -3380,7 +3410,7 @@ button.custom-btn:hover {
 }
 .Candidates-grid .top-grid-4 a {
     padding: 12px 30px;
-    background: rgba(25, 164, 99, 0.1);
+    background: #2a2775dc;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -3390,12 +3420,12 @@ button.custom-btn:hover {
     font-weight: 600;
     font-size: 16px;
     line-height: 30px;
-    color: #19A463;
+    color: white;
     transition: .3s ease-in-out; 
 }
 .Candidates-grid .top-grid-4 a:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 /*Candidate-list*/
 .Candidate-list .Candidate-list-1{
@@ -3452,13 +3482,13 @@ button.custom-btn:hover {
     font-weight: 500;
     font-size: 16px;
     line-height: 17px;
-    color: #19A463;
+    color: #292775;
     padding: 16px 21px;
     transition: .3s ease-in-out;  
 }
 .Candidate-list .Candidate-list-1 .Candidate-contact a:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 /*Candidates-Details*/
 .candidates-details-left {
@@ -3477,7 +3507,7 @@ button.custom-btn:hover {
 .candidates-details-left .save-candidate span {
     padding: 7px 7px;
     background: #FFFFFF;
-    border: 1px solid #19A463;
+    border: 1px solid #292775;
     border-radius: 5px;
     font-family: 'Gordita';
     font-style: normal;
@@ -3485,7 +3515,7 @@ button.custom-btn:hover {
     font-size: 16px;
     line-height: 17px;
     margin-left: 14px;
-    color: #19A463;
+    color: #292775;
 }
 .candidates-details-left .Profile-name h4{
     font-family: 'Gordita';
@@ -3514,7 +3544,7 @@ button.custom-btn:hover {
 }
 .candidates-details-left .social-link ul li a {
     display: inline-block;
-    color: #19A463;
+    color: #292775;
     width: 40px;
     background: rgba(25, 164, 99, 0.1);
     text-align: center;
@@ -3600,14 +3630,14 @@ button.custom-btn:hover {
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
-    color: #19A463;
+    color: #292775;
     line-height: 23px;
     padding: 16px 36px;
     transition: .3s ease-in-out; 
 }
 .candidates-details-right .Candidate-contact a:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 .candidates-details-right .candidate-list-2 h4{
     font-family: 'Gordita';
@@ -3645,6 +3675,7 @@ button.custom-btn:hover {
     text-align: left;
     max-width: 83%;
     right: -15%;
+    padding-bottom: 0;
 }
 .timeline::before {
     top: 0;
@@ -3653,7 +3684,7 @@ button.custom-btn:hover {
     position: absolute;
     width: 6px;
     height: 74%;
-    background: #19A463;
+    background: #292775;
     opacity: 0.2;
     border-radius: 5px;
 }
@@ -3677,7 +3708,7 @@ button.custom-btn:hover {
     font-weight: 400;
     font-size: 16px;
     line-height: 23px;
-    color: #19A463;
+    color: #292775;
 }
 .timeline .event p{
     font-family: 'Gordita';
@@ -3737,7 +3768,7 @@ button.custom-btn:hover {
     font-weight: 500;
     font-size: 18px;
     line-height: 26px;
-    color: #19A463;
+    color: #292775;
     background: rgba(25, 164, 99, 0.1);
     border-radius: 5px;
     border: none;
@@ -3747,7 +3778,7 @@ button.custom-btn:hover {
 }
 .candidates-details-right .candidate-list-5 .btn:hover {
     color: #ffffff;
-    background: #19A463;
+    background: #292775;
 }
 .btn-group>.btn-group:not(:last-child)>.btn, 
 .btn-group>.btn:not(:last-child):not(.dropdown-toggle){
@@ -3755,7 +3786,7 @@ button.custom-btn:hover {
     border-bottom-right-radius: 5px;
 }
 .candidates-details-right .candidate-list-6 a {
-    background: rgba(25, 164, 99, 1);
+    background: #292775;
     border-radius: 5px;
     font-family: 'Inter';
     font-style: normal;
@@ -3837,7 +3868,7 @@ button.custom-btn:hover {
     width: 40px;
     height: 40px;
     background:rgba(25, 164, 99, 0.1);
-    color:#19A463;
+    color:#292775;
     text-align: center;
     border-radius:50%;
     transition: .3s ease-in-out; 
@@ -3850,7 +3881,7 @@ button.custom-btn:hover {
 .single-blog-left .left-5 a{
     width: 211px;
     height: 54px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     font-family: 'Inter';
     font-style: normal;
@@ -3903,7 +3934,7 @@ button.custom-btn:hover {
     height: 54px;
     background: rgba(25, 164, 99, 0.1);
     border-radius: 5px;
-    color: #19A463;
+    color: #292775;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
@@ -3938,7 +3969,7 @@ button.custom-btn:hover {
 .single-blog-left .make-comment a{
     width: 195px;
     height: 54px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     font-family: 'Inter';
     font-style: normal;
@@ -4016,7 +4047,7 @@ button.custom-btn:hover {
     height: 40px;
     background:rgba(25, 164, 99, 0.1);
     text-align: center;
-    color: #19A463;
+    color: #292775;
     border-radius:50%;
     transition: .3s ease-in-out;
     line-height: 40px;
@@ -4042,7 +4073,7 @@ button.custom-btn:hover {
 .single-blog-right .right-1 a {
     width: 143px;
     height: 50px;
-    background: #19A463;
+    background: #292775;
     border-radius: 5px;
     margin-top: 20px;
     font-family: 'Inter';
@@ -4121,7 +4152,7 @@ button.custom-btn:hover {
     background:rgba(25, 164, 99, 0.1);
     border-radius:50%;
     text-align: center;
-    color: #19A463;
+    color: #292775;
     transition: .3s ease-in-out; 
     line-height: 40px; 
 }
@@ -4171,7 +4202,7 @@ button.custom-btn:hover {
     font-size: 25px;
     cursor: pointer;
     border-radius: 50%;
-    background:#19A463;
+    background:#292775;
     display: none;
     transition: all 0.3s ease-in-out;
 }
@@ -4185,4 +4216,30 @@ button.custom-btn:hover {
     width: 90%;
     opacity: 1;
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 80%);
+}
+
+/*Braulio Miramontes*/
+.footer-one {
+    background-color:#d17d24;
+}
+
+.footer-one h5 {
+    color: white;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 15px;
+    border: 0;
+}
+
+.btn-search {
+    padding: 20px 25px;
+    background-color: #292775;
+    color: white;
+    font-weight: 700;
+}
+
+.btn-search:hover {
+    background-color: #282589;
 }

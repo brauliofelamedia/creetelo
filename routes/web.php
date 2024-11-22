@@ -6,7 +6,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FrontController;
 
 //Front
-Route::get('/',[FrontController::class,'index'])->name('front.home');
+Route::get('/{search?}',[FrontController::class,'index'])->name('front.home');
 Route::get('nosotros',[FrontController::class,'about'])->name('front.about');
 Route::get('contacto',[FrontController::class,'contact'])->name('front.contact');
 
@@ -15,6 +15,7 @@ Route::get('individual/{contactId}',[FrontController::class,'contact_detail'])->
 
 //Account
 Route::get('create',[FrontController::class,'account_create'])->name('front.account.create');
+Route::get('login',[FrontController::class,'account_login'])->name('front.account.login');
 Route::get('forgot',[FrontController::class,'account_forgot'])->name('front.account.forgot');
 
 //Configs

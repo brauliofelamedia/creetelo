@@ -9,12 +9,19 @@ class FrontController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contactServices = new ContactServices();
-        $contacts = $contactServices->getContacts();
-        $contacts = $contacts['contacts'];
-        return view('front.home', compact('contacts'));
+        $name = $request->name;
+
+        if($name){
+            $contactServices = new ContactServices();
+            $data = $contactServices->searchContact($name);
+        } else {
+            $contactServices = new ContactServices();
+            $data = $contactServices->getContacts();
+        }
+
+        return view('front.home', compact('data','name'));
     }
 
     public function about()
@@ -35,8 +42,15 @@ class FrontController extends Controller
     public function contact_detail($id)
     {
         $contactServices = new ContactServices();
+
+        //Información del candidato
         $contact = $contactServices->getContact($id);
         $contact = $contact['contact'];
-        return view('front.contact.detail', compact('contact'));
+
+        //Otros candidatos
+        $contacts = $contactServices->getContacts();
+        $otherContacts = collect($contacts['contacts'])->random(6);
+        
+        return view('front.contact.detail', compact('contact','otherContacts'));
     }
 }
