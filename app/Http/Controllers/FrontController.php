@@ -21,7 +21,7 @@ class FrontController extends Controller
             $data = $contactServices->getContacts();
         }
 
-        $paginate = $data['meta'];
+        //$paginate = $data['meta'];
 
         return view('front.home', compact('data','name','paginate'));
     }
