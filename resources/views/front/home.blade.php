@@ -1,4 +1,31 @@
 @extends('layouts.main')
+
+@push('css')
+<style>
+    li {
+        list-style-type: none;
+        display: inline;
+    }
+
+    ul {
+        margin:0 auto;
+        text-align: center;
+    }
+
+    .btn-pagination,.btn-pagination:hover {
+        margin-top: 30px;
+        padding: 5px 10px;
+        background-color: #474588;
+        color: white;
+        border-radius: 5px;
+    }
+    
+    .btn-pagination.active,.btn-pagination:hover {
+        background-color: #d17d24;
+    }
+</style>
+@endpush
+
 @section('content')    
     <div class="about-us-banner pt-120" style="background-image: url('{{asset('images/home.webp')}}')">
         <div class="about-three-rapper position-relative">
@@ -28,7 +55,7 @@
                         <div class="row job-grid-heading">
                             <div class="col-lg-8 md-pb-20" data-aos="zoom-in">
                                 <div class="left-grid">
-                                    <span class="">Mostrando {{count($data['contacts'])}} de {{number_format($data['meta']['total'])}} candidatos</span>
+                                    <span class="">Mostrando {{count($data['contacts'])}} de {{$data['total']}} candidatos</span>
                                 </div>
                             </div>
                             <div class="col-lg-4" data-aos="zoom-in">
@@ -45,24 +72,20 @@
                         </div>
                         @foreach($data['contacts'] as $contact)
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-3">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                     <div class="round-pic"><img src="{{Gravatar::get($contact['email'])}}" alt=""></div>
                                     <div class="Candidates-grid">
                                         <div class=" mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
                                             <div class=" d-flex flex-column align-items-center justify-content-center ">
-                                                <h3>{{(($contact['contactName'])? $contact['contactName'] :'-')}}</h3>
-                                                <span>{{(($contact['email'])? $contact['email'] :'-')}}</span>
-                                            </div>
-                                        </div>
-                                        <div class="top-grid-2 mt-20 d-flex align-items-center justify-content-center">
-                                            <div class="mb-20 text-center">
-                                                <span><i class="bi bi-geo-alt"></i></span>
+                                                <h3>{{(($contact['firstNameLowerCase'])? $contact['firstNameLowerCase'] :'-')}} {{(($contact['lastNameLowerCase'])? $contact['lastNameLowerCase'] :'-')}}</h3>
                                                 <span>{{$contact['country']}}</span>
-                                            </div>
-                                            <div class="mb-20">
-                                                <span><i class="bi bi-email-inbound"></i></span>
-                                                <span>{{$contact['phone']}}</span>
+                                                <ul class="social-link-front">
+                                                    <li><a href=""><i class="bi bi-linkedin"></i></a></li>
+                                                    <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+                                                    <li><a href=""><i class="bi bi-twitter"></i></a></li>
+                                                    <li><a href=""><i class="bi bi-instagram"></i></a></li>
+                                                </ul>
                                             </div>
                                         </div>
                                         <div class="top-grid-4 pt-20 d-flex flex-column align-items-center justify-content-center">
@@ -73,10 +96,16 @@
                             </div>
                         @endforeach
 
-                        <div class="pagination d-flex align-items-center justify-content-center">
-                            <button class="btn">Anterior</button>
-                            <button class="btn">Siguiente</button>
-                        </div>
+                        @php
+                            $total = $data['total'];
+                            $pages = intval(ceil($total / 20));
+                        @endphp
+
+                        <ul>
+                            @for ($i = 0; $i < $pages; $i++)
+                                <li><a href="{{route('front.home')}}/?page={{$i+1}}" class="btn-pagination  {{($page == $i+1)? 'active':''}}">{{$i+1}}</a></li>
+                            @endfor
+                        </ul>
 
                     @else
                         <h4 class="text-center mb-20">No hay candidados relacionados con tu búsqueda.</h4>

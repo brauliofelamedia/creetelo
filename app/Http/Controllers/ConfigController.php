@@ -80,6 +80,40 @@ class ConfigController extends Controller
         }
     }
 
+    public function renewToken()
+    {
+        // Fetch configuration data
+        $config = Config::where('id', 1)->firstOrFail();
+        $contactServices = new ContactServices();
+        $token = $contactServices->checkToken();
+
+        if($token->status() == 401){
+            try {
+                // Make HTTP request to exchange token
+                $response = Http::asForm()
+                    ->post('https://services.leadconnectorhq.com/oauth/token', [
+                        'client_id' => $config->client_id,
+                        'client_secret' => $config->client_secret_id,
+                        'grant_type' => 'refresh_token',
+                        'refresh_token' => $config->refresh_token,
+                    ]);
+    
+                $response->throw(); 
+                $data = $response->json();
+    
+                return response()->json($response);
+    
+                $config->access_token = $data['access_token'] ?? null;
+                $config->refresh_token = $data['refresh_token'] ?? null;
+                $config->save();
+    
+            } catch (\Throwable $exception) {
+                return response()->json(['error' => 'Failed to exchange token. Please try again later.'], 500);
+            }
+        }
+
+    }
+
     public function getAuthorizationRefreshToken(Request $request)
     {
         $config = Config::where('id',1)->first();

@@ -4243,3 +4243,33 @@ button.custom-btn:hover {
 .btn-search:hover {
     background-color: #ab6318;
 }
+
+.form-group {
+    padding: 7px 0px;
+}
+
+.social-link-front {
+    list-style: none;
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.social-link-front li {
+    display: inline-block;
+}
+
+.social-link-front li a {
+    display: inline-block;
+    color: #292775;
+    width: 40px;
+    background: rgba(25, 164, 99, 0.1);
+    text-align: center;
+    margin: 0 3px;
+    border-radius: 50px;
+    line-height:40px;
+    transition: .3s ease-in-out; 
+}
+
+.social-link-front li a:hover {
+    background: rgba(28 116 75 / 100%);
+    color: #ffffff;
+}

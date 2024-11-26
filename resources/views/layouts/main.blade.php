@@ -18,6 +18,7 @@
 		<link rel="icon" type="image/png" sizes="72x33" href="images/fabicon.png">
 		<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}" media="all">
 		<link rel="stylesheet" type="text/css" href="{{asset('css/responsive.css')}}" media="all">
+		@stack('css')
 		<!-- Fix Internet Explorer ______________________________________-->
 		<!--[if lt IE 9]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>

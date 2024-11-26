@@ -4,6 +4,8 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use App\Models\Config;
 use Exception;
+use Illuminate\Http\Request;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Crypt;
 
 class ContactServices
@@ -44,20 +46,79 @@ class ContactServices
         }
     }
 
-    public function getContacts()
+    public function getContacts($name,$page)
     {   
-        try {     
-            $response = $this->client->get('contacts', [
+        if($name){
+            $filters = [
+                [
+                    'group' => 'AND',
+                    'filters' => [
+                        [
+                            'field' => 'firstNameLowerCase',
+                            'operator' => 'contains',
+                            'value' => $name,
+                        ],
+                        [
+                            'field' => "lastNameLowerCase",
+                            'operator' => "exists"
+                        ],
+                    ],
+                ],
+                [
+                    'group' => 'OR',
+                    'filters' => [
+                        [
+                            'field' => 'tags',
+                            'operator' => 'eq',
+                            'value' => ['wowfriday_plan mensual'],
+                        ],
+                        [
+                            'field' => 'tags',
+                            'operator' => 'eq',
+                            'value' => ['wowfriday_plan anual'],
+                        ],
+                    ],
+                ],
+            ];
+        } else {
+            $filters = [
+                [
+                    'group' => 'OR',
+                    'filters' => [
+                        [
+                            'field' => 'tags',
+                            'operator' => 'eq',
+                            'value' => ['wowfriday_plan mensual'],
+                        ],
+                        [
+                            'field' => 'tags',
+                            'operator' => 'eq',
+                            'value' => ['wowfriday_plan anual'],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        $data = [
+            'locationId' => $this->config->location_id,
+            'page' => intval($page),
+            'pageLimit' => 20,
+            'filters' => $filters,
+        ];
+
+        try {
+            $response = $this->client->post('contacts/search', [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Version' => '2021-07-28',
                     'Authorization' => 'Bearer ' . $this->config->access_token,
                 ],
-                'query' => [
-                    'locationId' => $this->config->location_id
-                ]
+                'json' => $data,
             ]);
+            
             return json_decode($response->getBody(), true);
+
         } catch (Exception $e) {
             if ($e->getCode() == 401) {
                 return response()->json(['error' => 'Unauthorized request'], 401);
