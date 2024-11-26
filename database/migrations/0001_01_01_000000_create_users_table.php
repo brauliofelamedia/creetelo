@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('last_name')->nullable();
+            
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -23,8 +24,12 @@ return new class extends Migration
 
             //Extra
             $table->string('phone')->nullable();
-            $table->string('city')->nullable();
+            $table->string('website')->nullable();
+            $table->string('address')->nullable();
             $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
             $table->string('ocupation')->nullable();
             $table->string('company_or_venture')->nullable();
 

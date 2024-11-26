@@ -30,16 +30,6 @@ class FrontController extends Controller
         return view('front.home', compact('data','name','page'));
     }
 
-    public function about()
-    {
-        return view('front.about');
-    }
-
-    public function contact()
-    {
-        return view('front.contact');
-    }
-
     public function account_create()
     {
         echo 'hola';

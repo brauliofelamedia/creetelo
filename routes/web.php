@@ -4,23 +4,24 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Config;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\UserController;
+
+//Account
+Route::get('dashboard',[UserController::class,'index'])->middleware('auth')->name('dashboard.account.index');
+Route::get('dashboard/login',[UserController::class,'showLogin'])->name('dashboard.account.login');
+Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
+
+//Sync contacts
+Route::get('dashboard/sync',[UserController::class,'syncContacts'])->name('dashboard.sync');
 
 //Front
-Route::get('/{page?}',[FrontController::class,'index'])->name('front.home');
-Route::get('nosotros',[FrontController::class,'about'])->name('front.about');
-Route::get('contacto',[FrontController::class,'contact'])->name('front.contact');
+Route::get('{page?}',[FrontController::class,'index'])->name('front.home');
 
 //Contact detail
 Route::get('individual/{contactId}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
 
-//Account
-Route::get('create',[FrontController::class,'account_create'])->name('front.account.create');
-Route::get('login',[FrontController::class,'account_login'])->name('front.account.login');
-Route::get('forgot',[FrontController::class,'account_forgot'])->name('front.account.forgot');
-
 //Send Emails
 Route::post('send-email',[FrontController::class,'send_email'])->name('front.send_email');
-
 
 //Configs
 Route::middleware('auth')->prefix('admin/configs')->group(function () {
@@ -31,4 +32,3 @@ Route::middleware('auth')->prefix('admin/configs')->group(function () {
     Route::get('renew', [ConfigController::class, 'renewToken'])->name('config.renewtoken');
     Route::get('authorization', [ConfigController::class, 'getAuthorizationCode'])->name('config.authorization');
 });
-

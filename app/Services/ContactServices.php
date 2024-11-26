@@ -3,6 +3,7 @@
 namespace App\Services;
 use GuzzleHttp\Client;
 use App\Models\Config;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\ClientException;
@@ -170,8 +171,38 @@ class ContactServices
     }
 
     //SyncContact
-    public function putContact()
+    public function putContact($id)
     {
+        $user = User::where('contact_id',$id)->first();
+
+        try {
+            $response = $this->client->put('contacts/'.$id, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Version' => '2021-07-28',
+                    'Authorization' => 'Bearer ' . $this->config->access_token,
+                ],
+                'json' => [
+                    'firstName' => $user->name,
+                    'lastName' => $user->last_name,
+                    'name' => $user->name.' '.$user->last_name,
+                    'email' =>  $user->email,
+                    'phone' =>  $user->phone,
+                    'address1' =>  $user->address,
+                    'city' => $user->city,
+                    'state' => $user->state,
+                    'postalCode' => $user->postal_code,
+                    'country' => $user->country,
+                ],
+            ]);
+        
+            return json_decode($response->getBody(), true);
+        } catch (Exception $e) {
+            if ($e->getCode() == 401) {
+                return response()->json(['error' => 'Unauthorized request'], 401);
+            }
+            return response()->json(['error' => 'Request failed', 'message' => $e->getMessage()], 500);
+        }
     }
     
 }
