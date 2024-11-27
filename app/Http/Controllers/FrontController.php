@@ -37,7 +37,6 @@ class FrontController extends Controller
 
     public function paginate($page)
     {
-
     }
 
     public function contact_detail($id)
@@ -49,8 +48,9 @@ class FrontController extends Controller
         $contact = $contact['contact'];
 
         //Otros candidatos
-        $contacts = $contactServices->getContacts();
+        $contacts = $contactServices->getContacts(null,1);
         $otherContacts = collect($contacts['contacts'])->random(6);
+        //dd($otherContacts);
         
         return view('front.contact.detail', compact('contact','otherContacts'));
     }

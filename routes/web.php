@@ -20,7 +20,7 @@ Route::get('{page?}',[FrontController::class,'index'])->name('front.home');
 //Contact detail
 Route::get('individual/{contactId}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
 
-//Send Emails
+//Send emails
 Route::post('send-email',[FrontController::class,'send_email'])->name('front.send_email');
 
 //Configs

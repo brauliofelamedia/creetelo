@@ -1,7 +1,29 @@
 @extends('layouts.main')
+
+@push('css')
+<style>
+    .btn-submit {
+        background-color: #d17d24;
+    }
+</style>
+@endpush
+
 @section('content')
 
-    <section class="job-details mb-160 md-mb-80 pt-200">
+    <div class="about-us-banner" style="background-image: url('{{asset('images/home.webp')}}')">
+        <div class="about-three-rapper position-relative">
+            <img src="{{asset('images/shape/shape-2.png')}}" alt="" class="shape shape-12">
+            <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
+            <div class="container">	
+                <div class="row d-flex align-items-center justify-content-center flex-column">
+                    <div class="d-flex align-items-center justify-content-center mt-240 md-mt-100 pb-30">
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+
+    <section class="job-details mb-160 md-mb-80 pt-70">
         <div class="job-details-rapper">
             <div class="container">
                 <div class="row px-0 gx-5">
@@ -66,6 +88,7 @@
                                     <label>Comentarios:</label>
                                     <textarea name="comments" class="form-control" rows="3"></textarea>
                                 </div>
+                                <button type="submit" class="btn btn-submit">Enviar una solicitud</button>
                             </form>
                         </div>	
                     </div>
@@ -173,7 +196,7 @@
                                         <div class="Candidates-grid">
                                             <div class=" mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
                                                 <div class=" d-flex flex-column align-items-center justify-content-center ">
-                                                    <h3>{{(($contact['contactName'])? $contact['contactName'] :'-')}}</h3>
+                                                    <h3>{{(($contact['firstNameLowerCase'])? $contact['lastNameLowerCase'] :'-')}}</h3>
                                                     <span>{{(($contact['email'])? $contact['email'] :'-')}}</span>
                                                 </div>
                                             </div>

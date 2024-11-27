@@ -19,6 +19,11 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return $this->isAdmin();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -55,8 +60,6 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('ocupation')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('company_or_venture')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('contact_id')
                     ->maxLength(255),
             ]);
     }

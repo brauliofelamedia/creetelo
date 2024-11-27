@@ -16,6 +16,11 @@ class UserController extends Controller
         return view('front.user.index',compact('user','countries'));
     }
 
+    public function save(Request $request)
+    {
+        dd($request->all());
+    }
+
     public function showLogin()
     {
         return view('front.user.login');

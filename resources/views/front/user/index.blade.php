@@ -6,10 +6,34 @@
         font-size: 35px!important;
     }
 
+    label {
+        font-weight: 600 !important;
+    }
+
+    .form-group {
+        margin-bottom: 13px;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+    }
+
+    h3 {
+        margin: 10px 0px;
+        color: #d17d24;
+        font-weight: 600;
+        font-size: 23px;
+    }
+
+    input, select {
+        padding: 17px!important;
+        font-size: 15px!important;
+        font-weight: 400!important;
+    }
+
     .avatar {
         width:180px;
         height: 180px;
-        background-color: red;
         position: absolute;
         border-radius: 15px;
         top:-150px;
@@ -21,10 +45,18 @@
     }
 
     .btn-succcess {
-        background-color: red;
+        background-color: #292775;
+        font-weight: 700;
+        color: white;
         padding:20px;
+        font-size: 15px;
+        text-transform: uppercase;
         border-radius: 6px;
         width: 100%;
+    }
+
+    .btn-succcess:hover {
+        background-color: #1c1a6a;
     }
 </style>
 @endpush
@@ -53,6 +85,9 @@
             <form action="{{route('dashboard.account.process')}}" method="post">
                 @csrf
                 <div class="row">
+                    <div class="col-xl-12">
+                        <h3>Información personal</h3>
+                    </div>
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label mb-10">Nombre:</label>
@@ -74,19 +109,22 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
-                        <label class="form-label mb-10">Teléfono:</label>
-                        <input class="form-control" type="tel" name="phone" value="{{$user->phone}}" required>
+                        <div class="form-group">
+                            <label class="form-label mb-10">Teléfono:</label>
+                            <input class="form-control" type="tel" name="phone" value="{{$user->phone}}" required>
+                        </div>
                     </div>
                     <div class="col-lg-4">
-                        <label class="form-label mb-10">Empresa / emprendimiento:</label>
-                        <input class="form-control" type="text" name="company_or_venture" value="{{$user->company_or_venture}}">
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label mb-10">Ocupación:</label>
-                        <input class="form-control" type="text" name="ocupation" value="{{$user->ocupation}}" required>
+                        <div class="form-group">
+                            <label class="form-label mb-10">Ocupación:</label>
+                            <input class="form-control" type="text" name="ocupation" value="{{$user->ocupation}}" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-xl-12">
+                        <h3>Ubicación</h3>
+                    </div>
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label">País</label>
@@ -97,7 +135,49 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label mb-10">Estado:</label>
+                            <input class="form-control" type="text" name="state" value="{{$user->state}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label mb-10">Ciudad:</label>
+                            <input class="form-control" type="text" name="city" value="{{$user->city}}">
+                        </div>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h3>Información extra</h3>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label mb-10">Código postal:</label>
+                            <input class="form-control" type="text" name="postal_code" value="{{$user->postal_code}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label mb-10">Dirección:</label>
+                            <input class="form-control" type="text" name="address" value="{{$user->address}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label mb-10">Dirección:</label>
+                            <input class="form-control" type="text" name="address" value="{{$user->address}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label mb-10">Empresa / emprendimiento:</label>
+                            <input class="form-control" type="text" name="company_or_venture" value="{{$user->company_or_venture}}">
+                        </div>
+                    </div>
+                </div>
+                <br>
                 <button type="submit" class="btn-succcess">Actualizar información</button>
             </form>
         </div>
