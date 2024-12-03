@@ -3374,8 +3374,8 @@ button.custom-btn:hover {
     font-family: 'Gordita';
     font-style: normal;
     font-weight: 700;
-    font-size: 25px;
-    line-height: 30px;
+    font-size: 22px;
+    line-height: 1.2em;
     text-align: center;
     color: #111D3B;
     text-transform: capitalize;

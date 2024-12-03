@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nuevo mensaje desde el formulario de contacto</title>
+    <title>Se recibio esta información de solicitud.</title>
 </head>
 <body>
+    <p>Se recibio la siguiente información:</p><br>
     <p>Nombre: {{ $name }}</p>
-    <p>Email: {{ $email }}</p>
-    <p>Servicios: {{ $services }}</p>
+    <p>Correo electrónico: {{ $email }}</p>
+    <p>Teléfono / WhatsApp: {{ $phone }}</p>
     <p>Comentarios: {{ $comments }}</p>
 </body>
 </html>

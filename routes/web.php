@@ -9,7 +9,10 @@ use App\Http\Controllers\UserController;
 //Account
 Route::get('dashboard',[UserController::class,'index'])->middleware('auth')->name('dashboard.account.index');
 Route::get('dashboard/login',[UserController::class,'showLogin'])->name('dashboard.account.login');
-Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
+Route::put('dashboard/update',[UserController::class,'update'])->name('dashboard.account.update');
+Route::put('dashboard/socials/update',[UserController::class,'social_update'])->name('dashboard.social.update');
+Route::post('dashboard/socials/delete',[UserController::class,'social_delete'])->name('dashboard.social.delete');
+//Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
 
 //Sync contacts
 Route::get('dashboard/sync',[UserController::class,'syncContacts'])->name('dashboard.sync');

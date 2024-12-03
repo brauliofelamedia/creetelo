@@ -24,7 +24,7 @@ class SendContactMail extends Mailable
     {
         return $this->view('emails.contact')
                     ->email($this->data->email)
-                    ->subject('Nuevo mensaje desde el formulario de contacto')
+                    ->subject('Se ha recibido una solicitud de contacto')
                     ->with($this->data);
     }
 }

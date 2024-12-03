@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamps();
 
             //Extra
+            $table->string('avatar')->default('default.png')->nullable();
+            $table->text('about_me')->nullable();
             $table->string('phone')->nullable();
             $table->string('website')->nullable();
             $table->string('address')->nullable();
@@ -32,6 +34,8 @@ return new class extends Migration
             $table->string('postal_code')->nullable();
             $table->string('ocupation')->nullable();
             $table->string('company_or_venture')->nullable();
+            $table->text('skills')->nullable();
+            $table->text('services')->nullable();
 
             //CRM
             $table->string('contact_id')->nullable();

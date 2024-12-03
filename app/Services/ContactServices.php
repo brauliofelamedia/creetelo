@@ -171,28 +171,36 @@ class ContactServices
     }
 
     //SyncContact
-    public function putContact($id)
+    public function updateContact($user,$newData)
     {
-        $user = User::where('contact_id',$id)->first();
+        $name = $newData['name'] !== $user->name ? $newData['name'] : $user->name;
+        $last_name = $newData['last_name'] !== $user->last_name ? $newData['last_name'] : $user->last_name;
+        $phone = $newData['phone'] !== $user->phone ? $newData['phone'] : $user->phone;
+        $email = $newData['email'] !== $user->email ? $newData['email'] : $user->email;
+        $address = $newData['address'] !== $user->address ? $newData['address'] : $user->address;
+        $city = $newData['city'] !== $user->city ? $newData['city'] : $user->city;
+        $state = $newData['state'] !== $user->state ? $newData['state'] : $user->state;
+        $postal_code = $newData['postal_code'] !== $user->postal_code ? $newData['postal_code'] : $user->postal_code;
+        $country = $newData['country'] !== $user->country ? $newData['country'] : $user->country;
 
         try {
-            $response = $this->client->put('contacts/'.$id, [
+            $response = $this->client->put('contacts/'.$user->contact_id, [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Version' => '2021-07-28',
                     'Authorization' => 'Bearer ' . $this->config->access_token,
                 ],
                 'json' => [
-                    'firstName' => $user->name,
-                    'lastName' => $user->last_name,
-                    'name' => $user->name.' '.$user->last_name,
-                    'email' =>  $user->email,
-                    'phone' =>  $user->phone,
-                    'address1' =>  $user->address,
-                    'city' => $user->city,
-                    'state' => $user->state,
-                    'postalCode' => $user->postal_code,
-                    'country' => $user->country,
+                    'firstName' => $name,
+                    'lastName' => $last_name,
+                    'name' => $name.' '.$last_name,
+                    'email' =>  $email,
+                    'phone' =>  $phone,
+                    'address1' =>  $address,
+                    'city' => $city,
+                    'state' => $state,
+                    'postalCode' => $postal_code,
+                    'country' => $country,
                 ],
             ]);
         

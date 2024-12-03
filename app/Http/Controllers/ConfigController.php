@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use GuzzleHttp\Client;
 use App\Models\Config;
 use App\Models\Contact;
 use App\Services\ContactServices;
@@ -9,9 +9,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
+use Exception;
 
 class ConfigController extends Controller
 {
+    private $client;
+    private $config;
+
+    public function __construct()
+    {
+        $this->config = Config::where('id',1)->first();
+        $this->client = new Client([
+            'base_uri' => 'https://services.leadconnectorhq.com',
+        ]);
+    }
+
     /*public function callback(Request $request)
     {
         $config = Config::where('id',1)->first();
@@ -24,7 +36,7 @@ class ConfigController extends Controller
     public function finish()
     {
         $contactServices = new ContactServices();
-        $users = $contactServices->getContacts();
+        $users = $contactServices->getContacts(null,null);
         return 'Se termino la configuración';
     }
 
@@ -38,7 +50,7 @@ class ConfigController extends Controller
         $config = Config::where('id',1)->first();
         $client_id = $config->client_id;
         if($client_id){
-            $url = "https://marketplace.leadconnectorhq.com/oauth/chooselocation?response_type=code&redirect_uri=https://creetelo.local/admin/configs/authorization&client_id=".$client_id."&scope=contacts.readonly&loginWindowOpenMode=self";
+            $url = "https://marketplace.leadconnectorhq.com/oauth/chooselocation?response_type=code&redirect_uri=https://creetelo.local/admin/configs/authorization&client_id=".$client_id."&scope=contacts.write contacts.readonly&loginWindowOpenMode=self";
             return redirect()->away($url);
         } else {
             echo 'No se ha asignado el client_id';
@@ -82,36 +94,38 @@ class ConfigController extends Controller
 
     public function renewToken()
     {
-        // Fetch configuration data
-        $config = Config::where('id', 1)->firstOrFail();
-        $contactServices = new ContactServices();
-        $token = $contactServices->checkToken();
+        try {
+            $response = $this->client->post('https://services.leadconnectorhq.com/oauth/token', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ],
+                'form_params' => [
+                    'client_id' => $this->config->client_id,
+                    'client_secret' => $this->config->client_secret_id,
+                    'grant_type' => 'refresh_token',
+                    'code' => $this->config->code,
+                    'refresh_token' => $this->config->refresh_token,
+                ],
+            ]);
+        
+            $statusCode = $response->getStatusCode();
+            $responseBody = $response->getBody()->getContents();
+        
+            if ($statusCode === 200) {
+                $responseData = json_decode($responseBody, true);
 
-        if($token->status() == 401){
-            try {
-                // Make HTTP request to exchange token
-                $response = Http::asForm()
-                    ->post('https://services.leadconnectorhq.com/oauth/token', [
-                        'client_id' => $config->client_id,
-                        'client_secret' => $config->client_secret_id,
-                        'grant_type' => 'refresh_token',
-                        'refresh_token' => $config->refresh_token,
-                    ]);
-    
-                $response->throw(); 
-                $data = $response->json();
-    
-                return response()->json($response);
-    
-                $config->access_token = $data['access_token'] ?? null;
-                $config->refresh_token = $data['refresh_token'] ?? null;
+                $config = Config::where('id',1)->first();
+                $config->access_token = $responseData['access_token'];
+                $config->refresh_token = $responseData['refresh_token'];
                 $config->save();
-    
-            } catch (\Throwable $exception) {
-                return response()->json(['error' => 'Failed to exchange token. Please try again later.'], 500);
-            }
-        }
 
+            } else {
+                return response()->json(['error' => 'Token exchange failed'], $statusCode);
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Request failed'], 500);
+        }
     }
 
     public function getAuthorizationRefreshToken(Request $request)

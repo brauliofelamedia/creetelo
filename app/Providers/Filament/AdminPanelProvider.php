@@ -84,9 +84,6 @@ class AdminPanelProvider extends PanelProvider
                     ->group('Configuraciones')
                     ->sort(3)
             ])
-            ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);

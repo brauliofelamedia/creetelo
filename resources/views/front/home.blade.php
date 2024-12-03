@@ -74,18 +74,29 @@
 
                             <div class="col-lg-3">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
-                                    <div class="round-pic"><img src="{{Gravatar::get($contact['email'])}}" alt=""></div>
+                                    <div class="round-pic"><img src="{{$contact['avatar']}}" alt=""></div>
                                     <div class="Candidates-grid">
                                         <div class=" mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
                                             <div class=" d-flex flex-column align-items-center justify-content-center ">
                                                 <h3>{{(($contact['firstNameLowerCase'])? $contact['firstNameLowerCase'] :'-')}} {{(($contact['lastNameLowerCase'])? $contact['lastNameLowerCase'] :'-')}}</h3>
-                                                <span>{{$contact['country']}}</span>
-                                                <ul class="social-link-front">
-                                                    <li><a href=""><i class="bi bi-linkedin"></i></a></li>
-                                                    <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
-                                                    <li><a href=""><i class="bi bi-twitter"></i></a></li>
-                                                    <li><a href=""><i class="bi bi-instagram"></i></a></li>
-                                                </ul>
+                                                @php
+                                                    $countries = Config::get('countries.countries');
+                                                    $countryName = $countries[$contact['country']] ?? '-';
+                                                    ($countryName == 'Mexico')? $countryName = 'México': $countryName;
+                                                @endphp
+                                                @if(count($contact['socials']) > 0)
+
+                                                @endif
+                                                <span>{{$countryName}}</span>
+                                                @if(count($contact['socials']) > 0)
+                                                    <ul class="social-link-front">
+                                                        @foreach ($contact['socials'] as $url => $title)
+                                                        <li>
+                                                            <a href="{{ $url }}" target="_blank"><i class="bi bi-{{$title}}"></i></a>
+                                                        </li>
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="top-grid-4 pt-20 d-flex flex-column align-items-center justify-content-center">
