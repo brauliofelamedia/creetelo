@@ -20,14 +20,14 @@ class UserController extends Controller
     {
         $user = Auth::user()->with('abilities','services')->first();
 
-        if ($user->services) {
-            $userServices = $user->services->pluck('service_id')->toArray();
+        if ($user->services()) {
+            $userServices = $user->services()->pluck('service_id')->toArray();
         } else {
             $userServices = null;
         }
 
-        if ($user->abilities) {
-            $userSkills = $user->abilities->pluck('skill_id')->toArray();
+        if ($user->abilities()) {
+            $userSkills = $user->abilities()->pluck('skill_id')->toArray();
         } else {
             $userSkills = null;
         }
