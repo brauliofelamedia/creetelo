@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user()->with('abilities','services')->first();
 
         if ($user->services) {
             $userServices = $user->services->pluck('service_id')->toArray();
@@ -139,17 +139,19 @@ class UserController extends Controller
         if(!$request->services){
             $user->services()->delete();
         } else {
-            $currentServices = $user->services->pluck('id')->toArray();
-            $servicesToAdd = array_diff($request->services, $currentServices);
-            $servicesToRemove = array_diff($currentServices, $request->services);
-            $user->services()->whereIn('id', $servicesToRemove)->delete();
-
-            foreach ($servicesToAdd as $serviceId) {
-                // Crear una nueva instancia de Service
-                $service = new UserService();
-                $service->user_id = $user->id;
-                $service->service_id = $serviceId;
-                $service->save();
+            if(!is_null($user->services)){
+                $currentServices = $user->services->pluck('id')->toArray();
+                $servicesToAdd = array_diff($request->services, $currentServices);
+                $servicesToRemove = array_diff($currentServices, $request->services);
+                $user->services()->whereIn('id', $servicesToRemove)->delete();
+            } else {
+                foreach ($request->services as $serviceId) {
+                    // Crear una nueva instancia de Service
+                    $service = new UserService();
+                    $service->user_id = $user->id;
+                    $service->service_id = $serviceId;
+                    $service->save();
+                }
             }
         }
 
