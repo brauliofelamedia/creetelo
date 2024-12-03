@@ -129,7 +129,6 @@
                             </div>
                             <div class="candidate-list-5">
                                 <h4 class="mt-50 mb-30">Servicios:</h4>
-                                <p class="mb-30">{{$user->services}}</p>
                                 <div class="btn-group d-inline">
                                     @if(!is_null($user->services()))
                                         @foreach($user->services() as $service)
