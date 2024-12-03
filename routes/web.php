@@ -7,6 +7,7 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\UserController;
 
 //Account
+Route::redirect('/dashoboard', '/admin/login')->name('login');
 Route::get('dashboard',[UserController::class,'index'])->middleware('auth')->name('dashboard.account.index');
 Route::get('dashboard/login',[UserController::class,'showLogin'])->name('dashboard.account.login');
 Route::put('dashboard/update',[UserController::class,'update'])->name('dashboard.account.update');
