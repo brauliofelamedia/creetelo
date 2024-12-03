@@ -13,18 +13,27 @@ class SendContactMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
-
-    public function __construct($data)
+    public function __construct(private $data)
     {
-        $this->data = $data;
     }
 
-    public function build()
+    public function envelope()
     {
-        return $this->view('emails.contact')
-                    ->email($this->data->email)
-                    ->subject('Se ha recibido una solicitud de contacto')
-                    ->with($this->data);
+        return new Envelope(
+            subject: 'Se ha recibido una solicitud de contacto',
+        );
+    }
+
+    public function content()
+    {
+        return new Content(
+            view: 'emails.contact',
+            with: [
+                'name' => $this->data->name,
+                'email' => $this->data->email,
+                'phone' => $this->data->phone,
+                'comments' => $this->data->comments,
+            ],
+        );
     }
 }

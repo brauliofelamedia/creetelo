@@ -83,13 +83,12 @@ class FrontController extends Controller
 
     public function send_email(Request $request)
     {
-        dd($request->all());
+        $user = User::find($request->user_id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email',
             'phone' => 'nullable|string|max:20',
             'comments' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
         ]);
     
         if ($validator->fails()) {
@@ -105,7 +104,7 @@ class FrontController extends Controller
         $lead->save();
     
         // Envío del correo
-        Mail::to()->send(new SendContactMail($lead));
+        Mail::to($user->email)->send(new SendContactMail($lead));
 
         return redirect()->back()->with('success', 'Se ha enviado tu solicitud');
     }

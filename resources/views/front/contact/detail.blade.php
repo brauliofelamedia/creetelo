@@ -56,6 +56,13 @@
         <div class="job-details-rapper">
             <div class="container">
                 <div class="row px-0 gx-5">
+                    <div class="col-12">
+                        @if (session()->has('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                    </div>
                     <div class="col-lg-4">
                         <div class="candidates-details-left d-flex flex-column justify-content-center pt-60 mb-20">
                             <div class="save-candidate d-flex align-items-start justify-content-start">
