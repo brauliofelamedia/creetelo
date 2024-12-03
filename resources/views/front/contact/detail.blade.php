@@ -65,14 +65,14 @@
                             <div class="Profile-name pt-30 d-flex flex-column">
                                 <h4 class="mt-20 mb-20">{{$user->fullname}}</h4>
                                 <span>{{$user->ocupation}}</span>
-                                @if(!is_null($user->socials()))
-                                    <ul class="social-link">
-                                        @foreach ($user->socials() as $url => $title)
-                                        <li>
-                                            <a href="{{ $url }}" target="_blank"><i class="bi bi-{{$title}}"></i></a>
-                                        </li>
-                                        @endforeach
-                                    </ul>
+                                @if(!is_null($user->socials))
+                                    <div class="social-link-front">
+                                        <ul>
+                                            @foreach($user->socials as $social)
+                                                <li><a href="{{$social->url}}" target="_blank"><i class="bi bi-{{$social->title}}"></i></a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 @endif
                             </div>
                             <div class="left-1 pt-40">
@@ -129,7 +129,7 @@
                             </div>
                             <div class="candidate-list-5">
                                 <h4 class="mt-50 mb-30">Servicios:</h4>
-                                <p class="mb-30">Dramatically envisioneer interactive leadership through functionalized ROI. Professionally simplify synergistic initiatives before effective channels.</p>
+                                <p class="mb-30">{{$user->services}}</p>
                                 <div class="btn-group d-inline">
                                     @if(!is_null($user->services()))
                                         @foreach($user->services() as $service)
