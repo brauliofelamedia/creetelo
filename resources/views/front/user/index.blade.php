@@ -253,9 +253,21 @@
                         <div class="form-group">
                             <label class="form-label mb-10">Habilidades:</label>
                             <select class="select2 form-control" name="abilities[]" multiple="multiple">
-                                @foreach($skills as $skill)
-                                    <option value="{{$skill->id}}" @if(in_array($skill->id, $userSkills)) selected @endif>{{$skill->name}}</option>
-                                @endforeach
+                                @isset($userSkills)
+                                    @if(count($userSkills) > 0)
+                                        @foreach($skills as $skill)
+                                            <option value="{{$skill->id}}" @if(in_array($skill->id, $userSkills)) selected @endif>{{$skill->name}}</option>
+                                        @endforeach
+                                    @else
+                                        @foreach($skills as $skill)
+                                            <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                        @endforeach
+                                    @endif
+                                @else
+                                    @foreach($skills as $skill)
+                                        <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                    @endforeach
+                                @endisset
                             </select>
                         </div>
                     </div>
@@ -263,15 +275,21 @@
                         <div class="form-group">
                             <label class="form-label mb-10">Servicios:</label>
                             <select class="select2 form-control" name="services[]" multiple="multiple">
-                                @if(count($userServices) > 0)
-                                    @foreach($services as $service)
-                                        <option value="{{$service->id}}" @if(in_array($service->id, $userServices)) selected @endif>{{$service->name}}</option>
-                                    @endforeach
+                                @isset($userServices)
+                                    @if(count($userServices) > 0)
+                                        @foreach($services as $service)
+                                            <option value="{{$service->id}}" @if(in_array($service->id, $userServices)) selected @endif>{{$service->name}}</option>
+                                        @endforeach
+                                    @else
+                                        @foreach($services as $service)
+                                            <option value="{{$service->id}}">{{$service->name}}</option>
+                                        @endforeach
+                                    @endif
                                 @else
                                     @foreach($services as $service)
                                         <option value="{{$service->id}}">{{$service->name}}</option>
                                     @endforeach
-                                @endif
+                                @endisset
                             </select>
                         </div>
                     </div>
