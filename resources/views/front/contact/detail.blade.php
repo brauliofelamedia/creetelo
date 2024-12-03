@@ -65,17 +65,15 @@
                             <div class="Profile-name pt-30 d-flex flex-column">
                                 <h4 class="mt-20 mb-20">{{$user->fullname}}</h4>
                                 <span>{{$user->ocupation}}</span>
-                                <div class="social-link">
-                                    <ul>
-                                        <li><a href="#"><i class="fab fa-behance"></i></a></li>
-                                        <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="bi bi-twitter"></i></a></li>
-                                        <li><a href="#"><i class="bi bi-instagram"></i></a></li>
-                                        <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+                                @if(!is_null($user->socials()))
+                                    <ul class="social-link">
+                                        @foreach ($user->socials() as $url => $title)
+                                        <li>
+                                            <a href="{{ $url }}" target="_blank"><i class="bi bi-{{$title}}"></i></a>
+                                        </li>
+                                        @endforeach
                                     </ul>
-                                </div>
+                                @endif
                             </div>
                             <div class="left-1 pt-40">
                                 <p class="mb-20">Ubicación</p>
@@ -133,18 +131,22 @@
                                 <h4 class="mt-50 mb-30">Servicios:</h4>
                                 <p class="mb-30">Dramatically envisioneer interactive leadership through functionalized ROI. Professionally simplify synergistic initiatives before effective channels.</p>
                                 <div class="btn-group d-inline">
-                                    @foreach($user->services as $service)
-                                        <a href="#" class="btn btn-primary">{{$service->service->name}}</a>
-                                    @endforeach
+                                    @if(!is_null($user->services()))
+                                        @foreach($user->services() as $service)
+                                            <a href="#" class="btn btn-primary">{{$service->service->name}}</a>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                             <div class="candidate-list-5">
                                 <h4 class="mt-50 mb-30">Habilidades:</h4>
                                 <p class="mb-30">{{$user->skills}}</p>
                                 <div class="btn-group d-inline">
-                                    @foreach($user->abilities as $ability)
-                                        <a href="#" class="btn btn-primary">{{$ability->skill->name}}</a>
-                                    @endforeach
+                                    @if(!is_null($user->abilities()))
+                                        @foreach($user->abilities as $ability)
+                                            <a href="#" class="btn btn-primary">{{$ability->skill->name}}</a>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
 

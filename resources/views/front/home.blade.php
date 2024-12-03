@@ -84,9 +84,6 @@
                                                     $countryName = $countries[$contact['country']] ?? '-';
                                                     ($countryName == 'Mexico')? $countryName = 'México': $countryName;
                                                 @endphp
-                                                @if(count($contact['socials']) > 0)
-
-                                                @endif
                                                 <span>{{$countryName}}</span>
                                                 @if(count($contact['socials']) > 0)
                                                     <ul class="social-link-front">
