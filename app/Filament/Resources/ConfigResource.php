@@ -33,22 +33,31 @@ class ConfigResource extends Resource
                 FileUpload::make('logo')
                     ->default('default.png'),
                 ColorPicker::make('color_primary')
+                    ->hidden()
                     ->required()
                     ->default('#000000'),
                 ColorPicker::make('color_secundary')
+                    ->hidden()
                     ->required()
                     ->default('#000000'),
-                TextInput::make('client_id'),
-                TextInput::make('client_secret_id'),
+                TextInput::make('client_id')
+                    ->label('ID de cliente'),
+                TextInput::make('client_secret_id')
+                    ->label('ID secreto de cliente'),
                 TextInput::make('company_id')
+                    ->label('ID de empresa')
                     ->disabled(),
                 TextInput::make('location_id')
+                    ->hidden()
                     ->disabled(),
                 TextInput::make('code')
+                    ->hidden()
                     ->disabled(),
                 TextArea::make('refresh_token')
+                    ->hidden()
                     ->disabled(),
                 TextArea::make('access_token')
+                    ->hidden()
                     ->disabled(),
             ]);
     }

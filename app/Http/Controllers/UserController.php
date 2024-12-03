@@ -18,8 +18,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->with('abilities','services')->first();
-
+        $user = User::where('id',Auth::user()->id)->with('abilities','services')->first();
+        
         if ($user->services()) {
             $userServices = $user->services()->pluck('service_id')->toArray();
         } else {

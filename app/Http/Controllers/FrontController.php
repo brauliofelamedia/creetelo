@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
@@ -82,7 +83,7 @@ class FrontController extends Controller
 
     public function send_email(Request $request)
     {
-        //dd($request->all());
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email',
