@@ -104,8 +104,10 @@ class FrontController extends Controller
         $lead->save();
     
         // Envío del correo
-        Mail::to($user->email)->send(new SendContactMail($lead));
+        if($user->email){
+            Mail::to($user->email)->send(new SendContactMail($lead));
+        }
 
-        return redirect()->back()->with('success', 'Se ha enviado tu solicitud');
+        return redirect()->back()->with('success', 'Se ha enviado correctamente tu solicitud');
     }
 }
