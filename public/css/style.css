@@ -1,11 +1,11 @@
 /* CSS Document */
 
-/* 
+/*
     Created on   : 02/08/2023.
     Theme Name   : khuj -the job finder creative bootstrap 5 template
     Version      : 1.0.
     Developed by : (sayfurrahaman265@gmail.com) / (www.me.heloshape.com)
-   
+
 */
 /**
 * Importing necessary  Styles.
@@ -41,7 +41,7 @@
 *************************** Start Styling theme from here ***************************
 
 ==========================================================================================*/
-/*** 
+/***
 ====================================================================
  Root Prefix
 ====================================================================
@@ -49,7 +49,7 @@
  ***/
  *{padding: 0;margin: 0;box-sizing:border-box;}
  body{
-    font-family: "gordita";
+    font-family: "Gordita"!important;
     font-weight: normal;
     font-size: 16px;
     position: relative;
@@ -111,21 +111,21 @@ h3.heading-3{
   font-weight:500;
   font-size: 28px;
   line-height: 30px;
-} 
+}
 h4.heading-4{
   font-family: 'Gordita';
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 26px;
-} 
+}
 h5.heading-5{
   font-family: 'Gordita';
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 19px;
-} 
+}
 h6.heading-6{
   font-family: 'Gordita';
   font-style: normal;
@@ -138,7 +138,7 @@ h6.heading-6{
 ::-webkit-scrollbar{ width: 5px; }
 ::-webkit-scrollbar-track { background: #fff;}
 ::-webkit-scrollbar-thumb { background:#292775;border-radius: 0;}
-/*** 
+/***
 ====================================================================
   Loading Transition
 ====================================================================
@@ -201,7 +201,7 @@ h6.heading-6{
   from { border-color: transparent; }
   to { border-color: #292775;}
 }
-/*** 
+/***
 ====================================================================
   Loading Transition
 ====================================================================
@@ -277,7 +277,7 @@ h6.heading-6{
     color: #ffffff;
     padding: 10px 30px;
     text-align: center;
-    font-family: 'Inter';
+    font-family: 'Gordita';
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -678,18 +678,18 @@ category
     border: none;
     transition: all 0.3s ease-in-out;
 }
-.job-company {  
+.job-company {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 .company-name {
     display: flex;
     flex-direction: column;
     grid-gap: 10px;
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 .company-name img {
     height: 30px;
@@ -702,7 +702,7 @@ category
   font-size: 18px;
   line-height: 19px;
   color: #505050;
-  transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
   }
  .company-taq {
     width: 50px;
@@ -713,13 +713,13 @@ category
     justify-content: center;
     color: #292775;
     border-radius: 5px;
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 .job-title {
     display: flex;
     padding-top: 28px;
     padding-bottom: 30px;
-    transition: all 0.3s ease-in-out; 
+    transition: all 0.3s ease-in-out;
 }
 .job-title h3{
   font-family: 'Gordita';
@@ -728,7 +728,7 @@ category
   font-size: 24px;
   line-height: 30px;
   color: #111D3B;
-  transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 .job-type span{
   font-family: 'Gordita';
@@ -988,7 +988,7 @@ testimonial start
 }
 #testimonial_slider  .slick-list .slick-slide {
     margin:0 20px;
-    
+
 }
 #testimonial_slider i.bi-chevron-right{
     width: 60px;
@@ -1436,7 +1436,7 @@ footer
     left: 40%;
     max-width: 10%;
 }
-/*Easy Step To 
+/*Easy Step To
 Get Your Dream Job*/
 .dream-job2 {
   position: relative;
@@ -1791,7 +1791,7 @@ Get Your Dream Job*/
     font-weight: 900;
     font-style: normal;
     font-size: 24px;
-    line-height: 34px;    
+    line-height: 34px;
 }
 .left-choose-content .accordion-body {
     padding:15px 1.25rem 0 1.25rem;
@@ -2084,7 +2084,7 @@ line-height: normal;
     min-height: 140px;
     width: 100%;
     min-width: 310px;
-    transition: .3s ease-in-out;  
+    transition: .3s ease-in-out;
 }
 .job-ctg1:hover {
     background: rgba(25 164 99 /1);
@@ -2095,10 +2095,10 @@ line-height: normal;
 .job-ctg1:hover .ctg-heading,
  .job-ctg1:hover .ctg-heading,
   .job-ctg1:hover .ctg-heading,
-   .job-ctg1:hover .ctg-heading, 
-   .job-ctg1:hover .ctg-details, 
+   .job-ctg1:hover .ctg-heading,
    .job-ctg1:hover .ctg-details,
-    .job-ctg1:hover .ctg-details, 
+   .job-ctg1:hover .ctg-details,
+    .job-ctg1:hover .ctg-details,
     .job-ctg1:hover .ctg-details {
     color: #ffffff;
 }
@@ -2242,7 +2242,7 @@ line-height: normal;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .join-Company .right-side .item4 a:hover {
     color: #ffffff;
@@ -2459,6 +2459,7 @@ line-height: normal;
     position: relative;
 }
 
+/*
 .about-us-banner::before {
     content: '';
     position: absolute;
@@ -2467,6 +2468,10 @@ line-height: normal;
     width: 100%;
     height: 100%;
     background: linear-gradient(to top, rgba(41,39,115,0.8), rgba(41,39,115,0.2));
+}*/
+
+.feature-job-grid {
+    background-color: #DFCAE7;
 }
 
 .about-us-banner .form-3{position: relative;}
@@ -2487,7 +2492,7 @@ line-height: normal;
     /*font-size: 66px;*/
     font-size: 40px;
     line-height: 1.1em;
-    /*color:rgba(17, 29, 59, 1);*/
+    color:rgba(17, 29, 59, 1);
     color: white;
     max-width: 832px;
     text-align: center;
@@ -2729,7 +2734,7 @@ line-height: normal;
 .our_team_item .card img{
     position: relative;
     transition: .3s ease-in-out;
-    width: 100%; 
+    width: 100%;
 }
 .our_team_item .card:hover img{
     background: rgba(255, 255, 255, 0.6);
@@ -2959,7 +2964,7 @@ line-height: normal;
     font-size: 16px;
     line-height: 30px;
     color: #505050;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .job-list-pagination ul.pagination .page-item .page-link:hover {
     color: #ffffff;
@@ -3141,7 +3146,7 @@ button.custom-btn:hover {
     background: #292775;
     border-radius: 5px;
     padding:12px 30px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .job-details-left .left-2 a:hover {
     color: #ffffff;
@@ -3205,7 +3210,7 @@ button.custom-btn:hover {
     font-weight: 500;
     font-size: 16px;
     line-height: 23px;
-    transition: .3s ease-in-out;  
+    transition: .3s ease-in-out;
 }
 .job-details-right .job-list-1 .job-apply a:hover {
     color: #ffffff;
@@ -3251,7 +3256,7 @@ button.custom-btn:hover {
     font-weight: 500;
     font-size: 18px;
     line-height: 19px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .job-details-right .job-list-details .btn-group .btn:hover {
     color: #ffffff;
@@ -3267,7 +3272,7 @@ button.custom-btn:hover {
     line-height: 20px;
     color: #FFFFFF;
     padding: 14px 30px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .job-details-right .job-list-details .apply-btn:hover {
     color: #ffffff;
@@ -3289,7 +3294,7 @@ button.custom-btn:hover {
     margin: 0 15px;
     border-radius: 50px;
     transition: .3s ease-in-out;
-    line-height: 40px;  
+    line-height: 40px;
 }
 .job-details-right .job-list-details .social-link:hover {
     background: #292775;
@@ -3352,19 +3357,16 @@ button.custom-btn:hover {
     z-index: 1;
     border-bottom: 1px solid;
     border-bottom-style: inset;
-    border-left: none;
-    border-right: none;
-    border-bottom-right-radius: 50%;
-    border-bottom-left-radius: 50%;
+    border-radius: 50%;
 }
+
 .candidates-1 .round-pic img {
-    position: absolute;
-    top: 2%;
-    left: 3%;
-    border-radius:80px;
+    border-radius: 50%;
+    border:3px solid white;
 }
 .Candidates-grid {
     min-width: 90%;
+    background-color: white;
     position: relative;
     border: 1px solid rgba(17, 29, 59, 0.1);
     border-radius: 15px;
@@ -3421,7 +3423,7 @@ button.custom-btn:hover {
     font-size: 16px;
     line-height: 30px;
     color: white;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .Candidates-grid .top-grid-4 a:hover {
     color: #ffffff;
@@ -3484,7 +3486,7 @@ button.custom-btn:hover {
     line-height: 17px;
     color: #292775;
     padding: 16px 21px;
-    transition: .3s ease-in-out;  
+    transition: .3s ease-in-out;
 }
 .Candidate-list .Candidate-list-1 .Candidate-contact a:hover {
     color: #ffffff;
@@ -3551,7 +3553,7 @@ button.custom-btn:hover {
     margin: 0 3px;
     border-radius: 50px;
     line-height:40px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .candidates-details-left .social-link ul li a:hover {
     background: rgba(28 116 75 / 100%);
@@ -3633,7 +3635,7 @@ button.custom-btn:hover {
     color: #292775;
     line-height: 23px;
     padding: 16px 36px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .candidates-details-right .Candidate-contact a:hover {
     color: #ffffff;
@@ -3774,13 +3776,13 @@ button.custom-btn:hover {
     border: none;
     margin: 10px 10px;
     padding: 15px 20px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .candidates-details-right .candidate-list-5 .btn:hover {
     color: #ffffff;
     background: #292775;
 }
-.btn-group>.btn-group:not(:last-child)>.btn, 
+.btn-group>.btn-group:not(:last-child)>.btn,
 .btn-group>.btn:not(:last-child):not(.dropdown-toggle){
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -3871,7 +3873,7 @@ button.custom-btn:hover {
     color:#292775;
     text-align: center;
     border-radius:50%;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
     line-height: 40px;
 }
 .single-blog-left .left-4 ul li a:hover {
@@ -3890,7 +3892,7 @@ button.custom-btn:hover {
     line-height: 30px;
     color: #FFFFFF;
     text-align: center;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .single-blog-left .left-5 a:hover {
     color: #ffffff;
@@ -3977,7 +3979,7 @@ button.custom-btn:hover {
     font-size: 16px;
     line-height: 30px;
     color: #FFFFFF;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .single-blog-left .make-comment a:hover {
     color: #ffffff;
@@ -4153,8 +4155,8 @@ button.custom-btn:hover {
     border-radius:50%;
     text-align: center;
     color: #292775;
-    transition: .3s ease-in-out; 
-    line-height: 40px; 
+    transition: .3s ease-in-out;
+    line-height: 40px;
 }
 .single-blog-right .right-4  ul li a:hover {
     background: rgba(28 116 75 / 100%);
@@ -4182,7 +4184,7 @@ button.custom-btn:hover {
     line-height: 23px;
     color: #505050;
     margin:20px 20px 0px 0px ;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 .single-blog-right .right-5 .btn:hover {
     background: rgba(28 116 75 / 100%);
@@ -4266,7 +4268,7 @@ button.custom-btn:hover {
     margin: 0 3px;
     border-radius: 50px;
     line-height:40px;
-    transition: .3s ease-in-out; 
+    transition: .3s ease-in-out;
 }
 
 .social-link-front li a:hover {

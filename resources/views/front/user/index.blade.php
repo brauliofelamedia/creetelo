@@ -6,6 +6,11 @@
     .heading-2 {
         font-size: 35px!important;
     }
+    .blue {
+        padding: 20px;
+        background-color: #f3bfa5;
+        border-radius: 10px;
+    }
 
     .btn-add {
         background-color: #292775;
@@ -15,7 +20,7 @@
         font-size: 14px !important;
         cursor: pointer;
     }
-    
+
     .delete-row, .delete-save {
         position: absolute;
         right: 14px;
@@ -106,12 +111,12 @@
         <div class="about-three-rapper position-relative">
             <img src="{{asset('images/shape/shape-2.png')}}" alt="" class="shape shape-12">
             <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
-            <div class="container">	
+            <div class="container">
                 <div class="row d-flex align-items-center justify-content-center flex-column">
                     <div class="d-flex align-items-center justify-content-center mt-240 md-mt-100 pb-60">
                         <h1 class="mb-10">Mi cuenta</h1>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </div>
@@ -122,6 +127,11 @@
             <div class="text-left">
                 <h2 class="heading-2 mb-30">Hola, {{$user->fullname}}</h2>
             </div>
+            @if ($errors->has('ocupation'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('ocupation') }}</strong>
+                </span>
+            @endif
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -151,13 +161,13 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Nombre:</label>
+                            <label class="mb-10 form-label">Nombre:</label>
                             <input type="text" class="form-control" name="name" value="{{ucfirst($user->name)}}" required>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Apellidos:</label>
+                            <label class="mb-10 form-label">Apellidos:</label>
                             <input type="text" class="form-control" name="last_name" value="{{ucfirst($user->last_name)}}" required>
                         </div>
                     </div>
@@ -165,20 +175,222 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Correo electrónico</label>
+                            <label class="mb-10 form-label">Correo electrónico</label>
                             <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Teléfono:</label>
+                            <label class="mb-10 form-label">Teléfono:</label>
                             <input class="form-control" type="tel" name="phone" value="{{$user->phone}}" required>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Ocupación:</label>
+                            <label class="mb-10 form-label">Ocupación:</label>
                             <input class="form-control" type="text" name="ocupation" value="{{$user->ocupation}}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h3>Sobre mí</h3>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Hola! Soy una Creída muy:</label>
+                            <textarea class="form-control" name="how_vain">{{@$user->additional->how_vain}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Soy increíble en (mis habilidades):</label>
+                            <textarea class="form-control" name="skills">{{@$user->additional->skills}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Mi emprendimiento trata sobre:</label>
+                            <textarea class="form-control" name="business_about">{{@$user->additional->business_about}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Trabajo en el corporativo, me dedico a:</label>
+                            <textarea class="form-control" name="corporate_job">{{@$user->additional->corporate_job}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Mi misión es ayudar a que más personas:</label>
+                            <textarea class="form-control" name="mission">{{@$user->additional->mission}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Mi audiencia IDEAL es:</label>
+                            <textarea class="form-control" name="ideal_audience">{{@$user->additional->ideal_audience}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Prefiero no trabajar con personas que:</label>
+                            <textarea class="form-control" name="dont_work_with">{{@$user->additional->dont_work_with}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Mis valores más importantes son:</label>
+                            <textarea class="form-control" name="values">{{@$user->additional->values}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Mi tono es:</label>
+                            <textarea class="form-control" name="tone">{{@$user->additional->tone}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Entré a Créetelo buscando:</label>
+                            <textarea class="form-control" name="looking_for_in_creelo">{{@$user->additional->looking_for_in_creelo}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h3>Más sobre TI:</h3>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Dónde naciste y creciste?:</label>
+                            <textarea class="form-control" name="birthplace">{{@$user->additional->birthplace}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Qué signo eres?:</label>
+                            <textarea class="form-control" name="sign">{{@$user->additional->sign}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Tienes hobbies?:</label>
+                            <textarea class="form-control" name="hobbies">{{@$user->additional->hobbies}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Bebida favorita?:</label>
+                            <textarea class="form-control" name="favorite_drink">{{@$user->additional->favorite_drink}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Tienes hijos?:</label>
+                            <textarea class="form-control" name="has_children">{{@$user->additional->has_children}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Estás casada?:</label>
+                            <textarea class="form-control" name="is_married">{{@$user->additional->is_married}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Tu viaje favorito que has hecho?:</label>
+                            <textarea class="form-control" name="favorite_trip">{{@$user->additional->favorite_trip}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿A dónde te gustaría viajar next?:</label>
+                            <textarea class="form-control" name="next_trip">{{@$user->additional->next_trip}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Postre favorito?:</label>
+                            <textarea class="form-control" name="favorite_dessert">{{@$user->additional->favorite_dessert}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label  class="mb-10 form-label">¿Comida favorita? (si, el postre va primero):</label>
+                            <textarea class="form-control" name="favorite_food">{{@$user->additional->favorite_food}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label  class="mb-10 form-label">¿Qué serie o película recomiendas mucho?:</label>
+                            <textarea class="form-control" name="movie_recommendation">{{@$user->additional->movie_recommendation}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label  class="mb-10 form-label">¿Qué libro recomiendas? (Aparte de Hello Fears, obvi):</label>
+                            <textarea class="form-control" name="book_recommendation">{{@$user->additional->book_recommendation}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label  class="mb-10 form-label">¿Qué PODCAST amas?:</label>
+                            <textarea class="form-control" name="podcast_recommendation">{{@$user->additional->podcast_recommendation}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h3>Para cerrar:</h3>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Qué te hace IRREMPLAZABLE?:</label>
+                            <textarea class="form-control" name="irreplaceable">{{@$user->additional->irreplaceable}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Algún LOGRO que nos quieras compartir importante para ti?:</label>
+                            <textarea class="form-control" name="achievement">{{@$user->additional->achievement}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</label>
+                            <textarea class="form-control" name="biggest_dream">{{@$user->additional->biggest_dream}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Qué te gustaría recibir?:</label>
+                            <textarea class="form-control" name="like_to_receive">{{@$user->additional->like_to_receive}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Qué te hace bien o te trae felicidad?</label>
+                            <textarea class="form-control" name="brings_you_happiness">{{@$user->additional->brings_you_happiness}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="blue">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <h3>Somos abundantes:</h3>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</label>
+                                <textarea class="form-control" name="gift">{{@$user->additional->gift}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Comparte un link:</label>
+                                <input type="text" class="form-control" name="gift_link" value="{{@$user->additional->gift_link}}">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -198,13 +410,13 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Estado:</label>
+                            <label class="mb-10 form-label">Estado:</label>
                             <input class="form-control" type="text" name="state" value="{{$user->state}}">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Ciudad:</label>
+                            <label class="mb-10 form-label">Ciudad:</label>
                             <input class="form-control" type="text" name="city" value="{{$user->city}}">
                         </div>
                     </div>
@@ -215,43 +427,27 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Código postal:</label>
+                            <label class="mb-10 form-label">Código postal:</label>
                             <input class="form-control" type="text" name="postal_code" value="{{$user->postal_code}}">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Dirección:</label>
+                            <label class="mb-10 form-label">Dirección:</label>
                             <input class="form-control" type="text" name="address" value="{{$user->address}}">
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-label mb-10">Empresa / emprendimiento:</label>
+                            <label class="mb-10 form-label">Empresa / emprendimiento:</label>
                             <input class="form-control" type="text" name="company_or_venture" value="{{$user->company_or_venture}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="form-label mb-10">Sobre mí:</label>
-                            <textarea name="about_me" rows="6" class="form-control">{{$user->about_me}}</textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="form-label mb-10">Descripción de habilidades:</label>
-                            <textarea name="skills" rows="6" class="form-control">{{$user->skills}}</textarea>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label mb-10">Habilidades:</label>
+                            <label class="mb-10 form-label">Habilidades:</label>
                             <select class="select2 form-control" name="abilities[]" multiple="multiple">
                                 @isset($userSkills)
                                     @if(count($userSkills) > 0)
@@ -273,7 +469,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label mb-10">Servicios:</label>
+                            <label class="mb-10 form-label">Servicios:</label>
                             <select class="select2 form-control" name="services[]" multiple="multiple">
                                 @isset($userServices)
                                     @if(count($userServices) > 0)
@@ -294,7 +490,7 @@
                         </div>
                     </div>
                 </div>
-                    <button type="submit" class="btn-succcess" id="sendData">Actualizar información</button>
+                <button type="submit" class="btn-succcess" id="sendData">Actualizar información</button>
                 </form>
                 <form action="{{route('dashboard.social.update')}}" id="formSocial" method="post">
                     @csrf
@@ -311,18 +507,18 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label mb-10">Red social:</label>
+                                    <label class="mb-10 form-label">Red social:</label>
                                     <select name="social[]" class="form-control" required>
-                                        <option value="facebook" @if($social->title == 'facebook') selected @endif>Facebook</option>
-                                        <option value="linkedin" @if($social->title == 'linkedin') selected @endif>Linkedin</option>
-                                        <option value="x" @if($social->title == 'x') selected @endif>X (Twitter)</option>
+                                        <option value="email" @if($social->title == 'email') selected @endif>Email</option>
+                                        <option value="whatsapp" @if($social->title == 'whatsapp') selected @endif>Whatsapp</option>
                                         <option value="instagram" @if($social->title == 'instagram') selected @endif>Instagram</option>
+                                        <option value="linkedin" @if($social->title == 'linkedin') selected @endif>Linkedin</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="form-label mb-10">Url:</label>
+                                    <label class="mb-10 form-label">Url:</label>
                                     <input type="text" name="url[]" class="form-control" value="{{$social->url}}" required>
                                 </div>
                             </div>
@@ -391,25 +587,25 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label mb-10">Red social:</label>
+                            <label class="mb-10 form-label">Red social:</label>
                             <select name="social[]" class="form-control">
-                                <option value="facebook">Facebook</option>
-                                <option value="x">X (Twitter)</option>
-                                <option value="linkedin">Linkedin</option>
+                                <option value="email">Email</option>
+                                <option value="whatsapp">Whatsapp</option>
                                 <option value="instagram">Instagram</option>
+                                <option value="linkedin">Linkedin</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-label mb-10">Url:</label>
+                            <label class="mb-10 form-label">Url:</label>
                             <input type="text" name="url[]" class="form-control">
                         </div>
                     </div>
                 </div>
             `);
         });
-        
+
 
         let formulario = $('#form');
         let elementosFormulario = formulario.find('input, select, textarea');

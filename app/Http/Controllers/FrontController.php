@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendContactMail;
+use App\Models\Additional;
 use App\Models\Lead;
 use App\Services\ContactServices;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class FrontController extends Controller
 
         //Inyectamos mas valores de la base
         foreach($data['contacts'] as &$contact){
-            
+
             $user = User::where('contact_id',$contact['id'])->first();
             if(!$user){
                 $newUser = $this->addNewUser($contact);
@@ -65,6 +66,10 @@ class FrontController extends Controller
         $user->save();
         $user->assignRole('user');
 
+        $additional = new Additional();
+        $additional->user_id = $user->id;
+        $additional->save();
+
         return $user;
     }
 
@@ -77,7 +82,7 @@ class FrontController extends Controller
 
         //Otros candidatos
         $otherUsers = User::where('contact_id', '!=', $id)->inRandomOrder()->limit(6)->get();
-        
+
         return view('front.contact.detail', compact('user','otherUsers'));
     }
 
@@ -90,11 +95,11 @@ class FrontController extends Controller
             'phone' => 'nullable|string|max:20',
             'comments' => 'nullable|string',
         ]);
-    
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         $lead = new Lead();
         $lead->name = $request->name;
         $lead->email = $request->email;
@@ -102,7 +107,7 @@ class FrontController extends Controller
         $lead->comments = $request->comments;
         $lead->user_id = $request->user_id;
         $lead->save();
-    
+
         // Envío del correo
         if($user->email){
             Mail::to($user->email)->send(new SendContactMail($lead));

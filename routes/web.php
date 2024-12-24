@@ -15,22 +15,22 @@ Route::get('login', function () {
 //Account
 Route::get('dashboard',[UserController::class,'index'])->middleware('auth')->name('dashboard.account.index');
 Route::get('dashboard/login',[UserController::class,'showLogin'])->name('dashboard.account.login');
-Route::put('dashboard/update',[UserController::class,'update'])->name('dashboard.account.update');
-Route::put('dashboard/socials/update',[UserController::class,'social_update'])->name('dashboard.social.update');
-Route::post('dashboard/socials/delete',[UserController::class,'social_delete'])->name('dashboard.social.delete');
+Route::put('dashboard/update',[UserController::class,'update'])->middleware('auth')->name('dashboard.account.update');
+Route::put('dashboard/socials/update',[UserController::class,'social_update'])->middleware('auth')->name('dashboard.social.update');
+Route::post('dashboard/socials/delete',[UserController::class,'social_delete'])->middleware('auth')->name('dashboard.social.delete');
 //Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
 
 //Sync contacts
-Route::get('dashboard/sync',[UserController::class,'syncContacts'])->name('dashboard.sync');
+Route::get('dashboard/sync',[UserController::class,'syncContacts'])->middleware('auth')->name('dashboard.sync');
 
 //Front
-Route::get('{page?}',[FrontController::class,'index'])->name('front.home');
+Route::get('{page?}',[FrontController::class,'index'])->middleware('auth')->name('front.home');
 
 //Contact detail
 Route::get('individual/{contactId}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
 
 //Send emails
-Route::post('send-email',[FrontController::class,'send_email'])->name('front.send_email');
+Route::post('send-email',[FrontController::class,'send_email'])->middleware('auth')->name('front.send_email');
 
 //Configs
 Route::middleware('auth')->prefix('admin/configs')->group(function () {

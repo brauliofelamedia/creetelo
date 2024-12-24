@@ -3,49 +3,66 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use App\Models\Config;
 use App\Services\ContactServices;
+use Exception;
 
 class CheckToken
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
+    private $client;
+    private $config;
+
+    public function __construct()
+    {
+        $this->config = Config::where('id',1)->first();
+        $this->client = new Client([
+            'base_uri' => 'https://services.leadconnectorhq.com',
+        ]);
+    }
+
     public function handle(Request $request, Closure $next): Response
     {
         // Fetch configuration data
         $config = Config::where('id', 1)->firstOrFail();
         $contactServices = new ContactServices();
         $token = $contactServices->checkToken();
+        $statusCode = $token->getStatusCode();
 
-        if($token->status() == 401){
+        if($statusCode == 401){
             try {
-                // Make HTTP request to exchange token
-                $response = Http::asForm()
-                    ->post('https://services.leadconnectorhq.com/oauth/token', [
-                        'client_id' => $config->client_id,
-                        'client_secret' => $config->client_secret_id,
+                $response = $this->client->post('https://services.leadconnectorhq.com/oauth/token', [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ],
+                    'form_params' => [
+                        'client_id' => $this->config->client_id,
+                        'client_secret' => $this->config->client_secret_id,
                         'grant_type' => 'refresh_token',
-                        'refresh_token' => $config->refresh_token,
-                    ]);
-    
-                $response->throw(); 
-                $data = $response->json();
-    
-                return response()->json($response);
-    
-                $config->access_token = $data['access_token'] ?? null;
-                $config->refresh_token = $data['refresh_token'] ?? null;
-                $config->save();
-    
-            } catch (\Throwable $exception) {
-                return response()->json(['error' => 'Failed to exchange token. Please try again later.'], 500);
+                        'code' => $this->config->code,
+                        'refresh_token' => $this->config->refresh_token,
+                    ],
+                ]);
+
+                $statusCode = $response->getStatusCode();
+                $responseBody = $response->getBody()->getContents();
+
+                if ($statusCode === 200) {
+                    $responseData = json_decode($responseBody, true);
+
+                    $config = Config::where('id',1)->first();
+                    $config->access_token = $responseData['access_token'];
+                    $config->refresh_token = $responseData['refresh_token'];
+                    $config->save();
+
+                } else {
+                    return response()->json(['error' => 'Token exchange failed'], $statusCode);
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => 'Request failed'], 500);
             }
         }
 

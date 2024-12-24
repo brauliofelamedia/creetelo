@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Additional;
 use App\Models\Config;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $role = Role::create(['name' => 'super_admin']);
         $role = Role::create(['name' => 'admin']);
         $role = Role::create(['name' => 'user']);
 
@@ -25,17 +27,25 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
+        $additional = new Additional();
+        $additional->user_id = $user->id;
+        $additional->save();
+
         $user2 = User::factory()->create([
             'name' => 'Jorge Fela',
             'email' => 'jorge@felamedia.com',
             'password' => bcrypt('password'),
         ]);
 
+        $additional = new Additional();
+        $additional->user_id = $user->id;
+        $additional->save();
+
         //Generamos el archivo de configuración
         $config = new Config();
         $config->save();
 
-        $user->assignRole('admin');
+        $user->assignRole('super_admin');
         $user2->assignRole('admin');
     }
 }

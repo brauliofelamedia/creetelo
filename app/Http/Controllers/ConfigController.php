@@ -29,7 +29,7 @@ class ConfigController extends Controller
         $config = Config::where('id',1)->first();
         $config->code = Crypt::encrypt($request->code);
         $config->save();
-    
+
         return redirect()->route('filament.admin.resources.configs.edit',1)->with('message','Se ha registrado correctamente el código de acceso.');
     }*/
 
@@ -79,7 +79,7 @@ class ConfigController extends Controller
             // Handle successful response and return access token
             $config->access_token =$data['access_token'];
             $config->refresh_token = $data['refresh_token'];
-            $config->company_id = $data['companyId']; 
+            $config->company_id = $data['companyId'];
             $config->location_id = $data['locationId'];
             $config->save();
 
@@ -108,10 +108,10 @@ class ConfigController extends Controller
                     'refresh_token' => $this->config->refresh_token,
                 ],
             ]);
-        
+
             $statusCode = $response->getStatusCode();
             $responseBody = $response->getBody()->getContents();
-        
+
             if ($statusCode === 200) {
                 $responseData = json_decode($responseBody, true);
 

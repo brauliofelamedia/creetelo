@@ -19,38 +19,38 @@
         color: white;
         border-radius: 5px;
     }
-    
+
     .btn-pagination.active,.btn-pagination:hover {
         background-color: #d17d24;
     }
 </style>
 @endpush
 
-@section('content')    
-    <div class="about-us-banner pt-120" style="background-image: url('{{asset('images/home.webp')}}')">
+@section('content')
+    <div class="about-us-banner pt-120" style="background-image: url('{{asset('images/banner.png')}}')">
         <div class="about-three-rapper position-relative">
-            <img src="images/shape/shape-2.png" alt="" class="shape shape-12">
-            <img src="images/shape/shape-3.png" alt="" class="shape shape-13">
-            <div class="container">	
-                <div class="row d-flex align-items-center justify-content-center flex-column text-center">
+            <img src="{{asset('images/shape/shape-2.png')}}" alt="" class="shape shape-12">
+            <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
+            <div class="container">
+                <div class="text-center row d-flex align-items-center justify-content-center flex-column">
                     <div class="d-flex align-items-center justify-content-center mt-240 md-mt-100">
-                        <h1 class="mb-30">Créetelo es una comunidad que empodera a emprendedoras auténticas que quieren aportar a la vida de otros desde su propósito y sus conocimientos.</h1>
+                        <h1 class="mb-130 mt-100">Créetelo es una comunidad que empodera a emprendedoras auténticas que quieren aportar a la vida de otros desde su propósito y sus conocimientos.</h1>
                     </div>
-                    <div class="d-flex align-items-center justify-content-center mt-60">
+                    <div class="mt-20 d-flex align-items-center justify-content-center">
                         <form class="form-3 d-flex align-items-center justify-content-between" action="{{route('front.home')}}" method="get">
                             <input type="text" name="name" id="searchInput" placeholder="Michelle Poler"  value="{{@$name}}">
-                            <button type="submit" class="btn-search">Buscar</button>	
+                            <button type="submit" class="btn-search">Buscar</button>
                         </form>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </div>
-    
+
     <section class="feature-job-grid pb-90 pt-90">
         <div class="feature-job-grid-rapper">
             <div class="container">
-                <div class="row px-0 d-flex align-items-center">
+                <div class="px-0 row d-flex align-items-center">
                     @if(count($data['contacts']) >= 1)
                         <div class="row job-grid-heading">
                             <div class="col-lg-8 md-pb-20" data-aos="zoom-in">
@@ -76,8 +76,8 @@
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                     <div class="round-pic"><img src="{{$contact['avatar']}}" alt=""></div>
                                     <div class="Candidates-grid">
-                                        <div class=" mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
-                                            <div class=" d-flex flex-column align-items-center justify-content-center ">
+                                        <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
+                                            <div class=" d-flex flex-column align-items-center justify-content-center">
                                                 <h3>{{(($contact['firstNameLowerCase'])? $contact['firstNameLowerCase'] :'-')}} {{(($contact['lastNameLowerCase'])? $contact['lastNameLowerCase'] :'-')}}</h3>
                                                 @php
                                                     $countries = Config::get('countries.countries');
@@ -96,8 +96,8 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="top-grid-4 pt-20 d-flex flex-column align-items-center justify-content-center">
-                                            <a href="{{route('front.contact.detail',$contact['id'])}}"><span>Ver perfil completo</span></a>
+                                        <div class="pt-20 top-grid-4 d-flex flex-column align-items-center justify-content-center">
+                                            <a href="{{route('front.contact.detail',$contact['id'])}}"><span>Conoce esta Creída</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                         </ul>
 
                     @else
-                        <h4 class="text-center mb-20">No hay candidados relacionados con tu búsqueda.</h4>
+                        <h4 class="mb-20 text-center">No hay candidados relacionados con tu búsqueda.</h4>
                         <div class="explore-btn" style="padding:0;">
                             <form action="{{route('front.home')}}" method="GET">
                                 <input type="hidden" name="">
@@ -135,7 +135,7 @@
                 <img src="images/shape/shape-4.png" alt="">
                 <img src="images/shape/shape-4.png" alt="">
                 <div class="row">
-                    <div class=" col customer_content text-center pt-80 pb-80">
+                    <div class="text-center col customer_content pt-80 pb-80">
                         <h2 class="">200k+ Customers Regular Visit Our Site.Try it now!</h2>
                         <p class="mb-30">Enthusiastically mesh user friendly content with long-term high-impact architectures. Proactively underwhelm .</p>
                         <a href="" class="custom-btn">Apply Now</a>
@@ -144,5 +144,5 @@
             </div>
         </div>
     </section>
-    
+
 @endsection

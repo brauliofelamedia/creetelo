@@ -35,7 +35,7 @@ class ContactServices
                     'locationId' => $this->config->location_id
                 ]
             ]);
-            
+
             return json_decode($response->getBody(), true);
 
         } catch (Exception $e) {
@@ -48,7 +48,7 @@ class ContactServices
     }
 
     public function getContacts($name,$page)
-    {   
+    {
         if($name){
             $filters = [
                 [
@@ -117,7 +117,7 @@ class ContactServices
                 ],
                 'json' => $data,
             ]);
-            
+
             return json_decode($response->getBody(), true);
 
         } catch (Exception $e) {
@@ -129,8 +129,8 @@ class ContactServices
     }
 
     public function searchContact($name)
-    {   
-        try {     
+    {
+        try {
             $response = $this->client->get('contacts', [
                 'headers' => [
                     'Accept' => 'application/json',
@@ -171,7 +171,7 @@ class ContactServices
     }
 
     //SyncContact
-    public function updateContact($user,$newData)
+    public function updateContact($user,$newData,$custom)
     {
         $name = $newData['name'] !== $user->name ? $newData['name'] : $user->name;
         $last_name = $newData['last_name'] !== $user->last_name ? $newData['last_name'] : $user->last_name;
@@ -201,9 +201,10 @@ class ContactServices
                     'state' => $state,
                     'postalCode' => $postal_code,
                     'country' => $country,
+                    'customFields' => $custom
                 ],
             ]);
-        
+
             return json_decode($response->getBody(), true);
         } catch (Exception $e) {
             if ($e->getCode() == 401) {
@@ -212,5 +213,5 @@ class ContactServices
             return response()->json(['error' => 'Request failed', 'message' => $e->getMessage()], 500);
         }
     }
-    
+
 }

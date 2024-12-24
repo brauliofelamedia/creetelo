@@ -84,10 +84,8 @@ class User extends Authenticatable
         $countryName = $countries[$this->country] ?? 'País no encontrado';
         ($countryName == 'Mexico')? $countryName = 'México': $countryName;
 
-        if($country && $state && $city){
-            return $city.' - '.$state.' - '.$countryName;
-        } elseif($country && $state) {
-            return $state.' - '.$countryName;
+        if($country && $city){
+            return $countryName.' - '.$city;
         } else {
             return $countryName;
         }
@@ -116,5 +114,10 @@ class User extends Authenticatable
     public function abilities()
     {
         return $this->hasMany(UserSkill::class, 'user_id','id');
+    }
+
+    public function additional()
+    {
+        return $this->hasOne(Additional::class,'user_id','id');
     }
 }

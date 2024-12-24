@@ -2,12 +2,12 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
-		<meta name="keywords" content="job Search, Career, Resume, Career Builder, Employment">
-		<meta name="description" content="Khuj - the job finder HTML5 Template is designed especially for the  job related agency, multipurpose and business and those who offer job related services.">
+		<meta name="keywords" content="">
+		<meta name="description" content="">
       	<meta property="og:site_name" content="Creételo Club">
       	<meta property="og:url" content="https://creetelo.club">
       	<meta property="og:type" content="website">
-      	<meta property="og:title" content="Khuj - the job finder HTML5 Template">
+      	<meta property="og:title" content="#">
 		<meta name="og:image" content="images/assets/ogg.png">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
 		<meta name="msapplication-navbutton-color" content="#6dbfb8">
 		<meta name="apple-mobile-web-app-status-bar-style" content="#6dbfb8">
 		<title>Creételo Club - Michelle Poler</title>
-		<link rel="icon" type="image/png" sizes="72x33" href="images/fabicon.png">
+		<link rel="icon" type="image/png" sizes="72x33" href="{{asset('images/favicon.png')}}">
 		<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}" media="all">
 		<link rel="stylesheet" type="text/css" href="{{asset('css/responsive.css')}}" media="all">
 		@stack('css')
@@ -24,7 +24,7 @@
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 			<script src="{{asset('vendor/html5shiv.js')}}"></script>
 			<script src="{{asset('vendor/respond.js')}}"></script>
-		<![endif]-->	
+		<![endif]-->
 	</head>
 
 	<body>
@@ -44,10 +44,10 @@
 
             @yield('content')
 
-			<div class="footer-one pt-20 pb-20">
+			<div class="pt-20 pb-20 footer-one">
 				<div class="container">
 					<div class="row">
-						<div class="copy-right text-center pt-20" data-aos="zoom-in">
+						<div class="pt-20 text-center copy-right" data-aos="zoom-in">
 							<h5>Michelle Poler {{date('Y')}}©. Todos los derechos reservados</h5>
 						</div>
 					</div>
