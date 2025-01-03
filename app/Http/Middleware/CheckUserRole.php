@@ -6,24 +6,25 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+use Spatie\Permission\Traits\HasRoles;
+use Filament\Facades\Filament;
 
 class CheckUserRole
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
 
-        if($user){
-            if ($user->hasRole('admin')) {
-                return redirect()->route('filament.pages.dashboard');
-            }
-        
-            if ($user->hasRole('user')) {
-                return redirect('dashboard.account.index');
-            }    
+        $auth = Filament::auth();
+        $user = $auth->user();
+
+        $currentUrl = URL::current();
+        $explode = explode('/', $currentUrl);
+
+        if (end($explode) == 'admin' && auth()->check() && $user->HasRole('user')) {
+            return redirect()->route('dashboard.account.index');
         }
-        
-        //return abort(403, 'Acceso denegado.');
+
         return $next($request);
     }
 }

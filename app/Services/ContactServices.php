@@ -36,7 +36,9 @@ class ContactServices
                 ]
             ]);
 
-            return json_decode($response->getBody(), true);
+            $response = response()->json($response->getBody());
+            $response->setStatusCode(200);
+            return $response;
 
         } catch (Exception $e) {
             if ($e->getCode() == 401) {

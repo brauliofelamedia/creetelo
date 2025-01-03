@@ -5,10 +5,7 @@
 			<div class="right-wiget d-lg-flex align-items-center order-lg-3">
 				@if (auth()->check())
 					<div class="people"><a href="{{route('dashboard.account.index')}}"><img src="{{asset('images/icon/user.svg')}}" alt="user"></a></div>
-					<form action="{{route('filament.admin.auth.logout')}}" method="post">
-						@csrf
-						<button type="submit" class="sign-up"><a class="custom-btn">Cerrar sesión</a></button>
-					</form>
+					<a href="{{route('logout')}}" class="sign-up"><span class="custom-btn">Cerrar sesión</span></a>
 				@else
 					<div class="sign-up"><a class="custom-btn" href="{{route('filament.admin.auth.login')}}">Iniciar sesión</a></div>
 				@endif

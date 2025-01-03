@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthenticateAdmin;
 use App\Http\Middleware\CheckToken;
 use App\Http\Middleware\CheckUserRole;
 use Illuminate\Foundation\Application;
@@ -13,8 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //$middleware->append(CheckToken::class);
-        $middleware->append(CheckUserRole::class);
+        $middleware->append(CheckToken::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

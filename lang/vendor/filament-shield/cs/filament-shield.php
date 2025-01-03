@@ -23,7 +23,7 @@ return [
     'field.guard_name' => 'Název guardu',
     'field.permissions' => 'Oprávnění',
     'field.select_all.name' => 'Vybrat vše',
-    'field.select_all.message' => 'Povolit všechny oprávnení právě <span class="text-primary font-medium">Dostupné</span> pro tuto roli',
+    'field.select_all.message' => 'Povolit všechny oprávnení právě <span class="font-medium text-primary">Dostupné</span> pro tuto roli',
 
     /*
     |--------------------------------------------------------------------------

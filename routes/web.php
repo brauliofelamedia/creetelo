@@ -6,11 +6,26 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RedirectToFilamentLogin;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
-//Login
+Route::get('/clear-cache', function (Request $request) {
+    Artisan::call('optimize:clear');
+    return 'Cache cleared successfully.';
+})->middleware('auth');
+
+//Login & Logout
 Route::get('login', function () {
     return redirect()->route('filament.admin.auth.login');
 })->name('login');
+
+Route::get('logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect()->route('filament.admin.auth.login');
+})->name('logout');
 
 //Account
 Route::get('dashboard',[UserController::class,'index'])->middleware('auth')->name('dashboard.account.index');

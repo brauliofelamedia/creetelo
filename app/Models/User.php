@@ -3,26 +3,20 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Creativeorange\Gravatar\Facades\Gravatar;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use App\Models\UserSocial;
 use Illuminate\Support\Facades\Config;
-use Creativeorange\Gravatar\Facades\Gravatar;
-use App\Models\UserSkill;
-use App\Models\UserService;
-
-class User extends Authenticatable
+use Spatie\Permission\Traits\HasRoles;
+use Filament\Panel;
+use Illuminate\Support\Facades\Auth;
+class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    use HasFactory, HasRoles, Notifiable;
+
     protected $fillable = [
         'name',
         'last_name',
@@ -38,7 +32,7 @@ class User extends Authenticatable
         'postal_code',
         'ocupation',
         'company_or_venture',
-        'contact_id'
+        'contact_id',
     ];
 
     /**
@@ -64,9 +58,14 @@ class User extends Authenticatable
         ];
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole(['super_admin','admin','user']);
+    }
+
     public function getFullNameAttribute()
     {
-        if($this->last_name){
+        if ($this->last_name) {
             return ucwords($this->name).' '.ucwords($this->last_name);
         } else {
             return ucwords($this->name);
@@ -82,9 +81,9 @@ class User extends Authenticatable
         //Obtener las ubicaciones
         $countries = Config::get('countries.countries');
         $countryName = $countries[$this->country] ?? 'País no encontrado';
-        ($countryName == 'Mexico')? $countryName = 'México': $countryName;
+        ($countryName == 'Mexico') ? $countryName = 'México' : $countryName;
 
-        if($country && $city){
+        if ($country && $city) {
             return $countryName.' - '.$city;
         } else {
             return $countryName;
@@ -93,31 +92,38 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($avatar)
     {
-        if($avatar != 'default.png'){
-            return $avatar =  asset('storage/' . $avatar);
+        if ($avatar != 'default.png') {
+            return $avatar = asset('storage/'.$avatar);
         } else {
-           return Gravatar::fallback($avatar)->get($this->email);
+            return Gravatar::fallback($avatar)->get($this->email);
         }
+    }
+
+    public function getRoleAttribute()
+    {
+        $role = $this->roles->first();
+        return $role->name;
     }
 
     //Relaciones
     public function socials()
     {
-        return $this->hasMany(UserSocial::class,'user_id','id');
+        return $this->hasMany(UserSocial::class, 'user_id', 'id');
     }
 
     public function services()
     {
-        return $this->hasMany(UserService::class,'user_id','id');
+        return $this->hasMany(UserService::class, 'user_id', 'id');
     }
 
     public function abilities()
     {
-        return $this->hasMany(UserSkill::class, 'user_id','id');
+        return $this->hasMany(UserSkill::class, 'user_id', 'id');
     }
 
     public function additional()
     {
-        return $this->hasOne(Additional::class,'user_id','id');
+        return $this->hasOne(Additional::class, 'user_id', 'id');
     }
+
 }

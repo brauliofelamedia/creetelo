@@ -2,15 +2,20 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\AuthenticateAdmin;
+use App\Http\Middleware\CheckUserRole;
 use App\Models\Config;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Widgets\StatsOverviewWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -18,8 +23,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\Navigation\NavigationItem;
-use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -44,28 +47,17 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('5rem')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                StatsOverviewWidget::class,
+                //Widgets\AccountWidget::class,
                 //Widgets\FilamentInfoWidget::class,
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 \Hasnayeen\Themes\ThemesPlugin::make(),
-                FilamentShieldPlugin::make()
-                    ->gridColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'lg' => 3
-                    ])
-                    ->sectionColumnSpan(1)
-                    ->checkboxListColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'lg' => 4,
-                    ])
-                    ->resourceCheckboxListColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                    ]),
+                FilamentShieldPlugin::make(),
+            ])
+            ->authMiddleware([
+                Authenticate::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -78,17 +70,14 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
-                \App\Http\Middleware\AuthenticateAdmin::class,
+                \App\Http\Middleware\CheckUserRole::class,
             ])
             ->navigationItems([
                 NavigationItem::make('Sistema')
                     ->url(fn (Config $record): string => route('filament.admin.resources.configs.edit', 1))
                     ->icon('heroicon-o-presentation-chart-line')
                     ->group('Configuraciones')
-                    ->sort(3)
-            ])
-            ->authMiddleware([
-                Authenticate::class,
+                    ->sort(3),
             ]);
     }
 }
