@@ -32,7 +32,6 @@ class UserResource extends Resource
                         ->label('Contraseña')
                         ->password()
                         ->required()
-                        ->visible(fn (User $record): bool => $record->id === Auth::id())
                         ->maxLength(255),
                     Forms\Components\TextInput::make('last_name')
                         ->label('Apellido')
@@ -92,8 +91,7 @@ class UserResource extends Resource
                     ->label('Correo electrónico')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role')
-                    ->label('Rol')
-                    ->searchable(),
+                    ->label('Rol'),
                 Tables\Columns\TextColumn::make('contact_id')
                     ->label('ID de contacto'),
                 Tables\Columns\TextColumn::make('created_at')

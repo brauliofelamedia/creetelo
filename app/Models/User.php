@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Config;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Panel;
+use App\Models\Skill;
 use Illuminate\Support\Facades\Auth;
 class User extends Authenticatable implements FilamentUser
 {
@@ -92,11 +93,14 @@ class User extends Authenticatable implements FilamentUser
 
     public function getAvatarAttribute($avatar)
     {
-        if ($avatar != 'default.png') {
-            return $avatar = asset('storage/'.$avatar);
+        $avatar_default = asset('images/default.png');
+        if($avatar != 'default.png'){
+            $avatar = asset('storage/'.$avatar);
         } else {
-            return Gravatar::fallback($avatar)->get($this->email);
+            $avatar = $avatar_default;
         }
+
+        return Gravatar::fallback($avatar)->get($this->email,['size'=>400]);
     }
 
     public function getRoleAttribute()
@@ -119,6 +123,11 @@ class User extends Authenticatable implements FilamentUser
     public function abilities()
     {
         return $this->hasMany(UserSkill::class, 'user_id', 'id');
+    }
+
+    public function skill()
+    {
+        return $this->belongsTo(Skill::class, 'skill_id', 'id');
     }
 
     public function additional()

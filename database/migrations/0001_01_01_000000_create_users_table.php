@@ -38,6 +38,7 @@ return new class extends Migration
             $table->text('services')->nullable();
 
             //CRM
+            $table->string('slug')->nullable();
             $table->string('contact_id')->nullable();
         });
 

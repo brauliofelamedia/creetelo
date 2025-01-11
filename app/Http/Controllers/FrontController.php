@@ -18,34 +18,24 @@ class FrontController extends Controller
 {
     public function index(Request $request)
     {
-        $name = $request->name;
-        $page = $request->query('page');
+        $search = $request->search;
+        $order = $request->order ?? 'desc';
 
-        $contactServices = new ContactServices();
+        $users = User::query();
 
-        if($name){
-            $data = $contactServices->getContacts($name,$page);
-        } else {
-            $data = $contactServices->getContacts(null,$page);
+        if ($request->has('search')) {
+            $users->where('name', 'like', '%' . $request->search . '%');
+            $users->orWhere('last_name', 'like', '%' . $request->search . '%');
+
+            $users->orWhereHas('abilities.skill', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
         }
 
-        //Inyectamos mas valores de la base
-        foreach($data['contacts'] as &$contact){
+        $users = $users->orderBy('created_at', $order);
+        $users = $users->paginate(20);
 
-            $user = User::where('contact_id',$contact['id'])->first();
-            if(!$user){
-                $newUser = $this->addNewUser($contact);
-                $contact['avatar'] = $newUser->avatar;
-            } else {
-                $contact['avatar'] = $user->avatar;
-                $contact['socials'] = $user->socials()->pluck('title','url')->toArray();
-            }
-        }
-
-        $jsonString = json_encode($data);
-        $data = json_decode($jsonString, true);
-
-        return view('front.home', compact('data','name','page'));
+        return view('front.home', compact('search','users','order'));
     }
 
     public function addNewUser($contact)
@@ -73,16 +63,10 @@ class FrontController extends Controller
         return $user;
     }
 
-    public function contact_detail($id)
+    public function contact_detail($slug)
     {
-        $contactServices = new ContactServices();
-
-        //Información del candidato
-        $user = User::where('contact_id',$id)->first();
-
-        //Otros candidatos
-        $otherUsers = User::where('contact_id', '!=', $id)->inRandomOrder()->limit(6)->get();
-
+        $user = User::where('slug',$slug)->with('abilities')->first();
+        $otherUsers = User::where('slug', '!=', $slug)->inRandomOrder()->limit(6)->get();
         return view('front.contact.detail', compact('user','otherUsers'));
     }
 

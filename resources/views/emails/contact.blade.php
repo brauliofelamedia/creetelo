@@ -16,8 +16,8 @@
 </head>
 <body>
 <div>
-    <a href="https://creetelo.fmdev.top" target="_blank">
-        <img src="https://creetelo.fmdev.top/images/logo.png" alt="Créetelo" style="width:250px;">
+    <a href="{{env('APP_URL')}}" target="_blank">
+        <img src="{{env()->url('public/images/logo.png')}}" alt="logo" style="width:100px;">
     </a><br>
     <p>Se recibio la siguiente información:😉</p><br>
     <p>Nombre: {{ $name }}</p>

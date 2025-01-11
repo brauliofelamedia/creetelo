@@ -9,7 +9,8 @@ use App\Http\Middleware\RedirectToFilamentLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\User;
+use Illuminate\Support\Str;
 Route::get('/clear-cache', function (Request $request) {
     Artisan::call('optimize:clear');
     return 'Cache cleared successfully.';
@@ -42,10 +43,18 @@ Route::get('dashboard/sync',[UserController::class,'syncContacts'])->middleware(
 Route::get('{page?}',[FrontController::class,'index'])->middleware('auth')->name('front.home');
 
 //Contact detail
-Route::get('individual/{contactId}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
+Route::get('individual/{slug}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
 
 //Send emails
 Route::post('send-email',[FrontController::class,'send_email'])->middleware('auth')->name('front.send_email');
+
+Route::get('create-slug',function(){
+    $users = User::all();
+    foreach ($users as $user) {
+        $user->slug = Str::slug($user->name);
+        $user->save();
+    }
+});
 
 //Configs
 Route::middleware('auth')->prefix('admin/configs')->group(function () {

@@ -103,11 +103,61 @@
     .btn-succcess:hover {
         background-color: #1c1a6a;
     }
+
+    h1 {
+        color: #292775!important;
+    }
+
+    @media (max-width: 992px) {
+        .avatar {
+            width: 170px;
+            height: 170px;
+            top: -140px;
+            left: 44px;
+        }
+        .contact-form {
+            padding: 40px;
+            padding-top: 60px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .avatar {
+            width: 110px;
+            height: 110px;
+            top: -70px;
+            left: 38px;
+        }
+
+        .contact-form {
+            padding:20px;
+            padding-top: 60px!important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .avatar {
+            width: 130px;
+            height: 130px;
+            top: -119px;
+            left: 35px;
+        }
+
+        .heading-2 {
+            font-size: 28px !important;
+            margin: 0;
+        }
+
+        .contact-form {
+            padding:20px;
+            padding-top: 40px!important;
+        }
+    }
 </style>
 @endpush
 
 @section('content')
-    <div class="about-us-banner" style="background-image: url('{{asset('images/home.webp')}}')">
+    <div class="about-us-banner" style="background-image: url('{{asset('images/banner-detail.png')}}')">
         <div class="about-three-rapper position-relative">
             <img src="{{asset('images/shape/shape-2.png')}}" alt="" class="shape shape-12">
             <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
@@ -153,42 +203,40 @@
                     <div class="col-xl-12">
                         <h3>Información personal</h3>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label>Imagen de perfil</label>
-                            <input type="file" class="form-control" name="avatar">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Nombre:</label>
                             <input type="text" class="form-control" name="name" value="{{ucfirst($user->name)}}" required>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Apellidos:</label>
                             <input type="text" class="form-control" name="last_name" value="{{ucfirst($user->last_name)}}" required>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Correo electrónico</label>
                             <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Teléfono:</label>
                             <input class="form-control" type="tel" name="phone" value="{{$user->phone}}" required>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                         <div class="form-group">
                             <label class="mb-10 form-label">Ocupación:</label>
                             <input class="form-control" type="text" name="ocupation" value="{{$user->ocupation}}" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Sobre mi:</label>
+                            <textarea name="about_me" rows="5" class="form-control">{{$user->about_me}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -196,61 +244,61 @@
                     <div class="col-xl-12">
                         <h3>Sobre mí</h3>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Hola! Soy una Creída muy:</label>
                             <textarea class="form-control" name="how_vain">{{@$user->additional->how_vain}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Soy increíble en (mis habilidades):</label>
                             <textarea class="form-control" name="skills">{{@$user->additional->skills}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Mi emprendimiento trata sobre:</label>
                             <textarea class="form-control" name="business_about">{{@$user->additional->business_about}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Trabajo en el corporativo, me dedico a:</label>
                             <textarea class="form-control" name="corporate_job">{{@$user->additional->corporate_job}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Mi misión es ayudar a que más personas:</label>
                             <textarea class="form-control" name="mission">{{@$user->additional->mission}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Mi audiencia IDEAL es:</label>
                             <textarea class="form-control" name="ideal_audience">{{@$user->additional->ideal_audience}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label>Prefiero no trabajar con personas que:</label>
                             <textarea class="form-control" name="dont_work_with">{{@$user->additional->dont_work_with}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Mis valores más importantes son:</label>
                             <textarea class="form-control" name="values">{{@$user->additional->values}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Mi tono es:</label>
                             <textarea class="form-control" name="tone">{{@$user->additional->tone}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Entré a Créetelo buscando:</label>
                             <textarea class="form-control" name="looking_for_in_creelo">{{@$user->additional->looking_for_in_creelo}}</textarea>
@@ -368,7 +416,7 @@
                             <textarea class="form-control" name="like_to_receive">{{@$user->additional->like_to_receive}}</textarea>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="form-group">
                             <label class="mb-10 form-label">¿Qué te hace bien o te trae felicidad?</label>
                             <textarea class="form-control" name="brings_you_happiness">{{@$user->additional->brings_you_happiness}}</textarea>

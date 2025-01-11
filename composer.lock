@@ -4,8 +4,69 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b630a238fce8b5742dbe5fdab27fbfc4",
+    "content-hash": "be5fc00da1082bd6bc910a6f02bc975c",
     "packages": [
+        {
+            "name": "agatanga/flags",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/agatanga/flags.git",
+                "reference": "41870ad0e436683d611c068aa55f1a8dfe13897e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/agatanga/flags/zipball/41870ad0e436683d611c068aa55f1a8dfe13897e",
+                "reference": "41870ad0e436683d611c068aa55f1a8dfe13897e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^7.14|^8.0|^9.0|^10.0|^11.0",
+                "illuminate/filesystem": "^7.14|^8.0|^9.0|^10.0|^11.0",
+                "illuminate/support": "^7.14|^8.0|^9.0|^10.0|^11.0",
+                "lipis/flag-icons": "^6.8|^7.0",
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Agatanga\\Flags\\FlagsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Agatanga\\Flags\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vova Yatsyuk",
+                    "email": "vova.yatsyuk@gmail.com"
+                }
+            ],
+            "description": "Country flags in SVG format for Laravel application.",
+            "homepage": "https://github.com/agatanga/flags",
+            "keywords": [
+                "blade",
+                "flags",
+                "laravel",
+                "svg"
+            ],
+            "support": {
+                "issues": "https://github.com/agatanga/flags/issues",
+                "source": "https://github.com/agatanga/flags"
+            },
+            "time": "2024-05-12T14:21:28+00:00"
+        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.2.26",
@@ -3335,6 +3396,47 @@
                 }
             ],
             "time": "2024-03-23T07:42:40+00:00"
+        },
+        {
+            "name": "lipis/flag-icons",
+            "version": "v7.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lipis/flag-icons.git",
+                "reference": "5667d75be0c0396f29fdc73e2b2e341d0e702843"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lipis/flag-icons/zipball/5667d75be0c0396f29fdc73e2b2e341d0e702843",
+                "reference": "5667d75be0c0396f29fdc73e2b2e341d0e702843",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Panayiotis Lipiridis",
+                    "email": "lipiridis@gmail.com",
+                    "role": "Lead"
+                }
+            ],
+            "description": "A curated collection of all country flags in SVG — plus the CSS for easier integration.",
+            "homepage": "https://flagicons.lipis.dev",
+            "keywords": [
+                "country",
+                "country-flags",
+                "css",
+                "icon-css",
+                "svg"
+            ],
+            "support": {
+                "issues": "https://github.com/lipis/flag-icons/issues",
+                "source": "https://github.com/lipis/flag-icons/tree/v7.2.3"
+            },
+            "time": "2024-05-29T11:01:19+00:00"
         },
         {
             "name": "livewire/livewire",

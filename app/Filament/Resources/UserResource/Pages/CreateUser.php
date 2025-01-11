@@ -16,10 +16,12 @@ class CreateUser extends CreateRecord
     protected function afterCreate(): void
     {
         $user = $this->record;
-
         //Generamos la contraseña
+        $fullName = $user->first.' '.$user->last_name;
         $password = Str::random(10);
+
         $user->password = bcrypt($password);
+        $user->slug = Str::slug($fullName);
         $user->save();
 
         //Enviamos el correo de bienvenida

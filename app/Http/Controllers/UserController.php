@@ -13,7 +13,7 @@ use App\Services\ContactServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-
+use Illuminate\Support\Str;
 class UserController extends Controller
 {
     public function index()
@@ -84,9 +84,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'about_me' => 'nullable|string',
-            'skills' => 'nullable|string',
             'phone' => 'nullable|string',
             'website' => 'nullable|url',
             'address' => 'nullable|string',
@@ -103,7 +102,7 @@ class UserController extends Controller
             'last_name' => strtolower($request->last_name),
         ]);
 
-        $newData = $request->only('name', 'last_name', 'email', 'avatar','about_me','skills','phone','website','address','country','state','city','postal_code','ocupation','company_or_venture');
+        $newData = $request->only('name', 'last_name', 'email','about_me','skills','phone','website','address','country','state','city','postal_code','ocupation','company_or_venture');
 
         foreach ($newData as $key => $value) {
             if ($value !== $user->$key) {
@@ -331,8 +330,6 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        dd($request->all());
-
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -359,13 +356,14 @@ class UserController extends Controller
             //Create and update users
             foreach ($data1['contacts'] as $contact) {
                 $userExist = User::where('contact_id', $contact['id'])->first();
-
+                $fullName = $contact['firstNameLowerCase'].' '.$contact['lastNameLowerCase'];
                 if (! isset($userExist)) {
                     $user = new User;
                     $user->password = bcrypt('password');
                     $user->contact_id = $contact['id'];
                     $user->name = $contact['firstNameLowerCase'];
                     $user->last_name = $contact['lastNameLowerCase'];
+                    $user->slug = Str::slug($fullName);
                     $user->email = $contact['email'];
                     $user->postal_code = $contact['postalCode'];
                     $user->country = $contact['country'];
