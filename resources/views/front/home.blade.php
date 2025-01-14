@@ -98,6 +98,17 @@
 
     @media (max-width: 480px) {
 
+        .page-item {
+            display: none;
+        }
+        .page-item:last-child {
+            display: block!important;
+        }
+
+        .page-item:first-child {
+            display: block!important;
+        }
+
         .job-grid-heading .aos-init:nth-child(1) {
             display: none;
         }
@@ -223,22 +234,6 @@
                             </form>
                         </div>
                     @endif
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="Customer-one">
-        <div class="container">
-            <div class="customer_rapper">
-                <img src="images/shape/shape-4.png" alt="">
-                <img src="images/shape/shape-4.png" alt="">
-                <div class="row">
-                    <div class="text-center col customer_content pt-80 pb-80">
-                        <h2 class="">200k+ Customers Regular Visit Our Site.Try it now!</h2>
-                        <p class="mb-30">Enthusiastically mesh user friendly content with long-term high-impact architectures. Proactively underwhelm .</p>
-                        <a href="" class="custom-btn">Apply Now</a>
-                    </div>
                 </div>
             </div>
         </div>
