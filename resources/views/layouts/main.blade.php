@@ -48,7 +48,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="pt-20 text-center copy-right" data-aos="zoom-in">
-							<h5>Michelle Poler {{date('Y')}}©. Todos los derechos reservados</h5>
+							<h5>{{env('APP_NAME')}} {{date('Y')}}©. Todos los derechos reservados</h5>
 						</div>
 					</div>
 				</div>

@@ -8,19 +8,29 @@
         margin: 35px 0;
     }
     li {
-    list-style-type: none;
+        list-style-type: none;
         display: inline;
     }
 
     .country {
         position: absolute;
         bottom: 0;
-        right: 20px;
+        right: 0;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
     }
 
     .country svg {
         width: 30px;
-        box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
+        margin-top: 12px;
+        margin-left: 8px;
+    }
+
+    .about-three-rapper .logo-directorio {
+        width: 40%;
     }
 
     .logo {
@@ -46,11 +56,85 @@
 
     @media (max-width: 992px) {
         .about-three-rapper h1 {
-            font-size: 30px;
+            font-size: 25px;
+            line-height: 1.2em;
         }
 
         #feature-job-grid {
             padding: 40px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .job-grid-heading .right-grid span {
+            font-size: 17px;
+        }
+
+        .md-mt-50 {
+            margin-top: 0!important;
+        }
+
+        .about-three-rapper .logo-directorio {
+            width: 60%;
+        }
+
+        .about-us-banner {
+            padding: 50px 90px;
+        }
+
+        .job-grid-heading .right-grid .form-select {
+            width: 50%;
+            font-size: 16px;
+        }
+
+        .job-grid-heading .left-grid span {
+            font-size: 16px;
+        }
+
+        #feature-job-grid {
+            padding: 50px 30px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .job-grid-heading .aos-init:nth-child(1) {
+            display: none;
+        }
+        .about-us-banner {
+            position: relative;
+            padding: 30px;
+            padding-top: 80px;
+            background-position: right;
+        }
+
+        .about-us-banner::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(255,255,255,0.1), rgba(255,255,255,0.6));
+        }
+
+        .about-three-rapper h1 {
+            font-size: 19px;
+            line-height: 1.2em;
+            color: white;
+            text-shadow: 0 0 13px rgba(1, 1, 1, 0.4);
+        }
+
+        .about-three-rapper .logo-directorio {
+            width: 65%;
+        }
+
+        .job-grid-heading .right-grid {
+            display: block!important;
+        }
+
+        .job-grid-heading select {
+            width: 100%!important;
         }
     }
 </style>
@@ -63,7 +147,7 @@
             <img src="{{asset('images/shape/shape-3.png')}}" alt="#" class="shape shape-13">
             <div class="container">
                 <div class="text-center row d-flex align-items-center justify-content-center flex-column">
-                    <img src="{{asset('images/Directorio-Logo.png')}}" alt="{{env('APP_NAME')}}" style="width:40%;">
+                    <img src="{{asset('images/Directorio-Logo.png')}}" alt="{{env('APP_NAME')}}" class="logo-directorio">
                     <div class="mt-20 d-flex align-items-center justify-content-center md-mt-50">
                         <h1 class="mb-50 mt-50">Créetelo es una comunidad que empodera a emprendedoras auténticas que quieren aportar a la vida de otros desde su propósito y sus conocimientos.</h1>
                     </div>
@@ -84,12 +168,12 @@
                 <div class="px-0 row d-flex align-items-center">
                     @if(count($users) >= 1)
                         <div class="row job-grid-heading">
-                            <div class="mt-10 col-lg-6 md-pb-10" data-aos="zoom-in">
+                            <div class="mt-10 col-lg-6 col-md-5 md-pb-10" data-aos="zoom-in">
                                 <div class="left-grid">
                                     <span class="">Mostrando {{$users->total()}} {{$users->total() == 1 ? 'candidato' : 'candidatos'}}</span>
                                 </div>
                             </div>
-                            <div class="col-lg-6" data-aos="zoom-in">
+                            <div class="col-lg-6 col-md-7" data-aos="zoom-in">
                                 <form action="{{route('front.home')}}" method="GET">
                                     <div class="right-grid d-flex align-items-center">
                                         <span>Ordenar por:</span>
@@ -102,7 +186,7 @@
                             </div>
                         </div>
                         @foreach($users as $contact)
-                            <div class="col-xl-3 col-lg-4">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6 col-12">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                     <div class="round-pic">
                                         <img src="{{$contact->avatar}}" alt="#">

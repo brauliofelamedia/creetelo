@@ -15,11 +15,17 @@
     .avatar .country {
         position: absolute;
         bottom: 26px;
-        right: 20px;
+        right: 48px;
+        border-radius: 50%;
+        background-color: white;
+        padding: 7px;
+        width: 50px;
+        height: 50px;
     }
 
     .avatar .country svg {
-        width: 50px;
+        width: 36px;
+        margin-top: 5px;
         box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
     }
 
@@ -34,9 +40,15 @@
         box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
     }
 
+    p {
+        font-size: 16px;
+    }
+
     h5 {
-        font-weight: bold;
         margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        font-family: 'Inter';
     }
 
     h1 {
@@ -137,6 +149,10 @@
         margin-top: 10px;
     }
 
+    .about-us-banner {
+        background-position: right;
+    }
+
     @media (max-width: 992px) {
         .about-us-banner {
             background-position: right bottom;
@@ -167,6 +183,20 @@
             margin-bottom: 20px;
         }
 
+        .tabs ul {
+            margin-bottom: 10px!important;
+        }
+
+        .tabs li {
+            float: none!important;
+            margin-right: 0!important;
+            margin-bottom: 5px;
+        }
+
+        .tabs a {
+            width: 100%;
+        }
+
         .container {
             max-width: 90%;
         }
@@ -174,9 +204,19 @@
         #about-me, .recent-job {
             padding: 0;
         }
+
+        .about-us-banner {
+            background-size: auto!important;
+            background-position: left!important;
+        }
     }
 
     @media (max-width: 480px) {
+
+        .about-us-banner {
+            background-size: auto!important;
+            background-position: left!important;
+        }
         h1 {
             font-size: 27px;
         }
@@ -188,8 +228,87 @@
         .about-me {
             width: 100%;
         }
+
+        .tabs a {
+            font-size: 14px!important;
+        }
+
+        h2 {
+            font-size: 20px!important;
+        }
+
+        h5 {
+            font-size: 17px!important;
+            line-height: 1.3em;
+        }
+
+        .tab-content {
+            padding: 30px!important;
+        }
     }
 
+
+    .tabs {
+        overflow: hidden;
+    }
+
+    .tabs ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 70px;
+
+    }
+
+    .tabs li {
+        float: left;
+        margin-right: 5px!important;
+    }
+
+    .tabs a {
+        background-color: #292775;
+        padding: 20px 25px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        color: white;
+        text-transform: uppercase;
+        border-radius: 5px;
+    }
+
+    .tabs a.active, .tabs a:hover {
+        background-color: #3d3ab9;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 40px;
+        border-top: none;
+        background-color: #f3f3f3;
+        border-radius: 5px;
+    }
+
+    .tab-content h2 {
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #e55707;
+        margin-bottom: 20px;
+    }
+
+    .tab-content.active {
+        display: block;
+        clear: both;
+    }
+
+    a.disabled {
+        cursor: not-allowed;
+        background-color: #858585 !important;
+        color: black;
+    }
+
+    a.disabled i {
+        color: #e5e5e5;
+    }
 </style>
 @endpush
 
@@ -234,15 +353,17 @@
                         @if(!is_null($user->socials))
                             <div class="social-link-front">
                                 <ul>
-                                    @foreach($user->socials as $social)
-                                        @if($social->title == 'email')
-                                            <li><a href="mailto:{{$social->url}}" target="_blank"><i class="bi bi-envelope"></i></a></li>
-                                        @elseif($social->title == 'whatsapp')
-                                            <li><a href="https://api.whatsapp.com/send?phone={{$social->url}}" target="_blank"><i class="bi bi-{{$social->title}}"></i></a></li>
-                                        @else
-                                            <li><a href="{{$social->url}}" target="_blank"><i class="bi bi-{{$social->title}}"></i></a></li>
-                                        @endif
-                                    @endforeach
+                                    @if($user->socials->count() >= 1)
+                                        @foreach($user->socials as $social)
+                                            <li><a href="{{($social->title == 'email')? 'mailto:'.$social->url.'' : $social->url }}" class="{{(is_null($social->url))? 'disabled' : ''}}" target="_blank"><i class="bi bi-{{($social->title == 'email')? 'envelope' : $social->title}}"></i></a></li>
+                                        @endforeach
+                                    @else
+                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-envelope"></i></a></li>
+                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
+                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-facebook"></i></a></li>
+                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-linkedin"></i></a></li>
+                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-instagram"></i></a></li>
+                                    @endif
                                 </ul>
                             </div>
                         @endif
@@ -255,181 +376,122 @@
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
-                    @if($user->additional->how_vain)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Hola! Soy una Creída muy:</h5><p>{{$user->additional->how_vain}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->skills)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Soy increíble en (mis habilidades):</h5><p>{{$user->additional->skills}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->business_about)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Mi emprendimiento trata sobre:</h5><p>{{$user->additional->business_about}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->corporate_job)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Trabajo en el corporativo, me dedico a:</h5><p>{{$user->additional->corporate_job}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->mission)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Mi misión es ayudar a que más personas:</h5><p>{{$user->additional->mission}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->ideal_audience)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Mi audiencia IDEAL es:</h5><p>{{$user->additional->ideal_audience}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->dont_work_with)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Prefiero no trabajar con personas que:</h5><p>{{$user->additional->dont_work_with}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->values)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Mis valores más importantes son:</h5><p>{{$user->additional->values}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->tone)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Mi tono es:</h5><p>{{$user->additional->tone}}</p>
-                        </div>
-                    @endif
-                    @if($user->additional->looking_for_in_creelo)
-                        <div class="mb-10 candidate-list-2">
-                            <h5>Entré a Créetelo buscando:</h5><p>{{$user->additional->looking_for_in_creelo}}</p>
-                        </div>
-                    @endif
 
-                    <div class="accordion">
-                        <div class="accordion-item">
-                          <h2 class="accordion-header">Más sobre ti</h2>
-                          <div class="accordion-content">
-                            @if($user->additional->birthplace)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Dónde naciste y creciste?:</h5><p>{{$user->additional->birthplace}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->sign)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué signo eres?:</h5><p>{{$user->additional->sign}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->hobbies)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Tienes hobbies?:</h5><p>{{$user->additional->hobbies}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->favorite_drink)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Bebida favorita?:</h5><p>{{$user->additional->favorite_drink}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->has_children)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Tienes hijos?:</h5><p>{{$user->additional->has_children}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->is_married)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Estás casada?:</h5><p>{{$user->additional->is_married}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->favorite_trip)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Tu viaje favorito que has hecho?:</h5><p>{{$user->additional->favorite_trip}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->next_trip)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿A dónde te gustaría viajar next?:</h5><p>{{$user->additional->next_trip}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->favorite_dessert)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Postre favorito?:</h5><p>{{$user->additional->favorite_dessert}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->favorite_food)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Comida favorita? (si, el postre va primero):</h5><p>{{$user->additional->favorite_food}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->movie_recommendation)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué serie o película recomiendas mucho?:</h5><p>{{$user->additional->movie_recommendation}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->book_recommendation)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué libro recomiendas? (Aparte de Hello Fears, obvi):</h5><p>{{$user->additional->book_recommendation}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->podcast_recommendation)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué PODCAST amas?:</h5><p>{{$user->additional->podcast_recommendation}}</p>
-                                </div>
-                            @endif
-                            @if($user->additional->podcast_recommendation)
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué PODCAST amas?:</h5><p>{{$user->additional->podcast_recommendation}}</p>
-                                </div>
-                            @endif
-                          </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">Para cerrar</h2>
-                            <div class="accordion-content">
-                                @if($user->additional->irreplaceable)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{$user->additional->irreplaceable}}</p>
-                                    </div>
-                                @endif
-                                @if($user->additional->achievement)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Algún LOGRO que nos quieras compartir importante para ti?:</h5><p>{{$user->additional->achievement}}</p>
-                                    </div>
-                                @endif
-                                @if($user->additional->biggest_dream)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</h5><p>{{$user->additional->biggest_dream}}</p>
-                                    </div>
-                                @endif
-                                @if($user->additional->irreplaceable)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{$user->additional->irreplaceable}}</p>
-                                    </div>
-                                @endif
-                                @if($user->additional->like_to_receive)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Qué te gustaría recibir?:</h5><p>{{$user->additional->like_to_receive}}</p>
-                                    </div>
-                                @endif
-                                @if($user->additional->brings_you_happiness)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Qué te hace bien o te trae felicidad?:</h5><p>{{$user->additional->brings_you_happiness}}</p>
-                                    </div>
-                                @endif
+                    <div class="tabs">
+                        <ul>
+                            <li><a href="#tab1" class="active">Sobre mí</a></li>
+                            <li><a href="#tab2">Más sobre ti</a></li>
+                            <li><a href="#tab3">Para cerrar</a></li>
+                            <li><a href="#tab4">Somos Abundantes</a></li>
+                        </ul>
+                        <div id="tab1" class="tab-content active">
+                            <h2>Sobre mí</h2>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Hola! Soy una Creída muy:</h5><p>{{(@$user->additional->how_vain)? @$user->additional->how_vain : '-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Soy increíble en (mis habilidades):</h5><p>{{(@$user->additional->skills)? @$user->additional->skills:'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Mi emprendimiento trata sobre:</h5><p>{{(@$user->additional->business_about)? @$user->additional->business_about:'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Trabajo en el corporativo, me dedico a:</h5><p>{{(@$user->additional->corporate_job)? @$user->additional->corporate_job :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Mi misión es ayudar a que más personas:</h5><p>{{(@$user->additional->mission)? @$user->additional->mission :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Mi audiencia IDEAL es:</h5><p>{{(@$user->additional->ideal_audience)? $user->additional->ideal_audience :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Prefiero no trabajar con personas que:</h5><p>{{(@$user->additional->dont_work_with)? $user->additional->dont_work_with :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Mis valores más importantes son:</h5><p>{{(@$user->additional->values)? @$user->additional->values :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Mi tono es:</h5><p>{{(@$user->additional->tone)? $user->additional->tone :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Entré a Créetelo buscando:</h5><p>{{(@$user->additional->looking_for_in_creelo)? $user->additional->looking_for_in_creelo : '-'}}</p>
                             </div>
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">Somos Abundantes</h2>
-                            <div class="accordion-content">
-                                @if($user->additional->gift)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</h5><p>{{$user->additional->gift}}</p>
-                                    </div>
-                                @endif
-                                @if($user->additional->gift_link)
-                                    <div class="mb-10 candidate-list-2">
-                                        <h5>Comparte un link:</h5><p>{{$user->additional->gift_link}}</p>
-                                    </div>
-                                @endif
+                        <div id="tab2" class="tab-content">
+                            <h2>Más sobre ti</h2>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Dónde naciste y creciste?:</h5><p>{{(@$user->additional->birthplace)? $user->additional->birthplace :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué signo eres?:</h5><p>{{(@$user->additional->sign)? $user->additional->sign :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Tienes hobbies?:</h5><p>{{(@$user->additional->hobbies)? $user->additional->hobbies :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Bebida favorita?:</h5><p>{{(@$user->additional->favorite_drink)? $user->additional->favorite_drink :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Tienes hijos?:</h5><p>{{(@$user->additional->has_children)? $user->additional->has_children :'-'}}</p>
+                            </div>
+                            @if(!is_null(@$user->additional->is_married))
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Estás casada?:</h5><p>{{(@$user->additional->is_married)? $user->additional->is_married :'-'}}</p>
+                                </div>
+                            @endif
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Tu viaje favorito que has hecho?:</h5><p>{{(@$user->additional->favorite_trip)? $user->additional->favorite_trip :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿A dónde te gustaría viajar next?:</h5><p>{{(@$user->additional->next_trip)? $user->additional->next_trip:'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Postre favorito?:</h5><p>{{(@$user->additional->favorite_dessert)? $user->additional->favorite_dessert :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Comida favorita? (si, el postre va primero):</h5><p>{{(@$user->additional->favorite_food)? $user->additional->favorite_food :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué serie o película recomiendas mucho?:</h5><p>{{(@$user->additional->movie_recommendation)? $user->additional->movie_recommendation :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué libro recomiendas? (Aparte de Hello Fears, obvi):</h5><p>{{(@$user->additional->book_recommendation)? $user->additional->book_recommendation :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué PODCAST amas?:</h5><p>{{(@$user->additional->podcast_recommendation)? $user->additional->podcast_recommendation :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué PODCAST amas?:</h5><p>{{(@$user->additional->podcast_recommendation)? $user->additional->podcast_recommendation :'-'}}</p>
+                            </div>
+                        </div>
+                        <div id="tab3" class="tab-content">
+                            <h2>Para cerrar</h2>
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{(@$user->additional->irreplaceable)? $user->additional->irreplaceable :'-'}}</p>
+                                </div>
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Algún LOGRO que nos quieras compartir importante para ti?:</h5><p>{{(@$user->additional->achievement)? $user->additional->achievement :'-'}}</p>
+                                </div>
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</h5><p>{{(@$user->additional->biggest_dream)? $user->additional->biggest_dream :'-'}}</p>
+                                </div>
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{(@$user->additional->irreplaceable)? $user->additional->irreplaceable :'-'}}</p>
+                                </div>
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Qué te gustaría recibir?:</h5><p>{{(@$user->additional->like_to_receive)? $user->additional->like_to_receive :'-'}}</p>
+                                </div>
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>¿Qué te hace bien o te trae felicidad?:</h5><p>{{(@$user->additional->brings_you_happiness)? $user->additional->brings_you_happiness :'-'}}</p>
+                                </div>
+                        </div>
+                        <div id="tab4" class="tab-content">
+                            <h2>Somos Abundantes</h2>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</h5><p>{{(@$user->additional->gift)? $user->additional->gift :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Comparte un link:</h5><p>{{(@$user->additional->gift_link)? $user->additional->gift_link :'-'}}</p>
                             </div>
                         </div>
                     </div>
@@ -485,8 +547,22 @@
 @push('js')
     <script>
         $(document).ready(function(){
-            $(".accordion-header").click(function(){
-                $(this).next().slideToggle();
+
+            //Tabs
+            $('.tabs li').click(function() {
+                // Obtener el ID del contenido
+                let li = $(this);
+                $('.tabs li a').removeClass('active');
+
+                li.find('a').addClass('active');
+                const targetId = $(this).find('a').attr('href').substring(1);
+
+                // Remover la clase 'active' de todos los tabs y contenidos
+                $('.tabs li, .tab-content').removeClass('active');
+
+                // Agregar la clase 'active' al tab y contenido seleccionados
+                $(this).addClass('active');
+                $('#' + targetId).addClass('active');
             });
         });
     </script>

@@ -2510,6 +2510,7 @@ line-height: normal;
     background: rgba(255 255 255/1);
     box-shadow: 15px 5px 60px rgb(17 29 59 / 8%);
     padding: 0 0 0 18px;
+    border-radius: 5px;
 }
 .about-three-rapper .form-3 .search-icon {
     padding-left: 30px;
@@ -4240,6 +4241,7 @@ button.custom-btn:hover {
     background-color: #d17d24;
     color: white;
     font-weight: 700;
+    border-radius: 0 5px 5px 0;
 }
 
 .btn-search:hover {
@@ -4274,4 +4276,59 @@ button.custom-btn:hover {
 .social-link-front li a:hover {
     background: rgba(28 116 75 / 100%);
     color: #ffffff;
+}
+
+ul.navbar-menu {
+    top: 50%;
+    text-align: right;
+    position: relative;
+    transform: translate(0, -50%);
+}
+
+.navbar-menu i {
+    font-size: 22px;
+}
+
+.navbar-menu .sign-up a:hover i {
+    color:white;
+}
+
+.sign-up, .user-account {
+    box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
+}
+
+.sign-up {
+    padding: 8px 14px;
+    background-color: #ff5600;
+    color: white;
+    border-radius: 5px;
+}
+
+.user-account {
+    padding: 8px 14px;
+    background-color: #111d3b;
+    color: white;
+    border-radius: 5px;
+}
+
+.navbar-menu li {
+    margin-right: 5px;
+    list-style-type: none;
+    display: inline;
+}
+
+.navbar-menu li:last-child {
+    margin-right: 0;
+}
+
+@media (max-width: 768px) {
+    .theme-main-menu {
+        padding: 20px!important;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-menu i {
+        font-size: 18px;
+    }
 }

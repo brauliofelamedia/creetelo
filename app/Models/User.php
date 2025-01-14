@@ -5,17 +5,15 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Creativeorange\Gravatar\Facades\Gravatar;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Config;
 use Spatie\Permission\Traits\HasRoles;
-use Filament\Panel;
-use App\Models\Skill;
-use Illuminate\Support\Facades\Auth;
+
 class User extends Authenticatable implements FilamentUser
 {
-
     use HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
@@ -61,7 +59,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole(['super_admin','admin','user']);
+        return $this->hasRole(['super_admin', 'admin', 'user']);
     }
 
     public function getFullNameAttribute()
@@ -94,18 +92,19 @@ class User extends Authenticatable implements FilamentUser
     public function getAvatarAttribute($avatar)
     {
         $avatar_default = asset('images/default.png');
-        if($avatar != 'default.png'){
+        if ($avatar != 'default.png') {
             $avatar = asset('storage/'.$avatar);
         } else {
             $avatar = $avatar_default;
         }
 
-        return Gravatar::fallback($avatar)->get($this->email,['size'=>400]);
+        return Gravatar::fallback($avatar)->get($this->email, ['size' => 400]);
     }
 
     public function getRoleAttribute()
     {
         $role = $this->roles->first();
+
         return $role->name;
     }
 
@@ -134,5 +133,4 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(Additional::class, 'user_id', 'id');
     }
-
 }
