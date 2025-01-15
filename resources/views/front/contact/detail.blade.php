@@ -309,6 +309,18 @@
     a.disabled i {
         color: #e5e5e5;
     }
+
+    @media (max-width: 480px) {
+        .skills {
+            text-align: center;
+        }
+        .social-link-front {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+            right: 0;
+        }
+    }
 </style>
 @endpush
 
@@ -332,7 +344,9 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
                     <div class="avatar" style="background-image:url('{{$user->avatar}}');">
-                        <span class="country">{{ flag($user->country, 'w-32') }}</span>
+                        @if($user->country)
+                            <span class="country">{{ flag($user->country, 'w-32') }}</span>
+                        @endif
                     </div>
                 </div>
                 <div class="col-xl-9 col-lg-8" style="position: relative;">

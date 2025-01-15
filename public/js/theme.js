@@ -19,10 +19,10 @@
         }
     // ------------------------ Navigation Scroll
 
-        $(window).on('scroll', function (){   
+        $(window).on('scroll', function (){
           var sticky = $('.sticky-menu'),
           scroll = $(window).scrollTop();
-          if (scroll >= 100) sticky.addClass('fixed');
+          if (scroll >= 200) sticky.addClass('fixed');
           else sticky.removeClass('fixed');
 
         });
@@ -382,7 +382,7 @@
             });
         };
 
-$(window).on ('load', function (){ 
+$(window).on ('load', function (){
 
   // -------------------- Site Preloader
 
@@ -391,7 +391,7 @@ $(window).on ('load', function (){
         $('body').delay(350).css({'overflow':'visible'});
 
 // ------------------------------- AOS Animation
-            if ($("[data-aos]").length) { 
+            if ($("[data-aos]").length) {
             AOS.init({
             duration: 800,
             mirror: true,
@@ -416,5 +416,5 @@ $(window).on ('load', function (){
           }
 
         }
-    
+
 })(jQuery);

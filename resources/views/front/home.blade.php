@@ -46,6 +46,17 @@
         text-align: center;
     }
 
+    .typed {
+        position: absolute;
+        left: 0;
+        color: #adadad;
+        font-size: 18px;
+        padding: 15px 20px;
+        width: 87%;
+        border-radius: 8px;
+        text-align: left;
+    }
+
     .page-link,.page-link:hover {
         margin-top: 30px;
         padding: 5px 10px;
@@ -97,6 +108,10 @@
     }
 
     @media (max-width: 480px) {
+
+        .typed {
+            font-size: 15px;
+        }
 
         .page-item {
             display: none;
@@ -164,8 +179,9 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-center">
                         <form class="form-3 d-flex align-items-center justify-content-between" action="{{route('front.home')}}" method="get">
-                            <input type="text" name="search" id="searchInput" placeholder="Busca por nombre, apellidos o habilidades..."  value="{{@$search}}">
-                            <button type="submit" class="btn-search">Buscar</button>
+                            <input type="text" name="search" id="search" class="form-control" required>
+                            <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                            <h4 class="typed">Buscar por <span id="typed"></span></h4>
                         </form>
                     </div>
                 </div>
@@ -173,7 +189,7 @@
         </div>
     </div>
 
-    <section class="feature-job-grid pb-90 pt-90" id="feature-job-grid">
+    <section class="feature-job-grid pb-30 pt-90" id="feature-job-grid">
         <div class="feature-job-grid-rapper">
             <div class="container">
                 <div class="px-0 row d-flex align-items-center">
@@ -201,7 +217,9 @@
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                     <div class="round-pic">
                                         <img src="{{$contact->avatar}}" alt="#">
-                                        <span class="country">{{ flag($contact->country, 'w-32') }}</span>
+                                        @if($contact->country)
+                                            <span class="country">{{ flag($contact->country, 'w-32') }}</span>
+                                        @endif
                                     </div>
                                     <div class="Candidates-grid">
                                         <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
@@ -242,8 +260,35 @@
 @endsection
 
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script>
     $(document).ready(function() {
+        $("#search").on("input", function() {
+            if ($(this).val()) {
+                $(".typed").hide();
+            } else {
+                $(".typed").show();
+            }
+        });
+
+        $('.typed').on('click', function() {
+            $('.typed').hide();
+            $("#search").focus();
+            $('#search').val('');
+        });
+
+        $("#search").blur(function() {
+            $(".typed").show();
+        });
+
+        //Typed.js
+        var typed = new Typed('#typed', {
+            strings: ['Nombre', 'Apellidos', 'Habilidades', 'País'],
+            typeSpeed: 50,
+            backSpeed: 50,
+            loop: true
+        });
+
         //Change order
         $('#change-order').change(function() {
             var order = $(this).val();
@@ -252,7 +297,7 @@
 
         $(window).scroll(function() {
             var scroll = $(window).scrollTop();
-            if (scroll >= 50) {
+            if (scroll >= 150) {
                 $('.logo').css('opacity', '1');
             } else {
                 $('.logo').css('opacity', '0');

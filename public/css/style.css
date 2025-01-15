@@ -2499,17 +2499,18 @@ line-height: normal;
 }
 .about-three-rapper .form-3 {
     width: 100%;
-    max-width: 740px;
+    max-width: 500px;
     max-height: 70px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
-    line-height: 19px;
     position: relative;
+    /*line-height: 19px;
     background: rgba(255 255 255/1);
     box-shadow: 15px 5px 60px rgb(17 29 59 / 8%);
     padding: 0 0 0 18px;
+    */
     border-radius: 5px;
 }
 .about-three-rapper .form-3 .search-icon {
@@ -4237,7 +4238,7 @@ button.custom-btn:hover {
 }
 
 .btn-search {
-    padding: 20px 25px;
+    padding: 15px 22px;
     background-color: #d17d24;
     color: white;
     font-weight: 700;
@@ -4311,6 +4312,14 @@ ul.navbar-menu {
     border-radius: 5px;
 }
 
+.sign-up:hover {
+    color: #6b09c4;
+}
+
+.user-account:hover {
+    color: white;
+}
+
 .navbar-menu li {
     margin-right: 5px;
     list-style-type: none;
@@ -4331,4 +4340,13 @@ ul.navbar-menu {
     .navbar-menu i {
         font-size: 18px;
     }
+}
+
+.form-control {
+    padding: 15px;
+    border-radius: 6px 0 0 6px;
+}
+
+.form-control:focus {
+    box-shadow: none;
 }
