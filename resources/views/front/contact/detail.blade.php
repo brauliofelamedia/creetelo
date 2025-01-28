@@ -10,23 +10,25 @@
         background-position: center;
         border-radius: 50%;
         position: relative;
+        border: 8px solid #e45607;
     }
 
     .avatar .country {
         position: absolute;
         bottom: 26px;
-        right: 48px;
+        right: 0;
         border-radius: 50%;
         background-color: white;
         padding: 7px;
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
     }
 
     .avatar .country svg {
-        width: 36px;
-        margin-top: 5px;
+        width: 50px;
+        margin-top: 11px;
         box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
+        margin-left: 7px;
     }
 
     .country {
@@ -42,19 +44,20 @@
 
     p {
         font-size: 16px;
+        color:#161e39!important;
     }
 
     h5 {
         margin: 0;
         font-size: 20px;
         font-weight: 600;
-        font-family: 'Inter';
+        color:#161e39!important;
     }
 
     h1 {
         font-size: 50px;
         font-weight: 700;
-        color: white;
+        color:#161e39;
     }
 
     .social-link-front {
@@ -142,10 +145,14 @@
         width: 80%;
     }
 
+    #about-me {
+        background-color: #e1c1f2!important;
+    }
+
     .line {
         width: 85px;
         height: 3px;
-        background-color: white;
+        background-color:#161e39;
         margin-top: 10px;
     }
 
@@ -247,7 +254,6 @@
         }
     }
 
-
     .tabs {
         overflow: hidden;
     }
@@ -266,7 +272,7 @@
     }
 
     .tabs a {
-        background-color: #292775;
+        background-color: #484584;
         padding: 20px 25px;
         cursor: pointer;
         font-weight: bold;
@@ -277,7 +283,7 @@
     }
 
     .tabs a.active, .tabs a:hover {
-        background-color: #3d3ab9;
+        background-color: #ff5600;
     }
 
     .tab-content {
@@ -298,6 +304,12 @@
     .tab-content.active {
         display: block;
         clear: both;
+        background-color: #fef7ee;
+        border: 4px solid #ff5600;
+    }
+
+    .tab-content.active h5, .tab-content.active p {
+        color: #484584!important;
     }
 
     a.disabled {
@@ -308,6 +320,19 @@
 
     a.disabled i {
         color: #e5e5e5;
+    }
+
+    #border-curve-me {
+        width: 100%;
+        height: 40px;
+        background-repeat: no-repeat;
+        position: absolute;
+        bottom: -83px;
+        background-size: contain;
+    }
+
+    #info-me {
+        position: relative;
     }
 
     @media (max-width: 480px) {
@@ -326,20 +351,9 @@
 
 @section('content')
 
-    <div class="about-us-banner" style="background-image: url('{{asset('images/banner-detail.png')}}')" style="background-position: 0 -90px!important;padding: 60px 0!important;">
-        <div class="about-three-rapper position-relative">
-            <img src="{{asset('images/shape/shape-2.png')}}" alt="" class="shape shape-12">
-            <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
-            <div class="container">
-                <div class="row d-flex align-items-center justify-content-center flex-column">
-                    <div class="d-flex align-items-center justify-content-center mt-300 md-mt-100 pb-30">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <img src="{{asset('images/individual.jpg')}}" alt="inviditual-banner">
 
-    <section class="pt-40 pb-40 mb-50 mt-60 md-mt-10" style="background-color:#e55707;">
+    <section class="mb-60 mt-60 md-mt-10" id="info-me">
         <div class="container">
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
@@ -384,9 +398,10 @@
                 </div>
             </div>
         </div>
+        <div id="border-curve-me" style="background-image:url('{{asset('images/bottom-cream.png')}}');"></div>
     </section>
 
-    <section id="about-me">
+    <section id="about-me" class="pt-50 pb-50">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
@@ -514,7 +529,7 @@
             </div>
     </section>
 
-    <section class="recent-job pb-160 md-pb-80">
+    <section class="recent-job pb-50 md-pb-80">
         <div class="recent-job-rapper">
             <div class="container">
                 <div class="feature-job-title">
@@ -528,7 +543,9 @@
                                     <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                         <div class="round-pic">
                                             <img src="{{$user->avatar}}" alt="{{$user->fullname}}">
-                                            <span class="country">{{ flag($user->country, 'w-32') }}</span>
+                                            @if($user->country)
+                                                    <span class="country">{{ flag($user->country, 'w-32') }}</span>
+                                                @endif
                                         </div>
                                         <div class="Candidates-grid">
                                             <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">

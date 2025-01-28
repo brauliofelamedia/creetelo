@@ -16,7 +16,7 @@ class EditUser extends EditRecord
         if(isset($data['password'])){
             $data['password'] = bcrypt($data['password']);
             $record->update($data);
-            return $data;
+            return $record;
         }
 
     }

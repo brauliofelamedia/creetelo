@@ -41,6 +41,15 @@
         margin-right: 5px;
     }
 
+    .page-link, .page-link:hover {
+        margin: 0!important;
+    }
+
+    .message-paginate {
+        margin: 30px auto;
+        font-size: 22px;
+        text-align: center;
+    }
     ul {
         margin:0 auto;
         text-align: center;
@@ -74,11 +83,25 @@
         #feature-job-grid {
             padding: 40px;
         }
+
+        .message-paginate {
+            margin: 20px auto;
+            font-size: 23px;
+        }
+
+        .page-link, .page-link:hover {
+            margin: 0;
+        }
     }
 
     @media (max-width: 768px) {
         .job-grid-heading .right-grid span {
             font-size: 17px;
+        }
+
+        .message-paginate {
+            margin: 20px auto;
+            font-size: 20px;
         }
 
         .md-mt-50 {
@@ -109,15 +132,16 @@
 
     @media (max-width: 480px) {
 
+        .page-link, .page-link:hover {
+            margin-top: 0;
+        }
+
         .typed {
             font-size: 15px;
         }
 
-        .page-item {
-            display: none;
-        }
-        .page-item:last-child {
-            display: block!important;
+        .page-item.disabled, .page-item:nth-child(9), .page-item:nth-child(10) {
+            display:none;
         }
 
         .page-item:first-child {
@@ -141,14 +165,13 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to top, rgba(255,255,255,0.1), rgba(255,255,255,0.6));
+            background: linear-gradient(to right, rgb(255 255 255 / 83%), rgb(255 255 255 / 78%));
         }
 
         .about-three-rapper h1 {
             font-size: 19px;
             line-height: 1.2em;
-            color: white;
-            text-shadow: 0 0 13px rgba(1, 1, 1, 0.4);
+            color: #111d3b;
         }
 
         .about-three-rapper .logo-directorio {
@@ -169,8 +192,6 @@
 @section('content')
     <div class="about-us-banner pt-120 pb-120" style="background-image: url('{{asset('images/banner.png')}}')">
         <div class="about-three-rapper position-relative">
-            <img src="{{asset('images/shape/shape-2.png')}}" alt="#" class="shape shape-12">
-            <img src="{{asset('images/shape/shape-3.png')}}" alt="#" class="shape shape-13">
             <div class="container">
                 <div class="text-center row d-flex align-items-center justify-content-center flex-column">
                     <img src="{{asset('images/Directorio-Logo.png')}}" alt="{{env('APP_NAME')}}" class="logo-directorio">
@@ -189,29 +210,11 @@
         </div>
     </div>
 
-    <section class="feature-job-grid pb-30 pt-90" id="feature-job-grid">
+    <section class="feature-job-grid pb-30 pt-30" id="feature-job-grid">
         <div class="feature-job-grid-rapper">
             <div class="container">
                 <div class="px-0 row d-flex align-items-center">
                     @if(count($users) >= 1)
-                        <div class="row job-grid-heading">
-                            <div class="mt-10 col-lg-6 col-md-5 md-pb-10" data-aos="zoom-in">
-                                <div class="left-grid">
-                                    <span class="">Mostrando {{$users->total()}} {{$users->total() == 1 ? 'candidato' : 'candidatos'}}</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-7" data-aos="zoom-in">
-                                <form action="{{route('front.home')}}" method="GET">
-                                    <div class="right-grid d-flex align-items-center">
-                                        <span>Ordenar por:</span>
-                                        <select class="form-select" name="order" id="change-order" class="form-control" style="border: 2px solid #111D3B;">
-                                            <option value="desc" {{ $order === 'desc' ? 'selected' : '' }}>Más recientes</option>
-                                            <option value="asc" {{ $order === 'asc' ? 'selected' : '' }}>Más antiguos</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                         @foreach($users as $contact)
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6 col-12">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
@@ -240,9 +243,8 @@
                                 </div>
                             </div>
                         @endforeach
-
-                        <div class="center-flex">{{$users->links()}}</div>
-
+                        <h6 style="display: none;" class="message-paginate">Mostrando 20 {{$users->total() == 1 ? 'candidato' : 'candidatos'}} de {{$users->total()}}</h6>
+                        <div class="center-flex" style="margin-top:25px;">{{$users->onEachSide(1)->links()}}</div>
                     @else
                         <h4 class="mb-20 text-center">No hay candidados relacionados con tu búsqueda.</h4>
                         <div class="explore-btn" style="padding:0;">

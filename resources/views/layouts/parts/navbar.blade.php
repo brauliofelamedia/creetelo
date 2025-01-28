@@ -17,4 +17,5 @@
             </div>
         </div>
 	</div>
+    <div class="border-curve" style="background-image: url('{{asset('images/border-curve.png')}}')"></div>
 </div>
