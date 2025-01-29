@@ -209,7 +209,7 @@
         }
 
         #about-me, .recent-job {
-            padding: 0;
+            padding: 50px 0;
         }
 
         .about-us-banner {
@@ -331,11 +331,34 @@
         background-size: contain;
     }
 
+    .individual-banner {
+        height: 250px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: bottom;
+    }
+
     #info-me {
         position: relative;
     }
 
     @media (max-width: 480px) {
+        .individual-banner {
+            height: 220px;
+            background-position: right;
+        }
+
+        #border-curve-me {
+            height: 20px;
+            bottom: -30px;
+            background-size: 250%;
+        }
+
+        .recent-job {
+            padding:0!important;
+            padding-bottom: 25px!important;
+        }
+
         .skills {
             text-align: center;
         }
@@ -351,9 +374,9 @@
 
 @section('content')
 
-    <img src="{{asset('images/individual.jpg')}}" alt="inviditual-banner">
+    <div class="individual-banner" style="background-image: url('{{asset('images/individual.jpg')}}')"></div>
 
-    <section class="mb-60 mt-60 md-mt-10" id="info-me">
+    <section class="mb-60 mt-60 md-mt-30 md-mb-10" id="info-me">
         <div class="container">
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
@@ -533,7 +556,7 @@
         <div class="recent-job-rapper">
             <div class="container">
                 <div class="feature-job-title">
-                    <h2 class="mb-20 heading-3 mt-50 md-mb-90">Otros perfiles</h2>
+                    <h2 class="mb-20 heading-3 mt-50 md-mb-90" style="color:#484584;">Otros perfiles</h2>
                 </div>
                 <div class="recent-job-slider" id="recent-job-slider">
                     @foreach($otherUsers as $user)
