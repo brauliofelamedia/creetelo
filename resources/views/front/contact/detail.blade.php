@@ -4,6 +4,7 @@
 <style>
     .avatar {
         height: 290px;
+        background-color: white;
         background-size: cover;
         background-repeat: no-repeat;
         width: 290px;
@@ -87,7 +88,6 @@
     }
 
     .social-link-front {
-        position: absolute;
         bottom: 0;
         right: 0;
     }
@@ -109,7 +109,7 @@
         text-transform: uppercase;
     }
     .skills {
-        margin-top: 30px;
+        margin-top: 15px;
         list-style-type: none;
     }
 
@@ -387,12 +387,20 @@
                     </div>
                 </div>
                 <div class="col-xl-9 col-lg-8" style="position: relative;">
+                        <div class="social-link-front">
+                            <ul>
+                                <li><a href="{{$user->email}}" class="{{(is_null($user->email))? 'disabled' : ''}}" target="_blank"><i class="bi bi-envelope"></i></a></li>
+                                <li><a href="{{$user->whatsapp}}" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
+                                <li><a href="{{$user->linkedin}}" class="{{(is_null($user->linkedin))? 'disabled' : ''}}" target="_blank"><i class="bi bi-linkedin"></i></a></li>
+                                <li><a href="{{$user->instagram}}" class="{{(is_null($user->instagram))? 'disabled' : ''}}" target="_blank"><i class="bi bi-instagram"></i></a></li>
+                            </ul>
+                        </div>
                         <h1>{{$user->fullname}}</h1>
                         <p class="ocupation">{{$user->ocupation}}</p>
                         <div class="line"></div>
                         <p class="about-me">{{$user->about_me}}</p>
                         @if($user->abilities)
-                            <ul class="skills">
+                            <ul class="skills"> 
                                 @foreach ($user->abilities as $ability)
                                     @php
                                         $new_title = str_replace(' ', '+', $ability->skill->name);
@@ -400,23 +408,6 @@
                                     <li><a href="{{route('front.home')}}?search={{$new_title}}#feature-job-grid">{{$ability->skill->name}}</a></li>
                                 @endforeach
                             </ul>
-                        @endif
-                        @if(!is_null($user->socials))
-                            <div class="social-link-front">
-                                <ul>
-                                    @if($user->socials->count() >= 1)
-                                        @foreach($user->socials as $social)
-                                            <li><a href="{{($social->title == 'email')? 'mailto:'.$social->url.'' : $social->url }}" class="{{(is_null($social->url))? 'disabled' : ''}}" target="_blank"><i class="bi bi-{{($social->title == 'email')? 'envelope' : $social->title}}"></i></a></li>
-                                        @endforeach
-                                    @else
-                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-envelope"></i></a></li>
-                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
-                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-facebook"></i></a></li>
-                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-linkedin"></i></a></li>
-                                        <li><a href="#" class="disabled" target="_blank"><i class="bi bi-instagram"></i></a></li>
-                                    @endif
-                                </ul>
-                            </div>
                         @endif
                 </div>
             </div>
@@ -552,49 +543,52 @@
             </div>
     </section>
 
-    <section class="recent-job pb-50 md-pb-80">
-        <div class="recent-job-rapper">
-            <div class="container">
-                <div class="feature-job-title">
-                    <h2 class="mb-20 heading-3 mt-50 md-mb-90" style="color:#484584;">Otros perfiles</h2>
-                </div>
-                <div class="recent-job-slider" id="recent-job-slider">
-                    @foreach($otherUsers as $user)
-                        <div class="candidates-job-item">
-                            <div class="px-0 row g-5">
-                                <div class="col">
-                                    <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
-                                        <div class="round-pic">
-                                            <img src="{{$user->avatar}}" alt="{{$user->fullname}}">
-                                            @if($user->country)
-                                                    <span class="country">{{ flag($user->country, 'w-32') }}</span>
-                                                @endif
-                                        </div>
-                                        <div class="Candidates-grid">
-                                            <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
-                                                <div class=" d-flex flex-column align-items-center justify-content-center">
-                                                    <h3>{{$user->fullname}}</h3>
-                                                    @php
-                                                        $countries = Config::get('countries.countries');
-                                                        $countryName = $countries[$user['country']] ?? '-';
-                                                        ($countryName == 'Mexico')? $countryName = 'México': $countryName;
-                                                    @endphp
-                                                    <span>{{$countryName}}</span>
-                                                </div>
+    @if($otherUsers->count() > 0)
+        <section class="recent-job pb-50 md-pb-80">
+            <div class="recent-job-rapper">
+                <div class="container">
+                    <div class="feature-job-title">
+                        <h2 class="mb-20 heading-3 mt-50 md-mb-90" style="color:#484584;">Otros perfiles</h2>
+                    </div>
+                    <div class="recent-job-slider" id="recent-job-slider">
+                        @foreach($otherUsers as $user)
+                            <div class="candidates-job-item">
+                                <div class="px-0 row g-5">
+                                    <div class="col">
+                                        <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
+                                            <div class="round-pic">
+                                                <img src="{{$user->avatar}}" alt="{{$user->fullname}}">
+                                                @if($user->country)
+                                                        <span class="country">{{ flag($user->country, 'w-32') }}</span>
+                                                    @endif
                                             </div>
-                                            <div class="pt-20 top-grid-4 d-flex flex-column align-items-center justify-content-center">
-                                                <a href="{{route('front.contact.detail',$user->slug)}}"><span>Conoce esta Creída</span></a>
+                                            <div class="Candidates-grid">
+                                                <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
+                                                    <div class=" d-flex flex-column align-items-center justify-content-center">
+                                                        <h3>{{$user->fullname}}</h3>
+                                                        @php
+                                                            $countries = Config::get('countries.countries');
+                                                            $countryName = $countries[$user['country']] ?? '-';
+                                                            ($countryName == 'Mexico')? $countryName = 'México': $countryName;
+                                                        @endphp
+                                                        <span>{{$countryName}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-20 top-grid-4 d-flex flex-column align-items-center justify-content-center">
+                                                    <a href="{{route('front.contact.detail',$user->slug)}}"><span>Conoce esta Creída</span></a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+    
 
 @endsection
 

@@ -177,12 +177,12 @@ class ContactServices
     {
         $name = $newData['name'] !== $user->name ? $newData['name'] : $user->name;
         $last_name = $newData['last_name'] !== $user->last_name ? $newData['last_name'] : $user->last_name;
-        $phone = $newData['phone'] !== $user->phone ? $newData['phone'] : $user->phone;
+        $phone = $newData['whatsapp'] !== $user->whatsapp ? $newData['whatsapp'] : $user->whatsapp;
         $email = $newData['email'] !== $user->email ? $newData['email'] : $user->email;
-        $address = $newData['address'] !== $user->address ? $newData['address'] : $user->address;
+        //$address = $newData['address'] !== $user->address ? $newData['address'] : $user->address;
         $city = $newData['city'] !== $user->city ? $newData['city'] : $user->city;
         $state = $newData['state'] !== $user->state ? $newData['state'] : $user->state;
-        $postal_code = $newData['postal_code'] !== $user->postal_code ? $newData['postal_code'] : $user->postal_code;
+        //$postal_code = $newData['postal_code'] !== $user->postal_code ? $newData['postal_code'] : $user->postal_code;
         $country = $newData['country'] !== $user->country ? $newData['country'] : $user->country;
 
         try {

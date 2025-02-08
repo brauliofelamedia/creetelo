@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @push('css')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
     .heading-2 {
         font-size: 35px!important;
@@ -10,6 +9,23 @@
         padding: 20px;
         background-color: #f3bfa5;
         border-radius: 10px;
+    }
+
+    .required {
+        color: red;
+    }
+
+    button[disabled], button[disabled]:hover {
+        opacity: 1!important;
+    }
+
+    #sendData {
+        position: fixed;
+        bottom: 0;
+        width: 310px;
+        right: 298px;
+        z-index: 10000;
+        border-radius: 10px 10px 0 0;
     }
 
     .btn-add {
@@ -77,6 +93,7 @@
     }
 
     .avatar {
+        background-color: white;
         width:180px;
         height: 180px;
         position: absolute;
@@ -172,16 +189,11 @@
     </div>
 
     <section class="contact-form pt-60 pb-60" style="position:relative;">
-        <div class="avatar" style="background-image:url('{{Gravatar::fallback($user->avatar)->get($user->email)}}');"></div>
+        <div class="avatar" style="background-image:url('{{$user->avatar}}');"></div>
         <div class="container">
             <div class="text-left">
                 <h2 class="heading-2 mb-30">Hola, {{$user->fullname}}</h2>
             </div>
-            @if ($errors->has('ocupation'))
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('ocupation') }}</strong>
-                </span>
-            @endif
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -205,44 +217,106 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Nombre:</label>
+                            <label class="mb-10 form-label">Actualizar avatar:</label>
+                            <input type="file" class="form-control" name="avatar">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Nombre: <span class="required">*</span></label>
                             <input type="text" class="form-control" name="name" value="{{ucfirst($user->name)}}" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Apellidos:</label>
+                            <label class="mb-10 form-label">Apellidos: <span class="required">*</span></label>
                             <input type="text" class="form-control" name="last_name" value="{{ucfirst($user->last_name)}}" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Correo electrónico</label>
+                            <label class="mb-10 form-label">Correo electrónico: <span class="required">*</span></label>
                             <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Teléfono:</label>
-                            <input class="form-control" type="tel" name="phone" value="{{$user->phone}}" required>
+                            <label class="mb-10 form-label">WhatsApp:</label>
+                            <input class="form-control" type="tel" name="whatsapp" value="{{$user->whatsapp}}">
                         </div>
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Ocupación:</label>
-                            <input class="form-control" type="text" name="ocupation" value="{{$user->ocupation}}" required>
+                            <label class="form-label">País:<span class="required">*</span></label>
+                            <select name="country" class="form-control" required>
+                                @foreach($countries as $code => $name)
+                                    <option value="{{$code}}" {{($user->country == $code)? 'selected':''}}>{{$name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Sobre mi:</label>
-                            <textarea name="about_me" rows="5" class="form-control">{{$user->about_me}}</textarea>
+                            <label class="mb-10 form-label">Estado:</label>
+                            <input class="form-control" type="text" name="state" value="{{$user->state}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Ciudad:<span class="required">*</span></label>
+                            <input class="form-control" type="text" required name="city" value="{{$user->city}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Instagram:</label>
+                            <input class="form-control" type="url" name="instagram" value="{{$user->instagram}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Linkedin:</label>
+                            <input class="form-control" type="url" name="instagram" value="{{$user->instagram}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Página Web:</label>
+                            <input class="form-control" type="url" name="website" value="{{$user->website}}">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-12">
                         <h3>Sobre mí</h3>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Bio corta:<span class="required">*</span></label>
+                            <textarea name="about_me" rows="5" required maxlength="1000" class="form-control">{{$user->about_me}}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Soy increíble en (mis habilidades):<span class="required">*</span></label>
+                            <select required name="abilities[]" class="selectSkills" multiple="multiple">
+                                @isset($userSkills)
+                                    @if(count($userSkills) > 0)
+                                        @foreach($skills as $skill)
+                                            <option value="{{$skill->id}}" @if(in_array($skill->id, $userSkills)) selected @endif>{{$skill->name}}</option>
+                                        @endforeach
+                                    @else
+                                        @foreach($skills as $skill)
+                                            <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                        @endforeach
+                                    @endif
+                                @else
+                                    @foreach($skills as $skill)
+                                        <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                    @endforeach
+                                @endisset
+                            </select>
+                        </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
@@ -252,50 +326,14 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Soy increíble en (mis habilidades):</label>
-                            <textarea class="form-control" name="skills">{{@$user->additional->skills}}</textarea>
+                            <label class="mb-10 form-label">¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</label>
+                            <textarea class="form-control" name="biggest_dream">{{@$user->additional->biggest_dream}}</textarea>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Mi emprendimiento trata sobre:</label>
-                            <textarea class="form-control" name="business_about">{{@$user->additional->business_about}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Trabajo en el corporativo, me dedico a:</label>
-                            <textarea class="form-control" name="corporate_job">{{@$user->additional->corporate_job}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Mi misión es ayudar a que más personas:</label>
-                            <textarea class="form-control" name="mission">{{@$user->additional->mission}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Mi audiencia IDEAL es:</label>
-                            <textarea class="form-control" name="ideal_audience">{{@$user->additional->ideal_audience}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label>Prefiero no trabajar con personas que:</label>
-                            <textarea class="form-control" name="dont_work_with">{{@$user->additional->dont_work_with}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Mis valores más importantes son:</label>
-                            <textarea class="form-control" name="values">{{@$user->additional->values}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Mi tono es:</label>
-                            <textarea class="form-control" name="tone">{{@$user->additional->tone}}</textarea>
+                            <label class="mb-10 form-label">¿Qué te hace bien o te trae felicidad?</label>
+                            <textarea class="form-control" name="brings_you_happiness">{{@$user->additional->brings_you_happiness}}</textarea>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -304,10 +342,70 @@
                             <textarea class="form-control" name="looking_for_in_creelo">{{@$user->additional->looking_for_in_creelo}}</textarea>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <h3>Sobre Mi Trabajo:</h3>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Ocupación:<span class="required">*</span></label>
+                                <input class="form-control" type="text" name="ocupation" value="{{$user->ocupation}}" required>
+                            </div>
+                        </div>  
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Mi emprendimiento/negocio/trabajo trata sobre: <span class="required">*</span></label>
+                                <textarea class="form-control" name="business_about" required>{{@$user->additional->business_about}}</textarea>
+                            </div>
+                        </div> 
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Mi audiencia IDEAL es:</label>
+                                <textarea class="form-control" name="ideal_audience">{{@$user->additional->ideal_audience}}</textarea>
+                            </div>
+                        </div> 
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Mis valores más importantes son:</label>
+                                <textarea class="form-control" name="values">{{@$user->additional->values}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Mi tono es:</label>
+                                <textarea class="form-control" name="tone">{{@$user->additional->tone}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Mi misión es ayudar a que más personas:</label>
+                                <textarea class="form-control" name="mission">{{@$user->additional->mission}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Prefiero no trabajar con personas que:</label>
+                                <textarea class="form-control" name="dont_work_with">{{@$user->additional->dont_work_with}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">¿Algún LOGRO que nos quieras compartir importante para ti?:</label>
+                                <textarea class="form-control" name="achievement">{{@$user->additional->achievement}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">Trabajo en el corporativo, me dedico a:</label>
+                            <textarea class="form-control" name="corporate_job">{{@$user->additional->corporate_job}}</textarea>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-12">
-                        <h3>Más sobre TI:</h3>
+                        <h3>Conóceme Más:</h3>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
@@ -318,12 +416,26 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">¿Qué signo eres?:</label>
-                            <textarea class="form-control" name="sign">{{@$user->additional->sign}}</textarea>
+                            <select class="form-select" name="sign" aria-label="Selecciona tu signo zodiacal">
+                                <option selected>Selecciona tu signo</option>
+                                <option value="Aries" {{@$user->additional->sign == 'Aries'? 'selected':''}}>Aries</option>
+                                <option value="Tauro" {{@$user->additional->sign == 'Tauro'? 'selected':''}}>Tauro</option>
+                                <option value="Géminis" {{@$user->additional->sign == 'Géminis'? 'selected':''}}>Géminis</option>
+                                <option value="Cáncer" {{@$user->additional->sign == 'Cáncer'? 'selected':''}}>Cáncer</option>
+                                <option value="Leo" {{@$user->additional->sign == 'Leo'? 'selected':''}}>Leo</option>
+                                <option value="Virgo" {{@$user->additional->sign == 'Virgo'? 'selected':''}}>Virgo</option>
+                                <option value="Libra" {{@$user->additional->sign == 'Libra'? 'selected':''}}>Libra</option>
+                                <option value="Escorpio" {{@$user->additional->sign == 'Escorpio'? 'selected':''}}>Escorpio</option>
+                                <option value="Sagitario" {{@$user->additional->sign == 'Sagitario'? 'selected':''}}>Sagitario</option>
+                                <option value="Capricornio" {{@$user->additional->sign == 'Capricornio'? 'selected':''}}>Capricornio</option>
+                                <option value="Acuario" {{@$user->additional->sign == 'Acuario'? 'selected':''}}>Acuario</option>
+                                <option value="Piscis" {{@$user->additional->sign == 'Piscis'? 'selected':''}}>Piscis</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">¿Tienes hobbies?:</label>
+                            <label class="mb-10 form-label">¿Tus intereses/hobbies?:</label>
                             <textarea class="form-control" name="hobbies">{{@$user->additional->hobbies}}</textarea>
                         </div>
                     </div>
@@ -336,13 +448,10 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">¿Tienes hijos?:</label>
-                            <textarea class="form-control" name="has_children">{{@$user->additional->has_children}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">¿Estás casada?:</label>
-                            <textarea class="form-control" name="is_married">{{@$user->additional->is_married}}</textarea>
+                            <select name="has_children" class="form-control">
+                                <option value="si" {{@$user->additional->has_children == 'si'? 'selected':''}}>Sí</option>
+                                <option value="no" {{@$user->additional->has_children == 'no'? 'selected':''}}>No</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -365,7 +474,16 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label  class="mb-10 form-label">¿Comida favorita? (si, el postre va primero):</label>
+                            <label class="mb-10 form-label">¿Estás casada?:</label>
+                            <select name="is_married" class="form-control">
+                                <option value="si" {{@$user->additional->is_married == 'si'? 'selected':''}}>Sí</option>
+                                <option value="no" {{@$user->additional->is_married == 'no'? 'selected':''}}>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label  class="mb-10 form-label">¿Comida favorita?:</label>
                             <textarea class="form-control" name="favorite_food">{{@$user->additional->favorite_food}}</textarea>
                         </div>
                     </div>
@@ -388,45 +506,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <h3>Para cerrar:</h3>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">¿Qué te hace IRREMPLAZABLE?:</label>
-                            <textarea class="form-control" name="irreplaceable">{{@$user->additional->irreplaceable}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">¿Algún LOGRO que nos quieras compartir importante para ti?:</label>
-                            <textarea class="form-control" name="achievement">{{@$user->additional->achievement}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</label>
-                            <textarea class="form-control" name="biggest_dream">{{@$user->additional->biggest_dream}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">¿Qué te gustaría recibir?:</label>
-                            <textarea class="form-control" name="like_to_receive">{{@$user->additional->like_to_receive}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">¿Qué te hace bien o te trae felicidad?</label>
-                            <textarea class="form-control" name="brings_you_happiness">{{@$user->additional->brings_you_happiness}}</textarea>
-                        </div>
-                    </div>
-                </div>
                 <div class="blue">
                     <div class="row">
                         <div class="col-xl-12">
-                            <h3>Somos abundantes:</h3>
+                            <h3>Te Regalo:</h3>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -442,149 +525,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <h3>Ubicación</h3>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label">País</label>
-                            <select name="country" class="form-control">
-                                @foreach($countries as $code => $name)
-                                    <option value="{{$code}}" {{($user->country == $code)? 'selected':''}}>{{$name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Estado:</label>
-                            <input class="form-control" type="text" name="state" value="{{$user->state}}">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Ciudad:</label>
-                            <input class="form-control" type="text" name="city" value="{{$user->city}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <h3>Información extra</h3>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Código postal:</label>
-                            <input class="form-control" type="text" name="postal_code" value="{{$user->postal_code}}">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Dirección:</label>
-                            <input class="form-control" type="text" name="address" value="{{$user->address}}">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Empresa / emprendimiento:</label>
-                            <input class="form-control" type="text" name="company_or_venture" value="{{$user->company_or_venture}}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Habilidades:</label>
-                            <select class="select2 form-control" name="abilities[]" multiple="multiple">
-                                @isset($userSkills)
-                                    @if(count($userSkills) > 0)
-                                        @foreach($skills as $skill)
-                                            <option value="{{$skill->id}}" @if(in_array($skill->id, $userSkills)) selected @endif>{{$skill->name}}</option>
-                                        @endforeach
-                                    @else
-                                        @foreach($skills as $skill)
-                                            <option value="{{$skill->id}}">{{$skill->name}}</option>
-                                        @endforeach
-                                    @endif
-                                @else
-                                    @foreach($skills as $skill)
-                                        <option value="{{$skill->id}}">{{$skill->name}}</option>
-                                    @endforeach
-                                @endisset
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Servicios:</label>
-                            <select class="select2 form-control" name="services[]" multiple="multiple">
-                                @isset($userServices)
-                                    @if(count($userServices) > 0)
-                                        @foreach($services as $service)
-                                            <option value="{{$service->id}}" @if(in_array($service->id, $userServices)) selected @endif>{{$service->name}}</option>
-                                        @endforeach
-                                    @else
-                                        @foreach($services as $service)
-                                            <option value="{{$service->id}}">{{$service->name}}</option>
-                                        @endforeach
-                                    @endif
-                                @else
-                                    @foreach($services as $service)
-                                        <option value="{{$service->id}}">{{$service->name}}</option>
-                                    @endforeach
-                                @endisset
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn-succcess" id="sendData">Actualizar información</button>
-                </form>
-                <form action="{{route('dashboard.social.update')}}" id="formSocial" method="post">
-                    @csrf
-                    @method('PUT')
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <h3>Redes sociales</h3>
-                        </div>
-                    </div>
-                    @foreach($user->socials as $social)
-                        <div class="row" style="position: relative;">
-                            <div class="col-lg-12">
-                                <a data-id="{{$social->id}}" class="btn btn-danger btn-sm delete-save">X</a>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="mb-10 form-label">Red social:</label>
-                                    <select name="social[]" class="form-control" required>
-                                        <option value="email" @if($social->title == 'email') selected @endif>Email</option>
-                                        <option value="whatsapp" @if($social->title == 'whatsapp') selected @endif>Whatsapp</option>
-                                        <option value="instagram" @if($social->title == 'instagram') selected @endif>Instagram</option>
-                                        <option value="linkedin" @if($social->title == 'linkedin') selected @endif>Linkedin</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="mb-10 form-label">Url:</label>
-                                    <input type="text" name="url[]" class="form-control" value="{{$social->url}}" required>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                    <div class="col-lg-12">
-                        <div id="your-container-id"></div>
-                        <a id="add-row-btn" class="btn-add">Agregar nueva fila</a>
-                    </div>
-                    <button type="submit" class="btn-succcess" id="btnSocial">Actualizar redes sociales</button>
-                </form>
+                <button type="submit" class="btn-succcess" id="sendData">Actualizar perfil</button>
+            </form>
         </div>
     </section>
 @endsection
 
 @push('js')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    $(function () {
+        $(".selectSkills").selectize({
+            create: false,
+        });
+    });
     $(document).on('click', '.delete-row', function() {
         $(this).closest('.row').remove();
     });
@@ -613,16 +566,6 @@
                         alert('Ocurrió un error al eliminar el registro');
                     }
                 });
-            }
-        });
-
-        $('.select2').select2({
-            allowClear: true,
-            createTag: function (params) {
-                return {
-                    id: params.term,
-                    text: params.term
-                }
             }
         });
 

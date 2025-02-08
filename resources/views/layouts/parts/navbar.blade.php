@@ -8,8 +8,8 @@
             <div class="col-md-3 col-xs-3 col-5">
                 <ul class="navbar-menu">
                     @if (auth()->check())
-                    <li><a href="{{route('dashboard.account.index')}}" class="user-account"><i class="fas fa-user"></i></a></li>
-                    <li><a href="{{route('logout')}}" class="sign-up"><i class="fas fa-unlock-alt"></i></a></li>
+                        <li><a style="font-weight:500;" href="{{route('dashboard.account.index')}}" class="user-account"><i class="fas fa-user"></i> Mi Perfil</a></li>
+                        <li><a href="{{route('logout')}}" class="sign-up"><i class="fas fa-unlock-alt"></i></a></li>
                     @else
                         <li><a href="{{route('filament.admin.auth.login')}}">Iniciar sesión</a></li>
                     @endif

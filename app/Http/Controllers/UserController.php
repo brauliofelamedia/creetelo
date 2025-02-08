@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     public function index()
@@ -80,29 +81,83 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
+        $rules = [
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Archivo de imagen, máximo 2MB
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-            //'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'about_me' => 'nullable|string',
-            'phone' => 'nullable|string',
-            'website' => 'nullable|url',
-            'address' => 'nullable|string',
-            'country' => 'string',
-            'state' => 'nullable|string',
-            'city' => 'nullable|string',
-            'postal_code' => 'nullable|string',
-            'ocupation' => 'nullable|string',
-            'company_or_venture' => 'nullable|string',
-        ]);
+            'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
+            'whatsapp' => 'nullable|string|max:20',
+            'country' => 'required|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'city' => 'required|string|max:255',
+            'instagram' => 'nullable|url|max:255',
+            'linkedin' => 'nullable|url|max:255',
+            'website' => 'nullable|url|max:255',
+            'about_me' => 'required|string|max:1000',
+            'abilities' => 'required|array',
+            'how_vain' => 'nullable|string|max:1000',
+            'biggest_dream' => 'nullable|string|max:1000',
+            'brings_you_happiness' => 'nullable|string|max:1000',
+            'looking_for_in_creelo' => 'nullable|string|max:1000',
+            'ocupation' => 'required|string|max:255',
+            'business_about' => 'required|string|max:1000',
+            'ideal_audience' => 'nullable|string|max:1000',
+            'values' => 'nullable|string|max:1000',
+            'tone' => 'nullable|string|max:1000',
+            'mission' => 'nullable|string|max:1000',
+            'dont_work_with' => 'nullable|string|max:1000',
+            'achievement' => 'nullable|string|max:1000',
+            'corporate_job' => 'nullable|string|max:1000',
+            'birthplace' => 'nullable|string|max:1000',
+            'sign' => 'nullable|string|max:255',
+            'hobbies' => 'nullable|string|max:1000',
+            'favorite_drink' => 'nullable|string|max:255',
+            'has_children' => 'nullable|string|max:255',
+            'favorite_trip' => 'nullable|string|max:1000',
+            'next_trip' => 'nullable|string|max:1000',
+            'favorite_dessert' => 'nullable|string|max:255',
+            'is_married' => 'nullable|string|max:255',
+            'favorite_food' => 'nullable|string|max:255',
+            'movie_recommendation' => 'nullable|string|max:1000',
+            'book_recommendation' => 'nullable|string|max:1000',
+            'podcast_recommendation' => 'nullable|string|max:1000',
+            'gift' => 'nullable|string|max:1000',
+            'gift_link' => 'nullable|url|max:255',
+        ];
+    
+        // Mensajes personalizados (opcional)
+        $messages = [
+            'name.required' => 'El campo nombre es obligatorio.',
+            'last_name.required' => 'El campo apellidos es obligatorio.',
+            'email.required' => 'El campo correo electrónico es obligatorio.',
+            'email.unique' => 'El correo electrónico ya está en uso.',
+            'about_me.required' => 'El campo bio corta es obligatorio.',
+            'abilities.required' => 'Debes seleccionar al menos una habilidad.',
+            'ocupation.required' => 'El campo ocupación es obligatorio.',
+            'business_about.required' => 'El campo sobre mi negocio es obligatorio.',
+        ];
+    
+        // Validar los datos del formulario
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        //Update slug
+        $fullName = $request->name . ' ' . $request->last_name;
+        $user->slug = Str::slug($fullName);
+        $user->save();
+    
+        // Si la validación falla, redirigir con errores
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $request->merge([
             'name' => strtolower($request->name),
             'last_name' => strtolower($request->last_name),
         ]);
 
-        $newData = $request->only('name', 'last_name', 'email','about_me','skills','phone','website','address','country','state','city','postal_code','ocupation','company_or_venture');
+        $newData = $request->only('name', 'last_name', 'email','about_me','skills','whatsapp','website','address','country','state','city','ocupation','instagram','linkedin');
 
         foreach ($newData as $key => $value) {
             if ($value !== $user->$key) {
@@ -274,10 +329,10 @@ class UserController extends Controller
         $user->save();
 
         if ($request->hasFile('avatar')) {
-            $avatarPath = $request->file('avatar')->store('public/avatars');
-            $user->avatar = $avatarPath;
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
             $user->save();
-        }
+          }
 
         //Actualizamos habilidades
         if (! $request->abilities) {

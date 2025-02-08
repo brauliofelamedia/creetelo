@@ -74,6 +74,11 @@
         border-radius: 5px;
     }
 
+    .women-mobile {
+        display: none;
+        width: 80%;
+    }
+
     @media (max-width: 992px) {
         .about-three-rapper h1 {
             font-size: 25px;
@@ -132,6 +137,15 @@
 
     @media (max-width: 480px) {
 
+        .women-mobile {
+            display: block!important;
+            margin-bottom: 10px;
+        }
+
+        .about-us-banner {
+            background-image: url('../images/bg-mobile.jpg')!important;
+        }
+
         .page-link, .page-link:hover {
             margin-top: 0;
         }
@@ -155,23 +169,14 @@
             position: relative;
             padding: 30px;
             padding-top: 80px;
-            background-position: right;
-        }
-
-        .about-us-banner::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgb(255 255 255 / 83%), rgb(255 255 255 / 78%));
+            padding-bottom: 60px;
+            background-position: bottom !important;
         }
 
         .about-three-rapper h1 {
             font-size: 19px;
             line-height: 1.2em;
-            color: #111d3b;
+            color: #484584;
         }
 
         .about-three-rapper .logo-directorio {
@@ -190,20 +195,129 @@
 @endpush
 
 @section('content')
+
     <div class="about-us-banner pt-120 pb-120" style="background-image: url('{{asset('images/banner.png')}}')">
         <div class="about-three-rapper position-relative">
             <div class="container">
                 <div class="text-center row d-flex align-items-center justify-content-center flex-column">
                     <img src="{{asset('images/Directorio-Logo.png')}}" alt="{{env('APP_NAME')}}" class="logo-directorio">
                     <div class="mt-20 d-flex align-items-center justify-content-center md-mt-50">
-                        <h1 class="mb-50 mt-50">Créetelo es una comunidad que empodera a emprendedoras auténticas que quieren aportar a la vida de otros desde su propósito y sus conocimientos.</h1>
+                        <h1 class="mb-50 mt-50 sm-mb-10 sm-mt-10">Créetelo es una comunidad que empodera a emprendedoras auténticas que quieren aportar a la vida de otros desde su propósito y sus conocimientos.</h1>
                     </div>
-                    <div class="d-flex align-items-center justify-content-center">
-                        <form class="form-3 d-flex align-items-center justify-content-between" action="{{route('front.home')}}" method="get">
-                            <input type="text" name="search" id="search" class="form-control" required>
-                            <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
-                            <h4 class="typed">Buscar por <span id="typed"></span></h4>
-                        </form>
+                    <img src="{{asset('images/cover-mobile.png')}}" class="women-mobile">
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                            <div class="container mt-5">
+                                <form method="get" action="{{route('front.home')}}">
+                                    <div class="mb-3">
+                                        <input type="text" name="search" class="form-control" value="{{@$search}}" placeholder="Nombre o Apellido">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                             <!-- Campo para Habilidades -->
+                                            <div class="mb-3">
+                                                <select class="form-control" name="skillSelect">
+                                                    <option value="*">Todas las habilidades</option>
+                                                    @foreach ($skills as $skill)
+                                                        <option value="{{$skill->id}}" {{($skill->id == $skillSelect)? 'selected':''}}>{{$skill->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <!-- Campo para País -->
+                                            <div class="mb-3">
+                                                <select name="countrySelect" class="form-control" required>
+                                                    <option value="*">Todos los paises</option>
+                                                    @foreach($countries as $code => $name)
+                                                        <option value="{{$code}}" {{($code == $countrySelect)? 'selected':''}}>{{$name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <!-- Campo para Estado -->
+                                            <div class="mb-3">
+                                                <select name="stateSelect" class="form-control" required>
+                                                    <option value="*">Todas los estados</option>
+                                                    @foreach($states as $state)
+                                                        <option value="{{$state->state}}" {{($state->state == $stateSelect)? 'selected':''}}>{{$state->state}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <!-- Campo para Ciudad -->
+                                            <div class="mb-3">
+                                                <select name="citySelect" class="form-control" required>
+                                                    <option value="*">Todas las ciudades</option>
+                                                    @foreach($cities as $city)
+                                                        <option value="{{$city->city}}" {{($city->city == $citySelect)? 'selected':''}}>{{$city->city}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <!-- Campo para Signo Astral -->
+                                            <div class="mb-3">
+                                                <select class="form-control" name="signSelect" aria-label="Selecciona tu signo zodiacal">
+                                                    <option value="*">Selecciona tu signo</option>
+                                                    <option value="Aries" {{@$signSelect == 'Aries'? 'selected':''}}>Aries</option>
+                                                    <option value="Tauro" {{@$signSelect == 'Tauro'? 'selected':''}}>Tauro</option>
+                                                    <option value="Géminis" {{@$signSelect == 'Géminis'? 'selected':''}}>Géminis</option>
+                                                    <option value="Cáncer" {{@$signSelect == 'Cáncer'? 'selected':''}}>Cáncer</option>
+                                                    <option value="Leo" {{@$signSelect == 'Leo'? 'selected':''}}>Leo</option>
+                                                    <option value="Virgo" {{@$signSelect == 'Virgo'? 'selected':''}}>Virgo</option>
+                                                    <option value="Libra" {{@$signSelect == 'Libra'? 'selected':''}}>Libra</option>
+                                                    <option value="Escorpio" {{@$signSelect == 'Escorpio'? 'selected':''}}>Escorpio</option>
+                                                    <option value="Sagitario" {{@$signSelect == 'Sagitario'? 'selected':''}}>Sagitario</option>
+                                                    <option value="Capricornio" {{@$signSelect == 'Capricornio'? 'selected':''}}>Capricornio</option>
+                                                    <option value="Acuario" {{@$signSelect == 'Acuario'? 'selected':''}}>Acuario</option>
+                                                    <option value="Piscis" {{@$signSelect == 'Piscis'? 'selected':''}}>Piscis</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <!-- Campo para Tienes hijos? -->
+                                            <div class="mb-3">
+                                                <div class="form-group">
+                                                    <label>¿Tienes hijos?</label>
+                                                    <input type="radio" id="childrenYes" name="childrenSelect" value="si" {{ @$childrenSelect == 'si' ? 'checked' : '' }}>
+                                                    <label for="childrenYes">Sí</label>
+                                                    <input type="radio" id="childrenNo" checked name="childrenSelect" value="no" {{ @$childrenSelect == 'no' ? 'checked' : '' }}>
+                                                    <label for="childrenNo">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-xl-12" style="display: none;">
+                            <form class="form-3" action="{{route('front.home')}}" method="get">
+                                <input type="text" name="search" id="search" class="form-control" required>
+                                <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                                <h4 class="typed">Buscar por <span id="typed"></span></h4>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <select name="skill[]" multiple="multiple" class="form-control js-example-basic-multiple">
+                                                    <option value="">Todas las habilidades</option>
+                                                @foreach ($skills as $skill)
+                                                    <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4"></div>
+                                    <div class="col-lg-4"></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -219,7 +333,7 @@
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6 col-12">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                     <div class="round-pic">
-                                        <img src="{{$contact->avatar}}" alt="#">
+                                        <img src="{{$contact->avatar}}" alt="{{$contact->name}}">
                                         @if($contact->country)
                                             <span class="country">{{ flag($contact->country, 'w-32') }}</span>
                                         @endif
@@ -264,6 +378,10 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script>
+     $(function () {
+        $(".multiselect").selectize();
+    });
+
     $(document).ready(function() {
         $("#search").on("input", function() {
             if ($(this).val()) {
@@ -285,7 +403,7 @@
 
         //Typed.js
         var typed = new Typed('#typed', {
-            strings: ['Nombre', 'Apellidos', 'Habilidades', 'País'],
+            strings: ['Nombre', 'Apellidos'],
             typeSpeed: 50,
             backSpeed: 50,
             loop: true

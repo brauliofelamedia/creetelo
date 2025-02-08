@@ -25,7 +25,7 @@ return new class extends Migration
             //Extra
             $table->string('avatar')->default('default.png')->nullable();
             $table->text('about_me')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('whatsapp')->nullable();
             $table->string('website')->nullable();
             $table->string('address')->nullable();
             $table->string('country')->nullable();
@@ -36,6 +36,10 @@ return new class extends Migration
             $table->string('company_or_venture')->nullable();
             $table->text('skills')->nullable();
             $table->text('services')->nullable();
+
+            //Socials
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
 
             //CRM
             $table->string('slug')->nullable();

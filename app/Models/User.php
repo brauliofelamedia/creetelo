@@ -26,6 +26,7 @@ class User extends Authenticatable implements FilamentUser
         'website',
         'address',
         'country',
+        'avatar',
         'state',
         'city',
         'postal_code',
@@ -98,7 +99,7 @@ class User extends Authenticatable implements FilamentUser
             $avatar = $avatar_default;
         }
 
-        return Gravatar::fallback($avatar)->get($this->email, ['size' => 400]);
+        return $avatar;
     }
 
     public function getRoleAttribute()

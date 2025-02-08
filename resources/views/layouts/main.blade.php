@@ -15,9 +15,17 @@
 		<meta name="msapplication-navbutton-color" content="#6dbfb8">
 		<meta name="apple-mobile-web-app-status-bar-style" content="#6dbfb8">
 		<title>Creételo Club - Michelle Poler</title>
+        <link rel="stylesheet"href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css"/>
 		<link rel="icon" type="image/png" sizes="72x33" href="{{asset('images/favicon.png')}}">
 		<link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}" media="all">
 		<link rel="stylesheet" type="text/css" href="{{asset('css/responsive.css')}}" media="all">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+            integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
 		@stack('css')
 		<!-- Fix Internet Explorer ______________________________________-->
 		<!--[if lt IE 9]>
@@ -63,6 +71,12 @@
     	<!-- jQuery first, then Bootstrap JS -->
     	<!-- jQuery -->
 		<script src="{{asset('vendor/jquery.min.js')}}"></script>
+         <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+            integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
 		<!-- Bootstrap JS -->
 		<script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 		<!-- AOS js -->

@@ -9,30 +9,62 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Skill;
+use Illuminate\Support\Facades\Config;
 
 class FrontController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->search;
+        $skillSelect = $request->skillSelect;
+        $citySelect = $request->citySelect;
+        $countrySelect = $request->countrySelect;
+        $stateSelect = $request->stateSelect;
+        $childrenSelect = $request->childrenSelect;
+        $signSelect = $request->signSelect;
+
         $order = $request->order ?? 'desc';
+        $skills = Skill::all();
+        $cities = User::select('city')->whereNotNull('city')->where('city', '!=', '')->distinct()->get();
+        $states = User::select('state')->whereNotNull('state')->where('state', '!=', '')->distinct()->get();
+        $countries = Config::get('countries.countries');
 
         $users = User::query();
 
         if ($request->has('search')) {
-            $users->where('name', 'like', '%'.$request->search.'%');
-            $users->orWhere('last_name', 'like', '%'.$request->search.'%');
-            $users->orWhere('country', 'like', '%'.$request->search.'%');
-
-            $users->orWhereHas('abilities.skill', function ($query) use ($search) {
-                $query->where('name', 'like', '%'.$search.'%');
+            $users->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('last_name', 'like', '%'.$request->search.'%');
             });
+        }
+
+        if ($request->has('citySelect')) {
+            $users->where('city', 'like', '%'.$request->citySelect.'%');
+        }
+
+        if ($request->has('signSelect')) {
+            $users->whereHas('additional', function ($query) use ($signSelect) {
+                $query->where('sign', $signSelect);
+            });
+        }
+
+        if ($request->has('countrySelect')) {
+            $users->where('country', 'like', '%'.$request->countrySelect.'%');
+        }
+
+        if ($request->has('stateSelect')) {
+            $users->where('state', 'like', '%'.$request->stateSelect.'%');
+        }
+
+        if ($request->has('childrenSelect')) {
+            $users->whereRelation('additional', 'has_children', $request->childrenSelect);
         }
 
         $users = $users->orderBy('created_at', $order);
         $users = $users->paginate(20);
 
-        return view('front.home', compact('search', 'users', 'order'));
+        return view('front.home', compact('search', 'users', 'order', 'skillSelect', 'citySelect', 'stateSelect','signSelect','countrySelect','skills','childrenSelect', 'cities','states','countries'));
     }
 
     public function addNewUser($contact)
@@ -63,7 +95,7 @@ class FrontController extends Controller
     public function contact_detail($slug)
     {
         $user = User::where('slug', $slug)->with('abilities')->first();
-        $otherUsers = User::where('slug', '!=', $slug)->inRandomOrder()->limit(6)->get();
+        $otherUsers = User::where('slug', '!=', $slug)->where('country', $user->country)->inRandomOrder()->limit(6)->get();
 
         return view('front.contact.detail', compact('user', 'otherUsers'));
     }
