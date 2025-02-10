@@ -17,4 +17,9 @@ class UserSkill extends Model
     {
         return $this->hasOne(Skill::class,'id','skill_id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_skills', 'skill_id', 'user_id');
+    }
 }

@@ -24,47 +24,53 @@ class FrontController extends Controller
         $childrenSelect = $request->childrenSelect;
         $signSelect = $request->signSelect;
 
-        $order = $request->order ?? 'desc';
         $skills = Skill::all();
         $cities = User::select('city')->whereNotNull('city')->where('city', '!=', '')->distinct()->get();
         $states = User::select('state')->whereNotNull('state')->where('state', '!=', '')->distinct()->get();
         $countries = Config::get('countries.countries');
 
-        $users = User::query();
+        $query = User::query();
 
-        if ($request->has('search')) {
-            $users->where(function ($query) use ($request) {
-                $query->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('last_name', 'like', '%'.$request->search.'%');
+        if ($search && $search != '*') {
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        //Skills
+        if ($skillSelect && $skillSelect != '*') {
+            $query->whereHas('skills', function ($q) use ($skillSelect) {
+                $q->where('skills.id', $skillSelect);
             });
         }
 
-        if ($request->has('citySelect')) {
-            $users->where('city', 'like', '%'.$request->citySelect.'%');
+        if ($countrySelect && $countrySelect != '*') {
+            $query->where('country', $countrySelect);
         }
 
-        if ($request->has('signSelect')) {
-            $users->whereHas('additional', function ($query) use ($signSelect) {
-                $query->where('sign', $signSelect);
+        if ($stateSelect && $stateSelect != '*') {
+            $query->where('state', $stateSelect);
+        }
+
+        if ($citySelect && $citySelect != '*') {
+            $query->where('city', $citySelect);
+        }
+
+        if ($signSelect && $signSelect != '*') {
+            $query->where('sign', $signSelect);
+        }
+
+        // Filtrar por la relación additional->children
+        if ($childrenSelect && $childrenSelect != '*') {
+            $query->whereHas('additional', function ($q) use ($childrenSelect) {
+                $q->where('has_children', $childrenSelect);
             });
         }
+        
+        $query->orderBy('created_at', 'desc');
+        $users = $query->with('additional')->paginate(20);
 
-        if ($request->has('countrySelect')) {
-            $users->where('country', 'like', '%'.$request->countrySelect.'%');
-        }
+        //dd($users);
 
-        if ($request->has('stateSelect')) {
-            $users->where('state', 'like', '%'.$request->stateSelect.'%');
-        }
-
-        if ($request->has('childrenSelect')) {
-            $users->whereRelation('additional', 'has_children', $request->childrenSelect);
-        }
-
-        $users = $users->orderBy('created_at', $order);
-        $users = $users->paginate(20);
-
-        return view('front.home', compact('search', 'users', 'order', 'skillSelect', 'citySelect', 'stateSelect','signSelect','countrySelect','skills','childrenSelect', 'cities','states','countries'));
+        return view('front.home', compact('search', 'users', 'skillSelect', 'citySelect', 'stateSelect','signSelect','countrySelect','skills','childrenSelect', 'cities','states','countries'));
     }
 
     public function addNewUser($contact)

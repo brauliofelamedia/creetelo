@@ -283,13 +283,11 @@
                                         <div class="col-lg-4">
                                             <!-- Campo para Tienes hijos? -->
                                             <div class="mb-3">
-                                                <div class="form-group">
-                                                    <label>¿Tienes hijos?</label>
-                                                    <input type="radio" id="childrenYes" name="childrenSelect" value="si" {{ @$childrenSelect == 'si' ? 'checked' : '' }}>
-                                                    <label for="childrenYes">Sí</label>
-                                                    <input type="radio" id="childrenNo" checked name="childrenSelect" value="no" {{ @$childrenSelect == 'no' ? 'checked' : '' }}>
-                                                    <label for="childrenNo">No</label>
-                                                </div>
+                                                <select class="form-control" name="childrenSelect" required>
+                                                    <option value="*">¿Tienes hijos?</option>
+                                                    <option value="si" {{@$childrenSelect == 'si'? 'selected':''}}>Si</option>
+                                                    <option value="no" {{@$childrenSelect == 'no'? 'selected':''}}>No</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
