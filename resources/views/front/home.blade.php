@@ -12,6 +12,21 @@
         display: inline;
     }
 
+    .mb-3 {
+        position: relative;
+        margin-bottom: 21px !important;
+    }
+
+    .label-top {
+        position: absolute;
+        top: -12px;
+        background-color: #111d3b;
+        color: white;
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 11px;
+    }
+
     .country {
         position: absolute;
         bottom: 0;
@@ -77,6 +92,10 @@
     .women-mobile {
         display: none;
         width: 80%;
+    }
+
+    .form-filter {
+        position: relative;
     }
 
     @media (max-width: 992px) {
@@ -210,7 +229,7 @@
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
                             <div class="container mt-5">
-                                <form method="get" action="{{route('front.home')}}">
+                                <form method="get" action="{{route('front.home')}}" class="form-filter">
                                     <div class="mb-3">
                                         <input type="text" name="search" class="form-control" value="{{@$search}}" placeholder="Nombre o Apellido">
                                     </div>
@@ -219,8 +238,9 @@
                                         <div class="col-lg-4">
                                              <!-- Campo para Habilidades -->
                                             <div class="mb-3">
+                                                <label class="label-top">Habilidades</label>
                                                 <select class="form-control" name="skillSelect">
-                                                    <option value="*">Todas las habilidades</option>
+                                                    <option value="*">Todos</option>
                                                     @foreach ($skills as $skill)
                                                         <option value="{{$skill->id}}" {{($skill->id == $skillSelect)? 'selected':''}}>{{$skill->name}}</option>
                                                     @endforeach
@@ -230,8 +250,9 @@
                                         <div class="col-lg-4">
                                             <!-- Campo para País -->
                                             <div class="mb-3">
+                                                <label class="label-top">Paises</label>
                                                 <select name="countrySelect" class="form-control" required>
-                                                    <option value="*">Todos los paises</option>
+                                                    <option value="*">Todos</option>
                                                     @foreach($countries as $code => $name)
                                                         <option value="{{$code}}" {{($code == $countrySelect)? 'selected':''}}>{{$name}}</option>
                                                     @endforeach
@@ -241,8 +262,9 @@
                                         <div class="col-lg-4">
                                             <!-- Campo para Estado -->
                                             <div class="mb-3">
+                                                <label class="label-top">Estados</label>
                                                 <select name="stateSelect" class="form-control" required>
-                                                    <option value="*">Todas los estados</option>
+                                                    <option value="*">Todas</option>
                                                     @foreach($states as $state)
                                                         <option value="{{$state->state}}" {{($state->state == $stateSelect)? 'selected':''}}>{{$state->state}}</option>
                                                     @endforeach
@@ -252,8 +274,9 @@
                                         <div class="col-lg-4">
                                             <!-- Campo para Ciudad -->
                                             <div class="mb-3">
+                                                <label class="label-top">Ciudad</label>
                                                 <select name="citySelect" class="form-control" required>
-                                                    <option value="*">Todas las ciudades</option>
+                                                    <option value="*">Todas</option>
                                                     @foreach($cities as $city)
                                                         <option value="{{$city->city}}" {{($city->city == $citySelect)? 'selected':''}}>{{$city->city}}</option>
                                                     @endforeach
@@ -263,8 +286,9 @@
                                         <div class="col-lg-4">
                                             <!-- Campo para Signo Astral -->
                                             <div class="mb-3">
+                                                <label class="label-top">Signo</label>
                                                 <select class="form-control" name="signSelect" aria-label="Selecciona tu signo zodiacal">
-                                                    <option value="*">Selecciona tu signo</option>
+                                                    <option value="*">Todos</option>
                                                     <option value="Aries" {{@$signSelect == 'Aries'? 'selected':''}}>Aries</option>
                                                     <option value="Tauro" {{@$signSelect == 'Tauro'? 'selected':''}}>Tauro</option>
                                                     <option value="Géminis" {{@$signSelect == 'Géminis'? 'selected':''}}>Géminis</option>
@@ -283,15 +307,16 @@
                                         <div class="col-lg-4">
                                             <!-- Campo para Tienes hijos? -->
                                             <div class="mb-3">
+                                                <label class="label-top">¿Tienes hijos?</label>
                                                 <select class="form-control" name="childrenSelect" required>
-                                                    <option value="*">¿Tienes hijos?</option>
+                                                    <option value="*">Todos</option>
                                                     <option value="si" {{@$childrenSelect == 'si'? 'selected':''}}>Si</option>
                                                     <option value="no" {{@$childrenSelect == 'no'? 'selected':''}}>No</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                    <button type="submit" class="btn btn-filter">Buscar</button>
                                 </form>
                             </div>
                         </div>
