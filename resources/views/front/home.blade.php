@@ -73,12 +73,28 @@
     .typed {
         position: absolute;
         left: 0;
-        color: #adadad;
+        color: black;
         font-size: 18px;
         padding: 15px 20px;
         width: 87%;
         border-radius: 8px;
         text-align: left;
+        bottom: -3px;
+    }
+
+    .btn-filter {
+        background-color: #ff5600;
+        float: right;
+        font-size: 18px;
+        color: white;
+        font-weight: 600;
+        padding: 9px 30px;
+        border-radius: 7px;
+    }
+
+    .btn-filter:hover {
+        background-color: #e14c01;
+        color:white;
     }
 
     .page-link,.page-link:hover {
@@ -225,122 +241,118 @@
                     </div>
                     <img src="{{asset('images/cover-mobile.png')}}" class="women-mobile">
                 </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8 offset-lg-2">
-                            <div class="container mt-5">
-                                <form method="get" action="{{route('front.home')}}" class="form-filter">
-                                    <div class="mb-3">
-                                        <input type="text" name="search" class="form-control" value="{{@$search}}" placeholder="Nombre o Apellido">
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                             <!-- Campo para Habilidades -->
-                                            <div class="mb-3">
-                                                <label class="label-top">Habilidades</label>
-                                                <select class="form-control" name="skillSelect">
-                                                    <option value="*">Todos</option>
-                                                    @foreach ($skills as $skill)
-                                                        <option value="{{$skill->id}}" {{($skill->id == $skillSelect)? 'selected':''}}>{{$skill->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <!-- Campo para País -->
-                                            <div class="mb-3">
-                                                <label class="label-top">Paises</label>
-                                                <select name="countrySelect" class="form-control" required>
-                                                    <option value="*">Todos</option>
-                                                    @foreach($countries as $code => $name)
-                                                        <option value="{{$code}}" {{($code == $countrySelect)? 'selected':''}}>{{$name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <!-- Campo para Estado -->
-                                            <div class="mb-3">
-                                                <label class="label-top">Estados</label>
-                                                <select name="stateSelect" class="form-control" required>
-                                                    <option value="*">Todas</option>
-                                                    @foreach($states as $state)
-                                                        <option value="{{$state->state}}" {{($state->state == $stateSelect)? 'selected':''}}>{{$state->state}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <!-- Campo para Ciudad -->
-                                            <div class="mb-3">
-                                                <label class="label-top">Ciudad</label>
-                                                <select name="citySelect" class="form-control" required>
-                                                    <option value="*">Todas</option>
-                                                    @foreach($cities as $city)
-                                                        <option value="{{$city->city}}" {{($city->city == $citySelect)? 'selected':''}}>{{$city->city}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <!-- Campo para Signo Astral -->
-                                            <div class="mb-3">
-                                                <label class="label-top">Signo</label>
-                                                <select class="form-control" name="signSelect" aria-label="Selecciona tu signo zodiacal">
-                                                    <option value="*">Todos</option>
-                                                    <option value="Aries" {{@$signSelect == 'Aries'? 'selected':''}}>Aries</option>
-                                                    <option value="Tauro" {{@$signSelect == 'Tauro'? 'selected':''}}>Tauro</option>
-                                                    <option value="Géminis" {{@$signSelect == 'Géminis'? 'selected':''}}>Géminis</option>
-                                                    <option value="Cáncer" {{@$signSelect == 'Cáncer'? 'selected':''}}>Cáncer</option>
-                                                    <option value="Leo" {{@$signSelect == 'Leo'? 'selected':''}}>Leo</option>
-                                                    <option value="Virgo" {{@$signSelect == 'Virgo'? 'selected':''}}>Virgo</option>
-                                                    <option value="Libra" {{@$signSelect == 'Libra'? 'selected':''}}>Libra</option>
-                                                    <option value="Escorpio" {{@$signSelect == 'Escorpio'? 'selected':''}}>Escorpio</option>
-                                                    <option value="Sagitario" {{@$signSelect == 'Sagitario'? 'selected':''}}>Sagitario</option>
-                                                    <option value="Capricornio" {{@$signSelect == 'Capricornio'? 'selected':''}}>Capricornio</option>
-                                                    <option value="Acuario" {{@$signSelect == 'Acuario'? 'selected':''}}>Acuario</option>
-                                                    <option value="Piscis" {{@$signSelect == 'Piscis'? 'selected':''}}>Piscis</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <!-- Campo para Tienes hijos? -->
-                                            <div class="mb-3">
-                                                <label class="label-top">¿Tienes hijos?</label>
-                                                <select class="form-control" name="childrenSelect" required>
-                                                    <option value="*">Todos</option>
-                                                    <option value="si" {{@$childrenSelect == 'si'? 'selected':''}}>Si</option>
-                                                    <option value="no" {{@$childrenSelect == 'no'? 'selected':''}}>No</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-filter">Buscar</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-xl-12" style="display: none;">
-                            <form class="form-3" action="{{route('front.home')}}" method="get">
-                                <input type="text" name="search" id="search" class="form-control" required>
-                                <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <form method="get" action="{{route('front.home')}}" class="form-filter">
+                            <div class="mb-3">
+                                <input type="text" name="search" id="search" class="form-control" value="{{@$search}}">
                                 <h4 class="typed">Buscar por <span id="typed"></span></h4>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <select name="skill[]" multiple="multiple" class="form-control js-example-basic-multiple">
-                                                    <option value="">Todas las habilidades</option>
-                                                @foreach ($skills as $skill)
-                                                    <option value="{{$skill->id}}">{{$skill->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-6">
+                                        <!-- Campo para Habilidades -->
+                                    <div class="mb-3">
+                                        <label class="label-top">Habilidades</label>
+                                        <select class="form-control" name="skillSelect">
+                                            <option value="*">Todos</option>
+                                            @foreach ($skills as $skill)
+                                                <option value="{{$skill->id}}" {{($skill->id == $skillSelect)? 'selected':''}}>{{$skill->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="col-lg-4"></div>
-                                    <div class="col-lg-4"></div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <!-- Campo para País -->
+                                    <div class="mb-3">
+                                        <label class="label-top">Paises</label>
+                                        <select name="countrySelect" class="form-control" required>
+                                            <option value="*">Todos</option>
+                                            @foreach($countries as $code => $name)
+                                                <option value="{{$code}}" {{($code == $countrySelect)? 'selected':''}}>{{$name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <!-- Campo para Estado -->
+                                    <div class="mb-3">
+                                        <label class="label-top">Estados</label>
+                                        <select name="stateSelect" class="form-control" required>
+                                            <option value="*">Todas</option>
+                                            @foreach($states as $state)
+                                                <option value="{{$state->state}}" {{($state->state == $stateSelect)? 'selected':''}}>{{$state->state}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <!-- Campo para Ciudad -->
+                                    <div class="mb-3">
+                                        <label class="label-top">Ciudad</label>
+                                        <select name="citySelect" class="form-control" required>
+                                            <option value="*">Todas</option>
+                                            @foreach($cities as $city)
+                                                <option value="{{$city->city}}" {{($city->city == $citySelect)? 'selected':''}}>{{$city->city}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <!-- Campo para Signo Astral -->
+                                    <div class="mb-3">
+                                        <label class="label-top">Signo</label>
+                                        <select class="form-control" name="signSelect" aria-label="Selecciona tu signo zodiacal">
+                                            <option value="*">Todos</option>
+                                            <option value="Aries" {{@$signSelect == 'Aries'? 'selected':''}}>Aries</option>
+                                            <option value="Tauro" {{@$signSelect == 'Tauro'? 'selected':''}}>Tauro</option>
+                                            <option value="Géminis" {{@$signSelect == 'Géminis'? 'selected':''}}>Géminis</option>
+                                            <option value="Cáncer" {{@$signSelect == 'Cáncer'? 'selected':''}}>Cáncer</option>
+                                            <option value="Leo" {{@$signSelect == 'Leo'? 'selected':''}}>Leo</option>
+                                            <option value="Virgo" {{@$signSelect == 'Virgo'? 'selected':''}}>Virgo</option>
+                                            <option value="Libra" {{@$signSelect == 'Libra'? 'selected':''}}>Libra</option>
+                                            <option value="Escorpio" {{@$signSelect == 'Escorpio'? 'selected':''}}>Escorpio</option>
+                                            <option value="Sagitario" {{@$signSelect == 'Sagitario'? 'selected':''}}>Sagitario</option>
+                                            <option value="Capricornio" {{@$signSelect == 'Capricornio'? 'selected':''}}>Capricornio</option>
+                                            <option value="Acuario" {{@$signSelect == 'Acuario'? 'selected':''}}>Acuario</option>
+                                            <option value="Piscis" {{@$signSelect == 'Piscis'? 'selected':''}}>Piscis</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6">
+                                    <!-- Campo para Tienes hijos? -->
+                                    <div class="mb-3">
+                                        <label class="label-top">¿Tienes hijos?</label>
+                                        <select class="form-control" name="childrenSelect" required>
+                                            <option value="*">Todos</option>
+                                            <option value="si" {{@$childrenSelect == 'si'? 'selected':''}}>Si</option>
+                                            <option value="no" {{@$childrenSelect == 'no'? 'selected':''}}>No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-filter">Buscar</button>
+                        </form>
+                    </div>
+                    <div class="col-xl-12" style="display: none;">
+                        <form class="form-3" action="{{route('front.home')}}" method="get">
+                            <input type="text" name="search" id="search" class="form-control" required>
+                            <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                            <h4 class="typed">Buscar por <span id="typed"></span></h4>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <select name="skill[]" multiple="multiple" class="form-control js-example-basic-multiple">
+                                                <option value="">Todas las habilidades</option>
+                                            @foreach ($skills as $skill)
+                                                <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-4"></div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
