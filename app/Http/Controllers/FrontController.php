@@ -55,7 +55,9 @@ class FrontController extends Controller
         }
 
         if ($signSelect && $signSelect != '*') {
-            $query->where('sign', $signSelect);
+            $query->whereHas('additional', function ($q) use ($signSelect) {
+                $q->where('sign', $signSelect);
+            });
         }
 
         // Filtrar por la relación additional->children
