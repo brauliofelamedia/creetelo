@@ -341,10 +341,10 @@
                                     <!-- Campo para País -->
                                     <div class="mb-3">
                                         <label class="label-top">Ciudades</label>
-                                        <select name="countrySelect" class="form-control single" required>
+                                        <select name="citySelect" class="form-control single" required>
                                             <option value="*">Todos</option>
                                             @foreach($cities as $code => $city)
-                                                <option value="{{$city}}" {{($city == $city)? 'selected':''}}>{{$city}}</option>
+                                                <option value="{{$city}}" {{($city == $citySelect)? 'selected':''}}>{{$city}}</option>
                                             @endforeach
                                         </select>
                                     </div>

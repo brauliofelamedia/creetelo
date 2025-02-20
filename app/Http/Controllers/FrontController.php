@@ -20,8 +20,6 @@ class FrontController extends Controller
         $search = $request->search;
         $skillSelect = $request->skillSelect;
         $citySelect = $request->citySelect;
-        $countrySelect = $request->countrySelect;
-        $stateSelect = $request->stateSelect;
         $childrenSelect = $request->childrenSelect;
         $signSelect = $request->signSelect;
         $interestSelect = $request->interestSelect;
@@ -76,7 +74,7 @@ class FrontController extends Controller
 
         //dd($users);
 
-        return view('front.home', compact('search', 'users','skillSelect', 'interests' , 'citySelect', 'stateSelect','signSelect','interestSelect','countrySelect','skills','childrenSelect', 'cities'));
+        return view('front.home', compact('search', 'users','skillSelect', 'interests' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'cities'));
     }
 
     public function addNewUser($contact)
