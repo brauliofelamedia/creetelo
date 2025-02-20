@@ -130,6 +130,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(Skill::class, 'user_skills', 'user_id', 'skill_id');
     }
 
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class, 'user_interests', 'user_id', 'interests_id');
+    }
+
     public function additional()
     {
         return $this->hasOne(Additional::class, 'user_id', 'id');

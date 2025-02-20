@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Additional;
 use App\Models\Service;
 use App\Models\Skill;
+use App\Models\Interest;
 use App\Models\User;
 use App\Models\UserService;
 use App\Models\UserSkill;
+use App\Models\UserInterest;
 use App\Models\UserSocial;
 use App\Services\ContactServices;
 use Illuminate\Http\Request;
@@ -33,11 +35,18 @@ class UserController extends Controller
             $userSkills = null;
         }
 
-        $countries = Config::get('countries.countries');
+        if ($user->interests()) {
+            $userInterests = $user->interests()->pluck('interests_id')->toArray();
+        } else {
+            $userInterests = null;
+        }
+
+        //$countries = Config::get('countries.countries');
         $services = Service::get();
         $skills = Skill::get();
+        $interests = Interest::get();
 
-        return view('front.user.index', compact('user', 'countries', 'services', 'skills', 'userServices', 'userSkills'));
+        return view('front.user.index', compact('user','services', 'skills', 'interests','userServices', 'userSkills','userInterests'));
     }
 
     public function social_update(Request $request)
@@ -133,6 +142,7 @@ class UserController extends Controller
             'email.unique' => 'El correo electrónico ya está en uso.',
             'about_me.required' => 'El campo bio corta es obligatorio.',
             'abilities.required' => 'Debes seleccionar al menos una habilidad.',
+            'interests.required' => 'Debes seleccionar al menos un interés.',
             'ocupation.required' => 'El campo ocupación es obligatorio.',
             'business_about.required' => 'El campo sobre mi negocio es obligatorio.',
         ];
@@ -348,6 +358,23 @@ class UserController extends Controller
                 $skill->user_id = $user->id;
                 $skill->skill_id = $skillId;
                 $skill->save();
+            }
+        }
+
+        //Actualizamos intereses
+        if (! $request->interests) {
+            $user->interests()->delete();
+        } else {
+            $currentInterests = $user->interests->pluck('id')->toArray();
+            $interestsToAdd = array_diff($request->interests, $currentInterests);
+            $interestsToRemove = array_diff($currentInterests, $request->interests);
+            $user->interests()->whereIn('id', $interestsToRemove)->delete();
+
+            foreach ($interestsToAdd as $interestId) {
+                $interest = new UserInterest;
+                $interest->user_id = $user->id;
+                $interest->interests_id = $interestId;
+                $interest->save();
             }
         }
 

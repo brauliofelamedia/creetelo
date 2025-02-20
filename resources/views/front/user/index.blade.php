@@ -245,26 +245,29 @@
                             <input class="form-control" type="tel" name="whatsapp" value="{{$user->whatsapp}}">
                         </div>
                     </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="location-input">Ubicación</label>
+                            <input type="text" id="location-input" class="form-control" placeholder="Ingresa una ubicación">
+                            <small>Solo introduce tu dirección para rellenar los campos de (País, estado y ciudad)</small>
+                        </div>
+                    </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label">País:<span class="required">*</span></label>
-                            <select name="country" class="form-control" required>
-                                @foreach($countries as $code => $name)
-                                    <option value="{{$code}}" {{($user->country == $code)? 'selected':''}}>{{$name}}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control" name="country" id="country" value="{{$user->country}}" readonly required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Estado:</label>
-                            <input class="form-control" type="text" name="state" value="{{$user->state}}">
+                            <input class="form-control" type="text" name="state" id="state" value="{{$user->state}}" readonly required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Ciudad:<span class="required">*</span></label>
-                            <input class="form-control" type="text" required name="city" value="{{$user->city}}">
+                            <input class="form-control" type="text" name="city" id="city" value="{{$user->city}}" readonly required>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -313,6 +316,28 @@
                                 @else
                                     @foreach($skills as $skill)
                                         <option value="{{$skill->id}}">{{$skill->name}}</option>
+                                    @endforeach
+                                @endisset
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="mb-10 form-label">¿Tus intereses/hobbies?:</label>
+                            <select required name="interests[]" class="selectInterests" multiple="multiple">
+                                @isset($userInterests)
+                                    @if(count($userInterests) > 0)
+                                        @foreach($interests as $interest)
+                                            <option value="{{$interest->id}}" @if(in_array($interest->id, $userInterests)) selected @endif>{{$interest->name}}</option>
+                                        @endforeach
+                                    @else
+                                        @foreach($interests as $interest)
+                                            <option value="{{$interest->id}}">{{$interest->name}}</option>
+                                        @endforeach
+                                    @endif
+                                @else
+                                    @foreach($interests as $interest)
+                                        <option value="{{$interest->id}}">{{$interest->name}}</option>
                                     @endforeach
                                 @endisset
                             </select>
@@ -435,12 +460,6 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">¿Tus intereses/hobbies?:</label>
-                            <textarea class="form-control" name="hobbies">{{@$user->additional->hobbies}}</textarea>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
                             <label class="mb-10 form-label">¿Bebida favorita?:</label>
                             <textarea class="form-control" name="favorite_drink">{{@$user->additional->favorite_drink}}</textarea>
                         </div>
@@ -532,9 +551,61 @@
 @endsection
 
 @push('js')
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxZBXi-it905W7UPnSySTUBNYCAK2CwPo&libraries=places"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar el autocompletado
+        const input = document.getElementById('location-input');
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ['geocode'], // Para direcciones geográficas
+        });
+        
+        // Listener para cuando el usuario selecciona una ubicación
+        autocomplete.addListener('place_changed', function() {
+            const place = autocomplete.getPlace();
+            
+            // Inicializar variables
+            let country = '';
+            let state = '';
+            let city = '';
+            
+            // Extraer componentes de la dirección
+            if (place.address_components) {
+                for (const component of place.address_components) {
+                    const componentType = component.types[0];
+                    
+                    switch (componentType) {
+                        case 'country':
+                            country = component.long_name;
+                            break;
+                        case 'administrative_area_level_1': // Estado/Provincia
+                            state = component.long_name;
+                            break;
+                        case 'locality': // Ciudad
+                        case 'administrative_area_level_2': // Municipio/Condado
+                            city = component.long_name;
+                            break;
+                    }
+                }
+            }
+            
+            // Actualizar los campos ocultos
+            document.getElementById('country').value = country;
+            document.getElementById('state').value = state;
+            document.getElementById('city').value = city;
+            
+            console.log('País:', country);
+            console.log('Estado:', state);
+            console.log('Ciudad/Municipio:', city);
+        });
+    });
+</script>
 <script>
     $(function () {
         $(".selectSkills").selectize({
+            create: false,
+        });
+        $(".selectInterests").selectize({
             create: false,
         });
     });

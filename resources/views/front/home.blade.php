@@ -1,15 +1,12 @@
 @extends('layouts.main')
 
 @push('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
     .center-flex {
         justify-content: center;
         display: flex;
         margin: 35px 0;
-    }
-    li {
-        list-style-type: none;
-        display: inline;
     }
 
     .mb-3 {
@@ -20,6 +17,7 @@
     .label-top {
         position: absolute;
         top: -12px;
+        z-index: 10;
         background-color: #111d3b;
         color: white;
         border-radius: 6px;
@@ -114,6 +112,78 @@
         position: relative;
     }
 
+    .filter-drop {
+        position: relative;
+    }
+
+    .child {
+        width: 280px;
+        position: absolute;
+        right: 0;
+        background-color: #ebebeb;
+        padding: 30px 20px;
+        padding-top: 20px;
+        border-radius: 4px;
+        display: none;
+        z-index: 10;
+    }
+
+    .father {
+        padding: 11px;
+        background-color: #111d3b;
+        border-radius: 5px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+
+    .father:hover {
+        background-color: #e14c01;
+    }
+
+    .close {
+        font-size: 14px;
+        background-color: #ff5600;
+        color: white;
+        display: inline-block;
+        padding: 2px 14px;
+        border-radius: 0 0 5px 5px;
+        position: absolute;
+        bottom: -25px;
+        right: 21px;
+        cursor: pointer;
+    }
+
+    .close {
+        background-color: #e14c01;
+    }
+
+    /* Aumentar padding del campo principal */
+    .select2-container .select2-selection--single {
+        height: auto !important;
+        padding: 12px 16px !important;
+    }
+
+    /* Ajustar la posición del texto */
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        padding: 0 !important;
+        line-height: normal !important;
+    }
+
+    /* Ajustar la posición de la flecha */
+    .select2-container .select2-selection--single .select2-selection__arrow {
+        height: 100% !important;
+        right: 8px !important;
+    }
+
+    /* Ajustar el padding de las opciones del dropdown */
+    .select2-container--default .select2-results__option {
+        padding: 5px 16px !important;
+        font-size: 14px;
+    }
+
     @media (max-width: 992px) {
         .about-three-rapper h1 {
             font-size: 25px;
@@ -135,6 +205,12 @@
     }
 
     @media (max-width: 768px) {
+
+        .filter-drop {
+            width: 70px;
+            float: right;
+        }
+        
         .job-grid-heading .right-grid span {
             font-size: 17px;
         }
@@ -249,11 +325,11 @@
                                 <h4 class="typed">Buscar por <span id="typed"></span></h4>
                             </div>
                             <div class="row">
-                                <div class="col-lg-4 col-sm-6">
-                                        <!-- Campo para Habilidades -->
+                                <div class="col-lg-4 col-sm-12">
+                                    <!-- Campo para Habilidades -->
                                     <div class="mb-3">
                                         <label class="label-top">Habilidades</label>
-                                        <select class="form-control" name="skillSelect">
+                                        <select class="form-control single" name="skillSelect">
                                             <option value="*">Todos</option>
                                             @foreach ($skills as $skill)
                                                 <option value="{{$skill->id}}" {{($skill->id == $skillSelect)? 'selected':''}}>{{$skill->name}}</option>
@@ -261,72 +337,69 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-sm-6">
+                                <div class="col-lg-4 col-sm-12">
                                     <!-- Campo para País -->
                                     <div class="mb-3">
-                                        <label class="label-top">Paises</label>
-                                        <select name="countrySelect" class="form-control" required>
+                                        <label class="label-top">Ciudades</label>
+                                        <select name="countrySelect" class="form-control single" required>
                                             <option value="*">Todos</option>
-                                            @foreach($countries as $code => $name)
-                                                <option value="{{$code}}" {{($code == $countrySelect)? 'selected':''}}>{{$name}}</option>
+                                            @foreach($cities as $code => $city)
+                                                <option value="{{$city}}" {{($city == $city)? 'selected':''}}>{{$city}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-sm-6">
+                                <div class="col-lg-3 col-sm-12">
                                     <!-- Campo para Estado -->
                                     <div class="mb-3">
-                                        <label class="label-top">Estados</label>
-                                        <select name="stateSelect" class="form-control" required>
-                                            <option value="*">Todas</option>
-                                            @foreach($states as $state)
-                                                <option value="{{$state->state}}" {{($state->state == $stateSelect)? 'selected':''}}>{{$state->state}}</option>
+                                        <label class="label-top">Intereses</label>
+                                        <select class="form-control single" name="interestSelect">
+                                            <option value="*">Todos</option>
+                                            @foreach ($interests as $interest)
+                                                <option value="{{$interest->id}}" {{($interest->id == $interestSelect)? 'selected':''}}>{{$interest->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <!-- Campo para Ciudad -->
-                                    <div class="mb-3">
-                                        <label class="label-top">Ciudad</label>
-                                        <select name="citySelect" class="form-control" required>
-                                            <option value="*">Todas</option>
-                                            @foreach($cities as $city)
-                                                <option value="{{$city->city}}" {{($city->city == $citySelect)? 'selected':''}}>{{$city->city}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <!-- Campo para Signo Astral -->
-                                    <div class="mb-3">
-                                        <label class="label-top">Signo</label>
-                                        <select class="form-control" name="signSelect" aria-label="Selecciona tu signo zodiacal">
-                                            <option value="*">Todos</option>
-                                            <option value="Aries" {{@$signSelect == 'Aries'? 'selected':''}}>Aries</option>
-                                            <option value="Tauro" {{@$signSelect == 'Tauro'? 'selected':''}}>Tauro</option>
-                                            <option value="Géminis" {{@$signSelect == 'Géminis'? 'selected':''}}>Géminis</option>
-                                            <option value="Cáncer" {{@$signSelect == 'Cáncer'? 'selected':''}}>Cáncer</option>
-                                            <option value="Leo" {{@$signSelect == 'Leo'? 'selected':''}}>Leo</option>
-                                            <option value="Virgo" {{@$signSelect == 'Virgo'? 'selected':''}}>Virgo</option>
-                                            <option value="Libra" {{@$signSelect == 'Libra'? 'selected':''}}>Libra</option>
-                                            <option value="Escorpio" {{@$signSelect == 'Escorpio'? 'selected':''}}>Escorpio</option>
-                                            <option value="Sagitario" {{@$signSelect == 'Sagitario'? 'selected':''}}>Sagitario</option>
-                                            <option value="Capricornio" {{@$signSelect == 'Capricornio'? 'selected':''}}>Capricornio</option>
-                                            <option value="Acuario" {{@$signSelect == 'Acuario'? 'selected':''}}>Acuario</option>
-                                            <option value="Piscis" {{@$signSelect == 'Piscis'? 'selected':''}}>Piscis</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-sm-6">
-                                    <!-- Campo para Tienes hijos? -->
-                                    <div class="mb-3">
-                                        <label class="label-top">¿Tienes hijos?</label>
-                                        <select class="form-control" name="childrenSelect" required>
-                                            <option value="*">Todos</option>
-                                            <option value="si" {{@$childrenSelect == 'si'? 'selected':''}}>Si</option>
-                                            <option value="no" {{@$childrenSelect == 'no'? 'selected':''}}>No</option>
-                                        </select>
+                                <div class="col-lg-1 col-sm-12">
+                                    <div class="filter-drop">
+                                        <div class="father">
+                                            <i class="fas fa-filter"></i>
+                                        </div>
+                                        <div class="child">
+                                            <div class="col-lg-12">
+                                                <h5 class="mb-4">Filtros avanzados</h5>
+                                                <!-- Campo para Signo Astral -->
+                                                <div class="mb-3">
+                                                    <label class="label-top">Signo</label>
+                                                    <select class="form-control" name="signSelect" aria-label="Selecciona tu signo zodiacal">
+                                                        <option value="*">Todos</option>
+                                                        <option value="Aries" {{@$signSelect == 'Aries'? 'selected':''}}>Aries</option>
+                                                        <option value="Tauro" {{@$signSelect == 'Tauro'? 'selected':''}}>Tauro</option>
+                                                        <option value="Géminis" {{@$signSelect == 'Géminis'? 'selected':''}}>Géminis</option>
+                                                        <option value="Cáncer" {{@$signSelect == 'Cáncer'? 'selected':''}}>Cáncer</option>
+                                                        <option value="Leo" {{@$signSelect == 'Leo'? 'selected':''}}>Leo</option>
+                                                        <option value="Virgo" {{@$signSelect == 'Virgo'? 'selected':''}}>Virgo</option>
+                                                        <option value="Libra" {{@$signSelect == 'Libra'? 'selected':''}}>Libra</option>
+                                                        <option value="Escorpio" {{@$signSelect == 'Escorpio'? 'selected':''}}>Escorpio</option>
+                                                        <option value="Sagitario" {{@$signSelect == 'Sagitario'? 'selected':''}}>Sagitario</option>
+                                                        <option value="Capricornio" {{@$signSelect == 'Capricornio'? 'selected':''}}>Capricornio</option>
+                                                        <option value="Acuario" {{@$signSelect == 'Acuario'? 'selected':''}}>Acuario</option>
+                                                        <option value="Piscis" {{@$signSelect == 'Piscis'? 'selected':''}}>Piscis</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Campo para Tienes hijos? -->
+                                                <div style="position: relative;">
+                                                    <label class="label-top">¿Tienes hijos?</label>
+                                                    <select class="form-control" name="childrenSelect" required>
+                                                        <option value="*">Todos</option>
+                                                        <option value="si" {{@$childrenSelect == 'si'? 'selected':''}}>Si</option>
+                                                        <option value="no" {{@$childrenSelect == 'no'? 'selected':''}}>No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="close">Cerrar</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -411,13 +484,28 @@
 @endsection
 
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 <script>
-     $(function () {
+
+    
+    $(function () {
         $(".multiselect").selectize();
     });
 
     $(document).ready(function() {
+        $('.single').select2();
+
+        // Mostrar el child al hacer clic en el father
+        $('.father').click(function() {
+            $('.child').slideDown();
+        });
+
+        // Ocultar el child al hacer clic en el botón .close
+        $('.close').click(function() {
+            $('.child').slideUp();
+        });
+        
         $("#search").on("input", function() {
             if ($(this).val()) {
                 $(".typed").hide();

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Skill;
+use App\Models\Interest;
 use Illuminate\Support\Facades\Config;
 
 class FrontController extends Controller
@@ -23,11 +24,16 @@ class FrontController extends Controller
         $stateSelect = $request->stateSelect;
         $childrenSelect = $request->childrenSelect;
         $signSelect = $request->signSelect;
+        $interestSelect = $request->interestSelect;
+        
 
         $skills = Skill::all();
-        $cities = User::select('city')->whereNotNull('city')->where('city', '!=', '')->distinct()->get();
-        $states = User::select('state')->whereNotNull('state')->where('state', '!=', '')->distinct()->get();
-        $countries = Config::get('countries.countries');
+        $interests = Interest::all();
+        $cities = User::whereNotNull('city')
+                      ->distinct()
+                      ->orderBy('city', 'asc')
+                      ->pluck('city')
+                      ->toArray();
 
         $query = User::query();
 
@@ -36,18 +42,16 @@ class FrontController extends Controller
         }
 
         //Skills
-        if ($skillSelect && $skillSelect != '*') {
-            $query->whereHas('skills', function ($q) use ($skillSelect) {
-                $q->where('skills.id', $skillSelect);
+        if ($interestSelect && $interestSelect != '*') {
+            $query->whereHas('interests', function ($q) use ($interestSelect) {
+                $q->where('interests.id', $interestSelect);
             });
         }
 
-        if ($countrySelect && $countrySelect != '*') {
-            $query->where('country', $countrySelect);
-        }
-
-        if ($stateSelect && $stateSelect != '*') {
-            $query->where('state', $stateSelect);
+        if ($skillSelect && $skillSelect != '*') {
+            $query->whereHas('interests', function ($q) use ($skillSelect) {
+                $q->where('skills.id', $skillSelect);
+            });
         }
 
         if ($citySelect && $citySelect != '*') {
@@ -72,7 +76,7 @@ class FrontController extends Controller
 
         //dd($users);
 
-        return view('front.home', compact('search', 'users', 'skillSelect', 'citySelect', 'stateSelect','signSelect','countrySelect','skills','childrenSelect', 'cities','states','countries'));
+        return view('front.home', compact('search', 'users','skillSelect', 'interests' , 'citySelect', 'stateSelect','signSelect','interestSelect','countrySelect','skills','childrenSelect', 'cities'));
     }
 
     public function addNewUser($contact)

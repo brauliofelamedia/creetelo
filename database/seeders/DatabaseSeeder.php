@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Database\Seeders\SkillsTableSeeder;
+use Database\Seeders\InterestTableSeeder;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -25,6 +27,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'braulio@felamedia.com',
             'contact_id' => 'PGk4Ewhl8CQgz3o5AYUM',
             'password' => bcrypt('password'),
+            'slug' => 'braulio-miramontes',
         ]);
 
         $additional = new Additional();
@@ -35,6 +38,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Jorge Fela',
             'email' => 'jorge@felamedia.com',
             'password' => bcrypt('password'),
+            'slug' => 'jorge-fela',
         ]);
 
         $additional = new Additional();
@@ -83,5 +87,6 @@ class DatabaseSeeder extends Seeder
         $user->additional->save();
 
         $this->call(SkillsTableSeeder::class);
+        $this->call(InterestTableSeeder::class);
     }
 }
