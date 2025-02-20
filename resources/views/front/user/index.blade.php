@@ -548,10 +548,11 @@
             </form>
         </div>
     </section>
+    {{$googleMapsKey = config('services.google_maps.key')}}
 @endsection
 
 @push('js')
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxZBXi-it905W7UPnSySTUBNYCAK2CwPo&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{config('services.google_maps.key')}}&libraries=places"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Inicializar el autocompletado

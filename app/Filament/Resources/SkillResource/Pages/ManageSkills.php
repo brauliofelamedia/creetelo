@@ -4,9 +4,9 @@ namespace App\Filament\Resources\SkillResource\Pages;
 
 use App\Filament\Resources\SkillResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListSkills extends ListRecords
+class ManageSkills extends ManageRecords
 {
     protected static string $resource = SkillResource::class;
 
