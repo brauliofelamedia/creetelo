@@ -17,10 +17,10 @@
 <body>
 <div>
     <a href="{{env('APP_URL')}}" target="_blank">
-        <img src="{{env()->url('public/images/logo.png')}}" alt="Créetelo" style="width:250px;">
+        <img src="{{assets('public/images/logo.png')}}" alt="Créetelo" style="width:250px;">
     </a><br>
     <p>Te dejamos los datos para iniciar sesión:😉</p><br>
-    <p>Url de acceso: <a href="{{env()->url('admin/login')}}" target="_blank">{{env()->url('admin/login')}}</a></p>
+    <p>Url de acceso: <a href="{{env('APP_URL')}}/admin/login" target="_blank">{{env('APP_URL')}}/admin/login</a></p>
     <p>Nombre: {{ $name }}</p>
     <p>Correo electrónico: {{ $email }}</p>
     <p>Contraseña: {{ $password }}</p>

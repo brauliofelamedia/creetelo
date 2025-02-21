@@ -17,7 +17,7 @@
 <body>
 <div>
     <a href="{{env('APP_URL')}}" target="_blank">
-        <img src="{{env()->url('public/images/logo.png')}}" alt="logo" style="width:100px;">
+        <img src="{{assets('public/images/logo.png')}}" alt="logo" style="width:100px;">
     </a><br>
     <p>Se recibio la siguiente información:😉</p><br>
     <p>Nombre: {{ $name }}</p>
