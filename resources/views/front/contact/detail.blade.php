@@ -566,8 +566,8 @@
                                                 <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
                                                     <div class=" d-flex flex-column align-items-center justify-content-center">
                                                         <h3>
-                                                            @if (strlen($user->full_name) > 30)
-                                                                {{ Str::limit($user->full_name, 30).'...' }}
+                                                            @if (strlen($contact->full_name) > 22)
+                                                        {{ Str::limit($contact->full_name, 22).'...' }}
                                                             @else
                                                                 {{$user->full_name }}
                                                             @endif
