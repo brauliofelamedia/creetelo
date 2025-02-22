@@ -301,6 +301,10 @@
         .job-grid-heading select {
             width: 100%!important;
         }
+
+        #feature-job-grid {
+            padding: 0!important;
+        }
     }
 </style>
 @endpush
