@@ -405,7 +405,7 @@
                                     @php
                                         $new_title = str_replace(' ', '+', $ability->skill->name);
                                     @endphp
-                                    <li><a href="{{route('front.home')}}?search={{$new_title}}#feature-job-grid">{{$ability->skill->name}}</a></li>
+                                    <li><a href="{{route('front.home')}}?skillSelect={{$ability->skill->id}}#feature-job-grid">{{$ability->skill->name}}</a></li>
                                 @endforeach
                             </ul>
                         @endif
@@ -423,7 +423,7 @@
                     <div class="tabs">
                         <ul>
                             <li><a href="#tab1" class="active">Sobre mí</a></li>
-                            <li><a href="#tab2">Más sobre ti</a></li>
+                            <li><a href="#tab2">Más sobre mí</a></li>
                             <li><a href="#tab3">Para cerrar</a></li>
                             <li><a href="#tab4">Somos Abundantes</a></li>
                         </ul>
@@ -461,7 +461,7 @@
                             </div>
                         </div>
                         <div id="tab2" class="tab-content">
-                            <h2>Más sobre ti</h2>
+                            <h2>Más sobre mí</h2>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Dónde naciste y creciste?:</h5><p>{{(@$user->additional->birthplace)? $user->additional->birthplace :'-'}}</p>
                             </div>
@@ -503,9 +503,6 @@
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Qué PODCAST amas?:</h5><p>{{(@$user->additional->podcast_recommendation)? $user->additional->podcast_recommendation :'-'}}</p>
                             </div>
-                            <div class="mb-10 candidate-list-2">
-                                <h5>¿Qué PODCAST amas?:</h5><p>{{(@$user->additional->podcast_recommendation)? $user->additional->podcast_recommendation :'-'}}</p>
-                            </div>
                         </div>
                         <div id="tab3" class="tab-content">
                             <h2>Para cerrar</h2>
@@ -517,9 +514,6 @@
                                 </div>
                                 <div class="mb-10 candidate-list-2">
                                     <h5>¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</h5><p>{{(@$user->additional->biggest_dream)? $user->additional->biggest_dream :'-'}}</p>
-                                </div>
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{(@$user->additional->irreplaceable)? $user->additional->irreplaceable :'-'}}</p>
                                 </div>
                                 <div class="mb-10 candidate-list-2">
                                     <h5>¿Qué te gustaría recibir?:</h5><p>{{(@$user->additional->like_to_receive)? $user->additional->like_to_receive :'-'}}</p>

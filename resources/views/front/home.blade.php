@@ -326,7 +326,9 @@
                         <form method="get" action="{{route('front.home')}}" class="form-filter">
                             <div class="mb-3">
                                 <input type="text" name="search" id="search" class="form-control" value="{{@$search}}">
-                                <h4 class="typed">Buscar por <span id="typed"></span></h4>
+                                @if(!$search)
+                                    <h4 class="typed">Buscar por <span id="typed"></span></h4>
+                                @endif
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12">

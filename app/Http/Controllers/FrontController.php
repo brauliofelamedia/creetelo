@@ -47,7 +47,7 @@ class FrontController extends Controller
         }
 
         if ($skillSelect && $skillSelect != '*') {
-            $query->whereHas('interests', function ($q) use ($skillSelect) {
+            $query->whereHas('skills', function ($q) use ($skillSelect) {
                 $q->where('skills.id', $skillSelect);
             });
         }
