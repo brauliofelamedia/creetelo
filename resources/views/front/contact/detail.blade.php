@@ -14,6 +14,15 @@
         border: 8px solid #e45607;
     }
 
+    .a-whatsapp {
+        padding: 5px 15px!important;
+        text-transform: initial!important;
+        display: inline!important;
+        font-size: 15px !important;
+        font-weight: 400!important;
+        background-color: #ff5600!important;
+    }
+
     .avatar .country {
         position: absolute;
         bottom: 26px;
@@ -220,6 +229,14 @@
 
     @media (max-width: 480px) {
 
+        .Candidates-grid {
+            padding: 20px 10px!important;
+        }
+
+        .Candidates-grid .top-grid-4 a {
+            width: 80%!important;
+        }
+
         .about-us-banner {
             background-size: auto!important;
             background-position: left!important;
@@ -393,6 +410,7 @@
                                 <li><a href="{{$user->whatsapp}}" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
                                 <li><a href="{{$user->linkedin}}" class="{{(is_null($user->linkedin))? 'disabled' : ''}}" target="_blank"><i class="bi bi-linkedin"></i></a></li>
                                 <li><a href="{{$user->instagram}}" class="{{(is_null($user->instagram))? 'disabled' : ''}}" target="_blank"><i class="bi bi-instagram"></i></a></li>
+                                <li><a href="{{$user->website}}" class="{{(is_null($user->website))? 'disabled' : ''}}" target="_blank"><i class="bi bi-cursor"></i></a></li>
                             </ul>
                         </div>
                         <h1>{{$user->fullname}}</h1>
@@ -422,12 +440,28 @@
 
                     <div class="tabs">
                         <ul>
-                            <li><a href="#tab1" class="active">Sobre mí</a></li>
-                            <li><a href="#tab2">Más sobre mí</a></li>
-                            <li><a href="#tab3">Para cerrar</a></li>
-                            <li><a href="#tab4">Somos Abundantes</a></li>
+                            <li><a href="#tab1" class="active">Información</a></li>
+                            <li><a href="#tab2">Sobre mí</a></li>
+                            <li><a href="#tab3">Más sobre mí</a></li>
+                            <li><a href="#tab4">Para cerrar</a></li>
+                            <li><a href="#tab5">Somos Abundantes</a></li>
                         </ul>
                         <div id="tab1" class="tab-content active">
+                            <h2>Información</h2>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Nombre:</h5><p>{{(@$user->fullname)? @$user->fullname : '-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>WhatsApp:</h5><p> @if(@$user->whatsapp){ <a class="a-whatsapp" href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank">Enviar un mensaje a WhatsApp</a>@else - </p>@endif
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Correo electrónico:</h5><p>@if(@$user->email) <a href="mailto:{{@$user->email}}" class="a-whatsapp" target="_blank">{{$user->email}}</a> @else - @endif</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Ubicación</h5><p>{{(@$user->fullUbication)? @$user->fullUbication :'-'}}</p>
+                            </div>
+                        </div>
+                        <div id="tab2" class="tab-content">
                             <h2>Sobre mí</h2>
                             <div class="mb-10 candidate-list-2">
                                 <h5>Hola! Soy una Creída muy:</h5><p>{{(@$user->additional->how_vain)? @$user->additional->how_vain : '-'}}</p>
@@ -460,7 +494,7 @@
                                 <h5>Entré a Créetelo buscando:</h5><p>{{(@$user->additional->looking_for_in_creelo)? $user->additional->looking_for_in_creelo : '-'}}</p>
                             </div>
                         </div>
-                        <div id="tab2" class="tab-content">
+                        <div id="tab3" class="tab-content">
                             <h2>Más sobre mí</h2>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Dónde naciste y creciste?:</h5><p>{{(@$user->additional->birthplace)? $user->additional->birthplace :'-'}}</p>
@@ -504,7 +538,7 @@
                                 <h5>¿Qué PODCAST amas?:</h5><p>{{(@$user->additional->podcast_recommendation)? $user->additional->podcast_recommendation :'-'}}</p>
                             </div>
                         </div>
-                        <div id="tab3" class="tab-content">
+                        <div id="tab4" class="tab-content">
                             <h2>Para cerrar</h2>
                                 <div class="mb-10 candidate-list-2">
                                     <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{(@$user->additional->irreplaceable)? $user->additional->irreplaceable :'-'}}</p>
@@ -522,7 +556,7 @@
                                     <h5>¿Qué te hace bien o te trae felicidad?:</h5><p>{{(@$user->additional->brings_you_happiness)? $user->additional->brings_you_happiness :'-'}}</p>
                                 </div>
                         </div>
-                        <div id="tab4" class="tab-content">
+                        <div id="tab5" class="tab-content">
                             <h2>Somos Abundantes</h2>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</h5><p>{{(@$user->additional->gift)? $user->additional->gift :'-'}}</p>
