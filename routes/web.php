@@ -38,6 +38,7 @@ Route::post('dashboard/socials/delete',[UserController::class,'social_delete'])-
 
 //Sync contacts
 Route::get('dashboard/sync',[UserController::class,'syncContacts'])->middleware('auth')->name('dashboard.sync');
+Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->name('dashboard.sync.crm');
 
 //Front
 Route::get('{page?}',[FrontController::class,'index'])->middleware('auth')->name('front.home');

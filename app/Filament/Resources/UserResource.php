@@ -11,6 +11,11 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Filament\Actions\Action;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Filament\Notifications\Notification;
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -83,6 +88,40 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+                Tables\Actions\Action::make('syncContacts')
+                    ->label('Sincronizar contactos')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('success')
+                    ->action(function () {
+                        try {
+                            // Llamada a la ruta de sincronización
+                            $response = Http::withoutVerifying()->get(route('dashboard.sync.crm'));
+                            
+                            if ($response->successful()) {
+                                Notification::make()
+                                    ->title('Sincronización exitosa')
+                                    ->body('Los contactos han sido sincronizados correctamente')
+                                    ->success()
+                                    ->send();
+                            } else {
+                                Notification::make()
+                                    ->title('Error en la sincronización')
+                                    ->body('No se pudieron sincronizar los contactos'. $response->body())
+                                    ->danger()
+                                    ->send();
+                                Log::error('Error en la sincronización de contactos: ' . $response->body());
+                            }
+                        } catch (\Exception $e) {
+                            Notification::make()
+                                    ->title('Error en la sincronización')
+                                    ->body('Ocurrió un error durante la sincronización: ' . $e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            Log::error('Excepción durante la sincronización de contactos: ' . $e->getMessage());
+                        }
+                    }),
+            ])
             ->columns([
                 Tables\Columns\TextColumn::make('fullname')
                     ->label('Nombre')
