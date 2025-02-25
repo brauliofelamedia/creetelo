@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('phone')->nullable()->after('email'); 
+            $table->string('phone')->nullable()->after('email');
+            $table->boolean('is_email')->default(false)->after('phone');
+            $table->string('password_assign_token')->nullable()->after('is_email');
+            $table->timestamp('password_assign_expires_at')->nullable()->after('password_assign_token');
         });
     }
 
@@ -23,6 +26,9 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('phone');
+            $table->dropColumn('is_email');
+            $table->dropColumn('password_assign_token');
+            $table->dropColumn('password_assign_expires_at');
         });
     }
 };

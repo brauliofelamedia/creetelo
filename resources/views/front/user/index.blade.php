@@ -236,7 +236,11 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Correo electrónico: <span class="required">*</span></label>
-                            <input type="email" class="form-control" name="email" value="{{$user->email}}" required>
+                            <input type="email" class="form-control" name="email" value="{{$user->email}}" readonly required>
+                            <div class="form-check" style="float: right;margin-top: 11px;">
+                                <input class="form-check-input" type="checkbox" name="is_email" {{($user->is_email == 1)? 'checked' : false}} style="padding: 10px !important;" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault" style="font-size: 14px;margin-left:8px;">Mostrar el correo</label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -345,7 +349,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Hola! Soy una Creída muy:</label>
+                            <label class="mb-10 form-label">Soy una Creída muy:</label>
                             <textarea class="form-control" name="how_vain">{{@$user->additional->how_vain}}</textarea>
                         </div>
                     </div>
@@ -548,7 +552,6 @@
             </form>
         </div>
     </section>
-    {{$googleMapsKey = config('services.google_maps.key')}}
 @endsection
 
 @push('js')

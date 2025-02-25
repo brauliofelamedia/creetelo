@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'admin/create_user_weebhook'
+        ]);
         $middleware->append(CheckToken::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {

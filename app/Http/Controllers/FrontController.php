@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Skill;
 use App\Models\Interest;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
@@ -138,5 +142,83 @@ class FrontController extends Controller
         }
 
         return redirect()->back()->with('success', 'Se ha enviado correctamente tu solicitud');
+    }
+
+    public function create_user_weebhook(Request $request)
+    {
+        $token = Str::random(60); 
+        $expiresAt = Carbon::now()->addHours(72);
+        $userExist = User::where('email',$request->email)->first();
+
+        if(!$userExist){
+            try {
+            
+                $user = new User();
+                $user->name = $request->first_name;
+                $user->last_name = (isset($request->last_name))? $request->last_name : '';
+                $user->email = $request->email;
+                $user->slug = Str::slug($user->fullname);
+                $user->password = bcrypt('2O6o&:_5IT55b(L}Z');
+                $user->password_assign_token = $token;
+                $user->password_assign_expires_at = $expiresAt;
+                $user->contact_id = $request->contact_id;
+                $user->assignRole('user');
+                $user->save();
+
+                $additional = new Additional();
+                $additional->user_id = $user->id;
+                $additional->save();
+    
+                //Generar el link
+                $assignLink = route('front.assign_password',$token);
+    
+                return response()->json([
+                    'message' => 'Se ha generado enlace para asignar la contraseña.',
+                    'url' => $assignLink
+                ]);
+                
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => 'Ocurrió un error en el servidor.',
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+        } else {
+            return response()->json([
+                'message' => 'El usuario ya tiene una cuenta asignada.'
+            ]);
+        }
+        
+    }
+
+    public function assign_password($token)
+    {
+        
+        $user = User::where('password_assign_token', $token)
+                    ->where('password_assign_expires_at', '>', Carbon::now())
+                    ->first();
+
+        return view('front.user.assign-password',compact('user'));
+    }
+
+    public function assign_save(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:8',
+            'repeat_password' => 'required|string|same:password',
+        ]);
+
+         // Encriptar la nueva contraseña
+         $user = User::where('password_assign_token',$request->token)->first();
+
+         $user->password = Hash::make($request->password);
+         $user->password_assign_token = '';
+         $user->password_assign_expires_at = NULL;
+         $user->save();
+ 
+         // Iniciar sesión automáticamente con los datos del usuario
+         Auth::login($user);
+
+         return redirect()->route('dashboard.account.index')->with(['message'=>'Se ha creado correctamente la contraseña.']);
     }
 }

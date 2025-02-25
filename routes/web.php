@@ -43,6 +43,11 @@ Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->name
 //Front
 Route::get('{page?}',[FrontController::class,'index'])->middleware('auth')->name('front.home');
 
+//Webhook
+Route::post('admin/create_user_weebhook',[FrontController::class,'create_user_weebhook'])->name('front.create_user_weebhook');
+Route::get('dashboard/assign-password/{token}',[FrontController::class,'assign_password'])->name('front.assign_password');
+Route::post('dashboard/assign',[FrontController::class,'assign_save'])->name('front.account.assign');
+
 //Contact detail
 Route::get('individual/{slug}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
 

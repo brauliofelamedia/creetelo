@@ -175,6 +175,13 @@ class UserController extends Controller
             }
         }
 
+        if($request->is_email == 'on'){
+            $user->is_email = true;
+        } else {
+            $user->is_email = false;
+        }
+        $user->save();
+
         //Custom fields
         $custom_fields = [
             [

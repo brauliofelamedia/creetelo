@@ -386,6 +386,13 @@
             right: 0;
         }
     }
+
+    li.li-style {
+      background-color: #ff5600;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
 </style>
 @endpush
 
@@ -406,7 +413,9 @@
                 <div class="col-xl-9 col-lg-8" style="position: relative;">
                         <div class="social-link-front">
                             <ul>
-                                <li><a href="{{$user->email}}" class="{{(is_null($user->email))? 'disabled' : ''}}" target="_blank"><i class="bi bi-envelope"></i></a></li>
+                                @if($user->is_email)
+                                    <li><a href="{{$user->email}}" class="{{(is_null($user->email))? 'disabled' : ''}}" target="_blank"><i class="bi bi-envelope"></i></a></li>
+                                @endif
                                 <li><a href="{{$user->whatsapp}}" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
                                 <li><a href="{{$user->linkedin}}" class="{{(is_null($user->linkedin))? 'disabled' : ''}}" target="_blank"><i class="bi bi-linkedin"></i></a></li>
                                 <li><a href="{{$user->instagram}}" class="{{(is_null($user->instagram))? 'disabled' : ''}}" target="_blank"><i class="bi bi-instagram"></i></a></li>
@@ -442,9 +451,9 @@
                         <ul>
                             <li><a href="#tab1" class="active">Información</a></li>
                             <li><a href="#tab2">Sobre mí</a></li>
-                            <li><a href="#tab3">Más sobre mí</a></li>
-                            <li><a href="#tab4">Para cerrar</a></li>
-                            <li><a href="#tab5">Somos Abundantes</a></li>
+                            <li><a href="#tab3">Sobre Mi Trabajo:</a></li>
+                            <li><a href="#tab4">Conóceme Más:</a></li>
+                            <li><a href="#tab5">Te Regalo:</a></li>
                         </ul>
                         <div id="tab1" class="tab-content active">
                             <h2>Información</h2>
@@ -454,9 +463,11 @@
                             <div class="mb-10 candidate-list-2">
                                 <h5>WhatsApp:</h5><p> @if(@$user->whatsapp){ <a class="a-whatsapp" href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank">Enviar un mensaje a WhatsApp</a>@else - </p>@endif
                             </div>
-                            <div class="mb-10 candidate-list-2">
-                                <h5>Correo electrónico:</h5><p>@if(@$user->email) <a href="mailto:{{@$user->email}}" class="a-whatsapp" target="_blank">{{$user->email}}</a> @else - @endif</p>
-                            </div>
+                            @if($user->is_email)
+                                <div class="mb-10 candidate-list-2">
+                                    <h5>Correo electrónico:</h5><p>@if(@$user->email) <a href="mailto:{{@$user->email}}" class="a-whatsapp" target="_blank">{{$user->email}}</a> @else - @endif</p>
+                                </div>
+                            @endif
                             <div class="mb-10 candidate-list-2">
                                 <h5>Ubicación</h5><p>{{(@$user->fullUbication)? @$user->fullUbication :'-'}}</p>
                             </div>
@@ -464,25 +475,47 @@
                         <div id="tab2" class="tab-content">
                             <h2>Sobre mí</h2>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Hola! Soy una Creída muy:</h5><p>{{(@$user->additional->how_vain)? @$user->additional->how_vain : '-'}}</p>
+                                <h5>Bio corta:</h5><p>{{(@$user->about_me)? @$user->about_me : '-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Soy increíble en (mis habilidades):</h5><p>{{(@$user->additional->skills)? @$user->additional->skills:'-'}}</p>
+                                <h5>Soy increíble en (mis habilidades):</h5>
+                                <ul style="margin: 0;display:inline-block!important;">
+                                    @foreach ($user->abilities as $ability)
+                                      <li class="li-style">{{$ability->skill->name}}</li>
+                                    @endforeach
+                                </ul>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Mi emprendimiento trata sobre:</h5><p>{{(@$user->additional->business_about)? @$user->additional->business_about:'-'}}</p>
+                                <h5>¿Tus intereses/hobbies?:</h5>
+                                <ul style="margin: 0;display:inline-block!important;">
+                                    @foreach ($user->interests as $interest)
+                                      <li class="li-style">{{$interest->name}}</li>
+                                    @endforeach
+                                </ul>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Trabajo en el corporativo, me dedico a:</h5><p>{{(@$user->additional->corporate_job)? @$user->additional->corporate_job :'-'}}</p>
+                                <h5>Soy una Creída muy:</h5><p>{{(@$user->additional->how_vain)? @$user->additional->how_vain : '-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Mi misión es ayudar a que más personas:</h5><p>{{(@$user->additional->mission)? @$user->additional->mission :'-'}}</p>
+                                <h5>¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</h5><p>{{(@$user->additional->biggest_dream)? $user->additional->biggest_dream :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Qué te hace bien o te trae felicidad?:</h5><p>{{(@$user->additional->brings_you_happiness)? $user->additional->brings_you_happiness :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Entré a Créetelo buscando:</h5><p>{{(@$user->additional->looking_for_in_creelo)? $user->additional->looking_for_in_creelo : '-'}}</p>
+                            </div>
+                        </div>
+                        <div id="tab3" class="tab-content">
+                            <h2>Más sobre mí trabajo</h2>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Ocupación:</h5><p>{{(@$user->ocupation)? $user->ocupation :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Mi emprendimiento/negocio/trabajo trata sobre:</h5><p>{{(@$user->additional->business_about)? @$user->additional->business_about:'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
                                 <h5>Mi audiencia IDEAL es:</h5><p>{{(@$user->additional->ideal_audience)? $user->additional->ideal_audience :'-'}}</p>
-                            </div>
-                            <div class="mb-10 candidate-list-2">
-                                <h5>Prefiero no trabajar con personas que:</h5><p>{{(@$user->additional->dont_work_with)? $user->additional->dont_work_with :'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
                                 <h5>Mis valores más importantes son:</h5><p>{{(@$user->additional->values)? @$user->additional->values :'-'}}</p>
@@ -491,11 +524,20 @@
                                 <h5>Mi tono es:</h5><p>{{(@$user->additional->tone)? $user->additional->tone :'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Entré a Créetelo buscando:</h5><p>{{(@$user->additional->looking_for_in_creelo)? $user->additional->looking_for_in_creelo : '-'}}</p>
+                                <h5>Mi misión es ayudar a que más personas:</h5><p>{{(@$user->additional->mission)? @$user->additional->mission :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Prefiero no trabajar con personas que:</h5><p>{{(@$user->additional->dont_work_with)? $user->additional->dont_work_with :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Algún LOGRO que nos quieras compartir importante para ti?:</h5><p>{{(@$user->additional->achievement)? $user->additional->achievement :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>Trabajo en el corporativo, me dedico a:</h5><p>{{(@$user->additional->corporate_job)? @$user->additional->corporate_job :'-'}}</p>
                             </div>
                         </div>
-                        <div id="tab3" class="tab-content">
-                            <h2>Más sobre mí</h2>
+                        <div id="tab4" class="tab-content">
+                            <h2>Conóce Más</h2>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Dónde naciste y creciste?:</h5><p>{{(@$user->additional->birthplace)? $user->additional->birthplace :'-'}}</p>
                             </div>
@@ -503,19 +545,11 @@
                                 <h5>¿Qué signo eres?:</h5><p>{{(@$user->additional->sign)? $user->additional->sign :'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>¿Tienes hobbies?:</h5><p>{{(@$user->additional->hobbies)? $user->additional->hobbies :'-'}}</p>
-                            </div>
-                            <div class="mb-10 candidate-list-2">
                                 <h5>¿Bebida favorita?:</h5><p>{{(@$user->additional->favorite_drink)? $user->additional->favorite_drink :'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Tienes hijos?:</h5><p>{{(@$user->additional->has_children)? $user->additional->has_children :'-'}}</p>
                             </div>
-                            @if(!is_null(@$user->additional->is_married))
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Estás casada?:</h5><p>{{(@$user->additional->is_married)? $user->additional->is_married :'-'}}</p>
-                                </div>
-                            @endif
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Tu viaje favorito que has hecho?:</h5><p>{{(@$user->additional->favorite_trip)? $user->additional->favorite_trip :'-'}}</p>
                             </div>
@@ -524,6 +558,9 @@
                             </div>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Postre favorito?:</h5><p>{{(@$user->additional->favorite_dessert)? $user->additional->favorite_dessert :'-'}}</p>
+                            </div>
+                            <div class="mb-10 candidate-list-2">
+                                <h5>¿Estás casada?:</h5><p>{{(@$user->additional->is_married)? $user->additional->is_married :'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Comida favorita? (si, el postre va primero):</h5><p>{{(@$user->additional->favorite_food)? $user->additional->favorite_food :'-'}}</p>
@@ -538,26 +575,8 @@
                                 <h5>¿Qué PODCAST amas?:</h5><p>{{(@$user->additional->podcast_recommendation)? $user->additional->podcast_recommendation :'-'}}</p>
                             </div>
                         </div>
-                        <div id="tab4" class="tab-content">
-                            <h2>Para cerrar</h2>
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué te hace IRREMPLAZABLE?:</h5><p>{{(@$user->additional->irreplaceable)? $user->additional->irreplaceable :'-'}}</p>
-                                </div>
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Algún LOGRO que nos quieras compartir importante para ti?:</h5><p>{{(@$user->additional->achievement)? $user->additional->achievement :'-'}}</p>
-                                </div>
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</h5><p>{{(@$user->additional->biggest_dream)? $user->additional->biggest_dream :'-'}}</p>
-                                </div>
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué te gustaría recibir?:</h5><p>{{(@$user->additional->like_to_receive)? $user->additional->like_to_receive :'-'}}</p>
-                                </div>
-                                <div class="mb-10 candidate-list-2">
-                                    <h5>¿Qué te hace bien o te trae felicidad?:</h5><p>{{(@$user->additional->brings_you_happiness)? $user->additional->brings_you_happiness :'-'}}</p>
-                                </div>
-                        </div>
                         <div id="tab5" class="tab-content">
-                            <h2>Somos Abundantes</h2>
+                            <h2>Te Regalo:</h2>
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</h5><p>{{(@$user->additional->gift)? $user->additional->gift :'-'}}</p>
                             </div>

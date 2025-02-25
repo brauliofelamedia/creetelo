@@ -24,8 +24,8 @@ class AuthenticateAdmin extends Middleware
         }
     }
 
-    protected function redirectTo($request): ?string
+    /*protected function redirectTo($request): ?string
     {
         return Filament::getLoginUrl();
-    }
+    }*/
 }

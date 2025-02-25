@@ -9,6 +9,9 @@
                     @if (auth()->check())
                         <li><a style="font-weight:500;" href="{{route('dashboard.account.index')}}" class="user-account"><i class="fas fa-user"></i> <span class="hidden-phone">Mi Perfil</span></a></li>
                         <li><a href="{{route('logout')}}" class="sign-up"><i class="fas fa-unlock-alt"></i></a></li>
+                        @if (auth()->user()->hasRole(['admin', 'super_admin']))
+                           <li><a href="{{route('filament.admin.pages.dashboard')}}" class="sign-up"><i class="fas fa-user-cog"></i></a></li>
+                        @endif
                     @else
                         <li><a href="{{route('filament.admin.auth.login')}}"><i class="fas fa-user"></i> <span class="hidden-phone">Iniciar sesión</span></a></li>
                     @endif
