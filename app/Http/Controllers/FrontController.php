@@ -16,9 +16,12 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class FrontController extends Controller
 {
+    protected $webhookUrl = 'https://services.leadconnectorhq.com/hooks/4z3IHPMw9JB3Qkz8ttK8/webhook-trigger/4630879d-a8a5-47ab-bf76-ef3af9975685';
+
     public function index(Request $request)
     {
         $search = $request->search;
@@ -171,11 +174,39 @@ class FrontController extends Controller
     
                 //Generar el link
                 $assignLink = route('front.assign_password',$token);
-    
-                return response()->json([
-                    'message' => 'Se ha generado enlace para asignar la contraseña.',
-                    'url' => $assignLink
-                ]);
+
+                //Enviar a Webhook
+                try {
+                    $data = [
+                        'url' => $assignLink,
+                        'contact_id' => $user->contact_id,
+                        'email' => $user->email,
+                    ];
+                    
+                    // Enviar datos al webhook
+                    $response = Http::post($this->webhookUrl, $data);
+                    
+                    // Verificar respuesta
+                    if ($response->successful()) {
+                        return response()->json([
+                            'success' => true,
+                            'data' => $response->body(),
+                            'message' => 'Datos enviados exitosamente al webhook'
+                        ]);
+                    } else {                        
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Error al enviar datos al webhook',
+                            'error' => $response->body()
+                        ], 500);
+                    }
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error interno al procesar la solicitud',
+                        'error' => $e->getMessage()
+                    ], 500);
+                }
                 
             } catch (\Exception $e) {
                 return response()->json([
