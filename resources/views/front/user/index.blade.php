@@ -252,8 +252,8 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="location-input">Ubicación</label>
-                            <input type="text" id="location-input" class="form-control" placeholder="Ingresa una ubicación">
-                            <small>Solo introduce tu dirección para rellenar los campos de (País, estado y ciudad)</small>
+                            <input type="text" id="location-input" class="form-control" placeholder="Ejemplo: México, Jalisco, Zapopan">
+                            <small style="background-color: red;display:inline-block;margin-top:5px;color:white;border-radius:4px;padding:3px 10px;">Introduce País, estado y ciudad</small>
                         </div>
                     </div>
                     <div class="col-lg-6">
