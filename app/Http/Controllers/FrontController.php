@@ -34,11 +34,37 @@ class FrontController extends Controller
 
         $skills = Skill::all();
         $interests = Interest::all();
+
         $cities = User::whereNotNull('city')
                       ->distinct()
                       ->orderBy('city', 'asc')
                       ->pluck('city')
                       ->toArray();
+
+        $cityNames = [];
+
+        //dd($cities); 72118 Tepic
+        foreach ($cities as $cityId) {
+            $cityResponse = \Nnjeim\World\World::cities([
+                'filters' => [
+                    'id' => $cityId
+                ]
+            ]);
+
+        
+            if ($cityResponse->success && !empty($cityResponse->data)) {
+                $cityNames[] = [
+                    'id' => $cityId,
+                    'name' => $cityResponse->data[0]['name']
+                ];
+            } else {
+                // If city not found, use the ID as fallback
+                $cityNames[] = $cityId;
+            }
+        }
+
+        // Replace the dd($cities) with:
+        $cities = $cityNames;
 
         $query = User::query();
 
@@ -79,9 +105,17 @@ class FrontController extends Controller
         $query->orderBy('created_at', 'desc');
         $users = $query->with('additional')->paginate(20);
 
-        //dd($users);
+        $countriesResponse = \Nnjeim\World\World::countries([
+            'fields' => 'id,name,iso2'
+        ]);
+    
+        // Check if the response is successful and has data
+        $countriesMap = [];
+        if ($countriesResponse->success && !empty($countriesResponse->data)) {
+            $countriesMap = collect($countriesResponse->data)->pluck('iso2', 'id')->toArray();
+        }
 
-        return view('front.home', compact('search', 'users','skillSelect', 'interests' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'cities'));
+        return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'cities'));
     }
 
     public function addNewUser($contact)
@@ -114,7 +148,17 @@ class FrontController extends Controller
         $user = User::where('slug', $slug)->with('abilities')->first();
         $otherUsers = User::where('slug', '!=', $slug)->where('country', $user->country)->inRandomOrder()->limit(6)->get();
 
-        return view('front.contact.detail', compact('user', 'otherUsers'));
+        $countriesResponse = \Nnjeim\World\World::countries([
+            'fields' => 'id,name,iso2'
+        ]);
+    
+        // Check if the response is successful and has data
+        $countriesMap = [];
+        if ($countriesResponse->success && !empty($countriesResponse->data)) {
+            $countriesMap = collect($countriesResponse->data)->pluck('iso2', 'id')->toArray();
+        }
+
+        return view('front.contact.detail', compact('user', 'otherUsers','countriesMap'));
     }
 
     public function send_email(Request $request)

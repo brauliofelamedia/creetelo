@@ -349,8 +349,16 @@
                                         <label class="label-top">Ciudades</label>
                                         <select name="citySelect" class="form-control single" required>
                                             <option value="*">Todos</option>
-                                            @foreach($cities as $code => $city)
-                                                <option value="{{$city}}" {{($city == $citySelect)? 'selected':''}}>{{$city}}</option>
+                                            @foreach($cities as $city)
+                                                @if(is_array($city))
+                                                    <option value="{{ $city['id'] }}" {{ old('city', $citySelect) == $city['id'] ? 'selected' : '' }}>
+                                                        {{ $city['name'] }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $city }}" {{ old('city', $citySelect) == $city ? 'selected' : '' }}>
+                                                        {{ $city }}
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -448,8 +456,8 @@
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                     <div class="round-pic">
                                         <img src="{{$contact->avatar}}" alt="{{$contact->name}}">
-                                        @if($contact->country)
-                                            <span class="country">{{ flag($contact->country, 'w-32') }}</span>
+                                        @if($contact->country && isset($countriesMap[$contact->country]))
+                                            <span class="country">{{ flag($countriesMap[$contact->country], 'w-32') }}</span>
                                         @endif
                                     </div>
                                     <div class="Candidates-grid">

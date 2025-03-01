@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Str;
+
 Route::get('/clear-cache', function (Request $request) {
     Artisan::call('optimize:clear');
     return 'Cache cleared successfully.';
@@ -34,11 +35,13 @@ Route::get('dashboard/login',[UserController::class,'showLogin'])->name('dashboa
 Route::put('dashboard/update',[UserController::class,'update'])->middleware('auth')->name('dashboard.account.update');
 Route::put('dashboard/socials/update',[UserController::class,'social_update'])->middleware('auth')->name('dashboard.social.update');
 Route::post('dashboard/socials/delete',[UserController::class,'social_delete'])->middleware('auth')->name('dashboard.social.delete');
+Route::get('dashboard/updateiso',[UserController::class,'changeIso'])->middleware('auth')->name('dashboard.iso.update');
+Route::get('dashboard/deletastate',[UserController::class,'deleteStatesAndCities'])->middleware('auth')->name('dashboard.delete.state');
 //Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
 
 //Sync contacts
 Route::get('dashboard/sync',[UserController::class,'syncContacts'])->middleware('auth')->name('dashboard.sync');
-Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->name('dashboard.sync.crm');
+Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->middleware('auth')->name('dashboard.sync.crm');
 
 //Front
 Route::get('{page?}',[FrontController::class,'index'])->middleware('auth')->name('front.home');
@@ -49,7 +52,7 @@ Route::get('dashboard/assign-password/{token}',[FrontController::class,'assign_p
 Route::post('dashboard/assign',[FrontController::class,'assign_save'])->name('front.account.assign');
 
 //Contact detail
-Route::get('individual/{slug}',[FrontController::class,'contact_detail'])->name('front.contact.detail');
+Route::get('individual/{slug}',[FrontController::class,'contact_detail'])->middleware('auth')->name('front.contact.detail');
 
 //Send emails
 Route::post('send-email',[FrontController::class,'send_email'])->middleware('auth')->name('front.send_email');

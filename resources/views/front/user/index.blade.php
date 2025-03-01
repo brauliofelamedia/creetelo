@@ -1,7 +1,44 @@
 @extends('layouts.main')
 
 @push('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
+    .select2-container .select2-selection--single {
+        height: 58px !important;
+        padding: 14px 20px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 28px !important;
+        padding-left: 0 !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 56px !important;
+        right: 10px !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+    }
+
+    .select2-search--dropdown .select2-search__field {
+        padding: 10px !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #292775 !important;
+    }
+
+    .select2-results__option {
+        padding: 10px 20px !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
     .heading-2 {
         font-size: 35px!important;
     }
@@ -249,29 +286,28 @@
                             <input class="form-control" type="tel" name="whatsapp" value="{{$user->whatsapp}}">
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="location-input">Ubicación</label>
-                            <input type="text" id="location-input" class="form-control" placeholder="Ejemplo: México, Jalisco, Zapopan">
-                            <small style="background-color: red;display:inline-block;margin-top:5px;color:white;border-radius:4px;padding:3px 10px;">Introduce País, estado y ciudad</small>
-                        </div>
-                    </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label">País:<span class="required">*</span></label>
-                            <input type="text" class="form-control" name="country" id="country" value="{{$user->country}}" readonly required>
+                            <select class="form-control" name="country" id="country" required>
+                                <option value="">Selecciona un país</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Estado:</label>
-                            <input class="form-control" type="text" name="state" id="state" value="{{$user->state}}" readonly required>
+                            <select class="form-control" name="state" id="state" required>
+                                <option value="">Selecciona un estado</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Ciudad:<span class="required">*</span></label>
-                            <input class="form-control" type="text" name="city" id="city" value="{{$user->city}}" readonly required>
+                            <select class="form-control" name="city" id="city" required>
+                                <option value="">Selecciona una ciudad</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -555,53 +591,152 @@
 @endsection
 
 @push('js')
-<script src="https://maps.googleapis.com/maps/api/js?key={{config('services.google_maps.key')}}&libraries=places"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Inicializar el autocompletado
-        const input = document.getElementById('location-input');
-        const autocomplete = new google.maps.places.Autocomplete(input, {
-            types: ['geocode'], // Para direcciones geográficas
-        });
-        
-        // Listener para cuando el usuario selecciona una ubicación
-        autocomplete.addListener('place_changed', function() {
-            const place = autocomplete.getPlace();
-            
-            // Inicializar variables
-            let country = '';
-            let state = '';
-            let city = '';
-            
-            // Extraer componentes de la dirección
-            if (place.address_components) {
-                for (const component of place.address_components) {
-                    const componentType = component.types[0];
-                    
-                    switch (componentType) {
-                        case 'country':
-                            country = component.long_name;
-                            break;
-                        case 'administrative_area_level_1': // Estado/Provincia
-                            state = component.long_name;
-                            break;
-                        case 'locality': // Ciudad
-                        case 'administrative_area_level_2': // Municipio/Condado
-                            city = component.long_name;
-                            break;
-                    }
-                }
+    // Initialize Select2 with loading state
+    $('#country, #state, #city').select2({
+        placeholder: "Selecciona una opción",
+        allowClear: true,
+        width: '100%',
+        language: {
+            searching: function() {
+                return "Buscando...";
+            },
+            noResults: function() {
+                return "No se encontraron resultados";
+            },
+            loadingMore: function() {
+                return "Cargando más resultados...";
             }
+        }
+    });
+
+    // Disable state and city initially
+    $('#state, #city').prop('disabled', true);
+
+    async function loadInitialData() {
+        try {
+            // Show loading state
+            $('#country').prop('disabled', true);
             
-            // Actualizar los campos ocultos
-            document.getElementById('country').value = country;
-            document.getElementById('state').value = state;
-            document.getElementById('city').value = city;
+            const countryResponse = await $.ajax({
+                url: '/api/countries',
+                type: 'GET'
+            });
+
+            let countrySelect = $('#country');
+            countrySelect.empty();
+            countrySelect.append('<option value="">Selecciona un país</option>');
             
-            console.log('País:', country);
-            console.log('Estado:', state);
-            console.log('Ciudad/Municipio:', city);
-        });
+            let defaultCountryId = null;
+            countryResponse.data.forEach(function(country) {
+                // Assuming USA has ID 234 (verify this in your database)
+                defaultCountryId = 236;
+                let selected = country.id === parseInt("{{$user->country}}") ? 'selected' : '';
+                countrySelect.append(`<option value="${country.id}" data-name="${country.name}" ${selected}>${country.name}</option>`);
+            });
+
+            // Enable country select
+            $('#country').prop('disabled', false);
+
+            // If user has a country, use that, otherwise use USA
+            const countryId = "{{$user->country}}" || defaultCountryId;
+            
+            if(countryId) {
+                countrySelect.val(countryId).trigger('change');
+                await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure select2 is ready
+                await loadStates(countryId);
+            }
+        } catch (error) {
+            console.error('Error loading initial data:', error);
+            $('#country').prop('disabled', false);
+        }
+    }
+
+    async function loadStates(countryId) {
+        try {
+            // Disable and clear dependent selects
+            $('#state, #city').prop('disabled', true).empty();
+            $('#state').append('<option value="">Selecciona un estado</option>');
+            $('#city').append('<option value="">Selecciona una ciudad</option>');
+
+            const stateResponse = await $.ajax({
+                url: `/api/states/${countryId}`,
+                type: 'GET'
+            });
+
+            let stateSelect = $('#state');
+            
+            stateResponse.data.forEach(function(state) {
+                let selected = state.id === parseInt("{{$user->state}}") ? 'selected' : '';
+                stateSelect.append(`<option value="${state.id}" ${selected}>${state.name}</option>`);
+            });
+
+            $('#state').prop('disabled', false);
+
+            // If there's a selected state, wait for select2 to initialize before loading cities
+            if("{{$user->state}}") {
+                await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure select2 is ready
+                await loadCities(countryId, "{{$user->state}}");
+            }
+        } catch (error) {
+            console.error('Error loading states:', error);
+            $('#state').prop('disabled', false);
+        }
+    }
+
+    async function loadCities(countryId, stateId) {
+        try {
+            $('#city').prop('disabled', true).empty();
+            $('#city').append('<option value="">Selecciona una ciudad</option>');
+
+            const cityResponse = await $.ajax({
+                url: `/api/cities/${countryId}/${stateId}`,
+                type: 'GET'
+            });
+
+            let citySelect = $('#city');
+            
+            cityResponse.data.forEach(function(city) {
+                let selected = city.id === parseInt("{{$user->city}}") ? 'selected' : '';
+                citySelect.append(`<option value="${city.id}" ${selected}>${city.name}</option>`);
+            });
+
+            $('#city').prop('disabled', false);
+        } catch (error) {
+            console.error('Error loading cities:', error);
+            $('#city').prop('disabled', false);
+        }
+    }
+
+    // Event Handlers using Select2 events
+    $('#country').on('select2:select select2:clear', async function(e) {
+        const countryId = $(this).val();
+        if(countryId) {
+            await loadStates(countryId);
+        } else {
+            $('#state, #city').prop('disabled', true).empty();
+            $('#state').append('<option value="">Selecciona un estado</option>');
+            $('#city').append('<option value="">Selecciona una ciudad</option>');
+            $('#state, #city').trigger('change');
+        }
+    });
+
+    $('#state').on('select2:select select2:clear', async function(e) {
+        const countryId = $('#country').val();
+        const stateId = $(this).val();
+        if(countryId && stateId) {
+            await loadCities(countryId, stateId);
+        } else {
+            $('#city').prop('disabled', true).empty();
+            $('#city').append('<option value="">Selecciona una ciudad</option>');
+            $('#city').trigger('change');
+        }
+    });
+
+    // Initialize on document ready
+    $(document).ready(function() {
+        loadInitialData();
     });
 </script>
 <script>
@@ -616,6 +751,7 @@
     $(document).on('click', '.delete-row', function() {
         $(this).closest('.row').remove();
     });
+
     $(document).ready(function() {
 
         //Borrado

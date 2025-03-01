@@ -471,7 +471,7 @@ class UserController extends Controller
                             $user->slug = Str::slug($fullName);
                             $user->email = $contact['email'];
                             $user->postal_code = $contact['postalCode'];
-                            $user->country = $contact['country'];
+                            $user->country = $this->convertIso2ToWorldId($contact['country']);
                             $user->address = $contact['address'];
                             $user->website = $contact['website'];
                             $user->state = $contact['state'];
@@ -535,7 +535,7 @@ class UserController extends Controller
                     //$userExist->slug = Str::slug($fullName);
                     //$userExist->email = $contact['email'];
                     $userExist->postal_code = $contact['postalCode'];
-                    $userExist->country = $contact['country'];
+                    $userExist->country = $this->convertIso2ToWorldId($contact['country']);
                     $userExist->address = $contact['address'];
                     $userExist->website = $contact['website'];
                     $userExist->state = $contact['state'];
@@ -618,7 +618,7 @@ class UserController extends Controller
                                     $user->slug = Str::slug($fullName);
                                     $user->email = $contact['email'];
                                     $user->postal_code = $contact['postalCode'];
-                                    $user->country = $contact['country'];
+                                    $user->country = $this->convertIso2ToWorldId($contact['country']);;
                                     $user->address = $contact['address'];
                                     $user->website = $contact['website'];
                                     $user->state = $contact['state'];
@@ -640,7 +640,7 @@ class UserController extends Controller
                             $userExist->name = $contact['firstNameLowerCase'];
                             $userExist->last_name = $contact['lastNameLowerCase'];
                             $userExist->postal_code = $contact['postalCode'];
-                            $userExist->country = $contact['country'];
+                            $userExist->country = $this->convertIso2ToWorldId($contact['country']);
                             $userExist->address = $contact['address'];
                             $userExist->website = $contact['website'];
                             $userExist->state = $contact['state'];
@@ -652,7 +652,6 @@ class UserController extends Controller
                             $userExist->additional->save();
                         }
                     } catch (\Exception $e) {
-                        \Log::error('Error procesando contacto: ' . json_encode($contact) . ' - Error: ' . $e->getMessage());
                         continue; // Continuar con el siguiente contacto
                     }
                 }
@@ -660,7 +659,6 @@ class UserController extends Controller
             
             return response()->json(['status' => 'success', 'message' => 'Contactos sincronizados correctamente']);
         } catch (\Exception $e) {
-            \Log::error('Error en sincronización de contactos: ' . $e->getMessage());
             return response()->json(['status' => 'error', 'message' => 'Error en la sincronización: ' . $e->getMessage()], 500);
         }
     }
@@ -709,6 +707,45 @@ class UserController extends Controller
         
         foreach ($fieldMappings as $attribute => $id) {
             $user->additional->$attribute = $this->getCustomFieldValue($customFields, $id);
+        }
+    }
+
+    protected function convertIso2ToWorldId($iso2)
+    {
+        try {
+            $countriesResponse = \Nnjeim\World\World::countries([
+                'fields' => 'id,iso2'
+            ]);
+
+            if ($countriesResponse->success && !empty($countriesResponse->data)) {
+                $country = collect($countriesResponse->data)
+                    ->where('iso2', strtoupper($iso2))
+                    ->first();
+                return $country ? $country['id'] : null;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function changeIso()
+    {
+        $users = User::all();
+        foreach($users as $user){
+            $user->country = $this->convertIso2ToWorldId($user->country);
+            $user->save();
+        }
+    }
+
+    public function deleteStatesAndCities()
+    {
+        $users = User::all();
+        foreach($users as $user){
+            $user->state = null;
+            $user->city = null;
+            $user->save();
         }
     }
 }

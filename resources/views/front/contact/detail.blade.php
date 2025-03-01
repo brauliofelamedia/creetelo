@@ -405,8 +405,8 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
                     <div class="avatar" style="background-image:url('{{$user->avatar}}');">
-                        @if($user->country)
-                            <span class="country">{{ flag($user->country, 'w-32') }}</span>
+                        @if($user->country && isset($countriesMap[$user->country]))
+                            <span class="country">{{ flag($countriesMap[$user->country], 'w-32') }}</span>
                         @endif
                     </div>
                 </div>
@@ -605,9 +605,9 @@
                                         <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
                                             <div class="round-pic">
                                                 <img src="{{$user->avatar}}" alt="{{$user->fullname}}">
-                                                @if($user->country)
-                                                        <span class="country">{{ flag($user->country, 'w-32') }}</span>
-                                                    @endif
+                                                @if($user->country && isset($countriesMap[$user->country]))
+                                                    <span class="country">{{ flag($countriesMap[$user->country], 'w-32') }}</span>
+                                                @endif
                                             </div>
                                             <div class="Candidates-grid">
                                                 <div class="mt-20 top-grid-1 d-flex flex-column align-items-center justify-content-center">
