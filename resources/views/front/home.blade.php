@@ -349,7 +349,7 @@
                                         <label class="label-top">Ciudades</label>
                                         <select name="citySelect" class="form-control single" required>
                                             <option value="*">Todos</option>
-                                            @foreach($cities as $city)
+                                            @foreach($citiesFinal as $city)
                                                 @if(is_array($city))
                                                     <option value="{{ $city['id'] }}" {{ old('city', $citySelect) == $city['id'] ? 'selected' : '' }}>
                                                         {{ $city['name'] }}

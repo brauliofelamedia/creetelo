@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Nnjeim\World\World;
+use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller
 {
@@ -32,7 +33,6 @@ class FrontController extends Controller
         $signSelect = $request->signSelect;
         $interestSelect = $request->interestSelect;
         
-
         $skills = Skill::all();
         $interests = Interest::all();
 
@@ -45,27 +45,16 @@ class FrontController extends Controller
         $cityNames = [];
 
         //dd($cities); 72118 Tepic
-        foreach ($cities as $cityId) {
-            $cityResponse = World::cities([
-                'filters' => [
-                    'id' => $cityId
-                ]
-            ]);
+        $query = "SELECT DISTINCT id, name FROM cities WHERE id IN (" . implode(',', $cities) . ")";
+        $citiesResult = DB::select($query);
 
-        
-            if ($cityResponse->success && !empty($cityResponse->data)) {
-                $cityNames[] = [
-                    'id' => $cityId,
-                    'name' => $cityResponse->data[0]['name']
-                ];
-            } else {
-                // If city not found, use the ID as fallback
-                $cityNames[] = $cityId;
-            }
+        if(!empty($citiesResult)) {
+            $citiesFinal = array_map(function($city) {
+                return $city->name;
+            }, $citiesResult);
+        } else {
+            $citiesFinal = $cities;
         }
-
-        // Replace the dd($cities) with:
-        $cities = $cityNames;
 
         $query = User::query();
 
@@ -116,7 +105,7 @@ class FrontController extends Controller
             $countriesMap = collect($countriesResponse->data)->pluck('iso2', 'id')->toArray();
         }
 
-        return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'cities'));
+        return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'citiesFinal'));
     }
 
     public function addNewUser($contact)
