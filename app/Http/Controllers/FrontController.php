@@ -46,7 +46,7 @@ class FrontController extends Controller
 
         //dd($cities); 72118 Tepic
         foreach ($cities as $cityId) {
-            $cityResponse = \Nnjeim\World\World::cities([
+            $cityResponse = World::cities([
                 'filters' => [
                     'id' => $cityId
                 ]
@@ -149,7 +149,7 @@ class FrontController extends Controller
         $user = User::where('slug', $slug)->with('abilities')->first();
         $otherUsers = User::where('slug', '!=', $slug)->where('country', $user->country)->inRandomOrder()->limit(6)->get();
 
-        $countriesResponse = \Nnjeim\World\World::countries([
+        $countriesResponse = World::countries([
             'fields' => 'id,name,iso2'
         ]);
     
