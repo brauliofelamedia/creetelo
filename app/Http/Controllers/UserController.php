@@ -733,9 +733,43 @@ class UserController extends Controller
     public function changeIso()
     {
         $users = User::all();
-        foreach($users as $user){
-            $user->country = $this->convertIso2ToWorldId($user->country);
-            $user->save();
+        foreach($users as $user) {
+            try {
+                if ($user->country) {
+                    $user->country = $this->convertIso2ToWorldId($user->country);
+                }
+                if ($user->state) {
+                    $stateResponse = \Nnjeim\World\World::states([
+                        'fields' => 'id,name',
+                        'filters' => [
+                            'country_id' => $user->country
+                        ]
+                    ]);
+                    if ($stateResponse->success) {
+                        $state = collect($stateResponse->data)
+                            ->where('name', ucfirst(strtolower($user->state)))
+                            ->first();
+                        $user->state = $state ? $state['id'] : null;
+                    }
+                }
+                if ($user->city && $user->state) {
+                    $cityResponse = \Nnjeim\World\World::cities([
+                        'fields' => 'id,name',
+                        'filters' => [
+                            'state_id' => $user->state
+                        ]
+                    ]);
+                    if ($cityResponse->success) {
+                        $city = collect($cityResponse->data)
+                            ->where('name', ucfirst(strtolower($user->city)))
+                            ->first();
+                        $user->city = $city ? $city['id'] : null;
+                    }
+                }
+                $user->save();
+            } catch (\Exception $e) {
+                continue;
+            }
         }
     }
 
