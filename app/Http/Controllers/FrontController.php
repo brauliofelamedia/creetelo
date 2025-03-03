@@ -43,17 +43,20 @@ class FrontController extends Controller
                       ->toArray();
 
         $cityNames = [];
+        $citiesFinal = [];
 
         //dd($cities); 72118 Tepic
-        $query = "SELECT DISTINCT id, name FROM cities WHERE id IN (" . implode(',', $cities) . ")";
-        $citiesResult = DB::select($query);
-
-        if(!empty($citiesResult)) {
-            $citiesFinal = array_map(function($city) {
-                return $city->name;
-            }, $citiesResult);
-        } else {
-            $citiesFinal = $cities;
+        if($cities){
+            $query = "SELECT DISTINCT id, name FROM cities WHERE id IN (" . implode(',', $cities) . ")";
+            $citiesResult = DB::select($query);
+    
+            if(!empty($citiesResult)) {
+                $citiesFinal = array_map(function($city) {
+                    return $city->name;
+                }, $citiesResult);
+            } else {
+                $citiesFinal = $cities;
+            }
         }
 
         $query = User::query();
