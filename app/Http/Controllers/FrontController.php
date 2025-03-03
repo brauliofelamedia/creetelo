@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Nnjeim\World\World;
 
 class FrontController extends Controller
 {
@@ -105,7 +106,7 @@ class FrontController extends Controller
         $query->orderBy('created_at', 'desc');
         $users = $query->with('additional')->paginate(20);
 
-        $countriesResponse = \Nnjeim\World\World::countries([
+        $countriesResponse = World::countries([
             'fields' => 'id,name,iso2'
         ]);
     
