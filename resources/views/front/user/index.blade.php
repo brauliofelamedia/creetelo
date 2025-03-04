@@ -665,12 +665,21 @@
                 type: 'GET'
             });
 
+            console.log(stateResponse);
+
             let stateSelect = $('#state');
             
-            stateResponse.data.forEach(function(state) {
-                let selected = state.id === parseInt("{{$user->state}}") ? 'selected' : '';
-                stateSelect.append(`<option value="${state.id}" ${selected}>${state.name}</option>`);
-            });
+            if (stateResponse && Array.isArray(stateResponse)) {
+                stateResponse.forEach(function(state) {
+                    let selected = state.id === parseInt("{{$user->state}}") ? 'selected' : '';
+                    stateSelect.append(`<option value="${state.id}" ${selected}>${state.name}</option>`);
+                });
+            } else if (stateResponse && Array.isArray(stateResponse.data)) {
+                stateResponse.data.forEach(function(state) {
+                    let selected = state.id === parseInt("{{$user->state}}") ? 'selected' : '';
+                    stateSelect.append(`<option value="${state.id}" ${selected}>${state.name}</option>`);
+                });
+            }
 
             $('#state').prop('disabled', false);
 
@@ -697,10 +706,17 @@
 
             let citySelect = $('#city');
             
-            cityResponse.data.forEach(function(city) {
-                let selected = city.id === parseInt("{{$user->city}}") ? 'selected' : '';
-                citySelect.append(`<option value="${city.id}" ${selected}>${city.name}</option>`);
-            });
+            if (cityResponse && Array.isArray(cityResponse)) {
+                cityResponse.forEach(function(city) {
+                    let selected = city.id === parseInt("{{$user->city}}") ? 'selected' : '';
+                    citySelect.append(`<option value="${city.id}" ${selected}>${city.name}</option>`);
+                });
+            } else if (cityResponse && Array.isArray(cityResponse.data)) {
+                cityResponse.data.forEach(function(city) {
+                    let selected = city.id === parseInt("{{$user->city}}") ? 'selected' : '';
+                    citySelect.append(`<option value="${city.id}" ${selected}>${city.name}</option>`);
+                });
+            }
 
             $('#city').prop('disabled', false);
         } catch (error) {

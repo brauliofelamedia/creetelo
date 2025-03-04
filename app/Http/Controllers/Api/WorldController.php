@@ -6,17 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Nnjeim\World\World;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class WorldController extends Controller
 {
     public function countries()
     {
         try {
-            $countries = World::countries([
-                'fields' => 'id,name'  // Changed from array to string
-            ]);
-
-            Log::info('Countries response:', ['response' => $countries]);
+            $countries = DB::table('countries')
+                ->select('id', 'name')
+                ->get();
 
             return $countries;
         } catch (\Exception $e) {
@@ -28,16 +27,13 @@ class WorldController extends Controller
     public function states($country_id = null)
     {
         try {
-            Log::info('Requesting states for country_id: ' . $country_id);
             
-            $response = World::states([
-                'fields' => 'id,name',
-                'filters' => [
-                    'country_id' => $country_id
-                ]
-            ]);
-            
-            Log::info('States response:', ['response' => $response]);
+            $response = DB::table('states')
+                ->select('id', 'name')
+                ->when($country_id, function ($query) use ($country_id) {
+                    return $query->where('country_id', $country_id);
+                })
+                ->get();
             
             return response()->json($response);
         } catch (\Exception $e) {
@@ -49,15 +45,11 @@ class WorldController extends Controller
     public function cities($country_id, $state_id)
     {
         try {
-            $response = World::cities([
-                'fields' => 'id,name',
-                'filters' => [
-                    'country_id' => $country_id,
-                    'state_id' => $state_id
-                ]
-            ]);
-
-            Log::info('Cities response:', ['response' => $response]);
+            $response = DB::table('cities')
+                ->select('id', 'name')
+                ->where('country_id', $country_id)
+                ->where('state_id', $state_id)
+                ->get();
             
             return response()->json($response);
         } catch (\Exception $e) {
