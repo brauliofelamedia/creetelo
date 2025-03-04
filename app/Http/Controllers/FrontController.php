@@ -248,17 +248,41 @@ class FrontController extends Controller
                 'message' => 'El usuario ya tiene una cuenta asignada.'
             ]);
         }
-        
     }
 
     public function assign_password($token)
     {
-        
-        $user = User::where('password_assign_token', $token)
-                    ->where('password_assign_expires_at', '>', Carbon::now())
-                    ->first();
+        $user = User::where('password_assign_token', $token)->first();
 
-        return view('front.user.assign-password',compact('user'));
+        if (!$user) {
+            session()->flash('filament.notifications', [
+                [
+                    'id' => Str::uuid()->toString(),
+                    'type' => 'danger',
+                    'title' => 'El token es invalido',
+                    'body' => 'Te invitamos a solicitar un correo de recuperación en el formulario inferior.',
+                    'actions' => [],
+                    'duration' => 12000,
+                ]
+            ]);
+            
+            return redirect()->route('filament.admin.auth.password-reset.request');
+        }
+
+        if (Carbon::parse($user->password_assign_expires_at)->isPast()) {
+
+            $tokenNew = Str::random(60);
+            $expiresAt = Carbon::now()->addHours(72);
+
+            $user->password_assign_token = $tokenNew;
+            $user->password_assign_expires_at = $expiresAt;
+            $user->save();
+
+            return redirect()->route('front.assign_password', $tokenNew);
+        } else {
+            return view('front.user.assign-password', compact('user'));
+        }
+    
     }
 
     public function assign_save(Request $request)

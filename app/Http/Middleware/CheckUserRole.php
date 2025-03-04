@@ -21,10 +21,6 @@ class CheckUserRole
         $currentUrl = URL::current();
         $explode = explode('/', $currentUrl);
 
-        /*if (end($explode) == 'admin' && auth()->check() && $user->HasRole('user')) {
-            return redirect()->route('dashboard.account.index');
-        }*/
-
         return $next($request);
     }
 }

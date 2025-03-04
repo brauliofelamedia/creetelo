@@ -17,6 +17,16 @@ Route::get('/clear-cache', function (Request $request) {
     return 'Cache cleared successfully.';
 })->middleware('auth');
 
+// Storage link command route
+Route::get('/storage-link', function (Request $request) {
+    try {
+        Artisan::call('storage:link');
+        return 'Storage link created successfully.';
+    } catch (\Exception $e) {
+        return 'Error creating storage link: ' . $e->getMessage();
+    }
+})->middleware('auth');
+
 //Login & Logout
 Route::get('login', function () {
     return redirect()->route('filament.admin.auth.login');

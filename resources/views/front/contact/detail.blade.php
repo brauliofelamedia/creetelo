@@ -360,6 +360,7 @@
     }
 
     @media (max-width: 480px) {
+
         .individual-banner {
             height: 220px;
             background-position: right;
@@ -416,7 +417,7 @@
                                 @if($user->is_email)
                                     <li><a href="{{$user->email}}" class="{{(is_null($user->email))? 'disabled' : ''}}" target="_blank"><i class="bi bi-envelope"></i></a></li>
                                 @endif
-                                <li><a href="{{$user->whatsapp}}" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
+                                <li><a href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
                                 <li><a href="{{$user->linkedin}}" class="{{(is_null($user->linkedin))? 'disabled' : ''}}" target="_blank"><i class="bi bi-linkedin"></i></a></li>
                                 <li><a href="{{$user->instagram}}" class="{{(is_null($user->instagram))? 'disabled' : ''}}" target="_blank"><i class="bi bi-instagram"></i></a></li>
                                 <li><a href="{{$user->website}}" class="{{(is_null($user->website))? 'disabled' : ''}}" target="_blank"><i class="bi bi-cursor"></i></a></li>
@@ -461,7 +462,7 @@
                                 <h5>Nombre:</h5><p>{{(@$user->fullname)? @$user->fullname : '-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>WhatsApp:</h5><p> @if(@$user->whatsapp){ <a class="a-whatsapp" href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank">Enviar un mensaje a WhatsApp</a>@else - </p>@endif
+                                <h5>WhatsApp:</h5><p> @if(@$user->whatsapp) <a class="a-whatsapp" href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank">Enviar un mensaje a WhatsApp</a>@else - </p>@endif
                             </div>
                             @if($user->is_email)
                                 <div class="mb-10 candidate-list-2">

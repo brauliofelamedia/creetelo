@@ -190,20 +190,29 @@
     }
 
     @media (max-width: 480px) {
+        #sendData {
+            right: 0;
+            width: 100%;
+            font-size: 12px;
+            border-radius: 0;
+            padding: 18px 0;
+        }
+
         .avatar {
-            width: 130px;
-            height: 130px;
-            top: -119px;
-            left: 35px;
+            width: 100px;
+            height: 100px;
+            top: -69px;
+            left: 30px;
+            border-radius: 10px;
         }
 
         .heading-2 {
-            font-size: 28px !important;
+            font-size: 23px !important;
             margin: 0;
         }
 
         .contact-form {
-            padding:20px;
+            padding:5px;
             padding-top: 40px!important;
         }
     }
@@ -217,8 +226,8 @@
             <img src="{{asset('images/shape/shape-3.png')}}" alt="" class="shape shape-13">
             <div class="container">
                 <div class="row d-flex align-items-center justify-content-center flex-column">
-                    <div class="d-flex align-items-center justify-content-center mt-240 md-mt-100 pb-60">
-                        <h1 class="mb-10">Mi cuenta</h1>
+                    <div class="d-flex align-items-center justify-content-center mt-240 md-mt-120 pb-60 md-pb-80 ">
+                        <h1 class="mb-10 my-account-title">Mi cuenta</h1>
                     </div>
                 </div>
             </div>
