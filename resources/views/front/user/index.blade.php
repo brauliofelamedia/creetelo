@@ -216,6 +216,16 @@
             padding-top: 40px!important;
         }
     }
+
+    .message-danger {
+        background-color: red;
+        color: white;
+        padding: 2px 8px;
+        display: inline-block;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-size: 13px;
+    }
 </style>
 @endpush
 
@@ -292,7 +302,8 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">WhatsApp:</label>
-                            <input class="form-control" type="tel" name="whatsapp" value="{{$user->whatsapp}}">
+                            <input class="form-control" type="tel" name="whatsapp" value="{{$user->whatsapp}}" placeholder="Ejemplo: 523114174458">
+                            <small class="message-danger">Recuerda agregar el código de tu país.</small>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -328,7 +339,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Linkedin:</label>
-                            <input class="form-control" type="url" name="instagram" value="{{$user->instagram}}">
+                            <input class="form-control" type="url" name="linkedin" value="{{$user->linkedin}}">
                         </div>
                     </div>
                     <div class="col-lg-6">

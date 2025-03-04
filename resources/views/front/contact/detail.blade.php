@@ -36,9 +36,9 @@
 
     .avatar .country svg {
         width: 50px;
-        margin-top: 11px;
+        margin-top: 9px;
         box-shadow: 0 0 10px rgba(1, 1, 1, 0.2);
-        margin-left: 7px;
+        margin-left: 2px;
     }
 
     .country {
@@ -107,8 +107,8 @@
     }
 
     .social-link-front li a:hover {
-        background-color: white;
-        color: #292775;
+        background-color: #4d4c89;
+        color: white;
     }
 
     .ocupation {
@@ -415,12 +415,12 @@
                         <div class="social-link-front">
                             <ul>
                                 @if($user->is_email)
-                                    <li><a href="{{$user->email}}" class="{{(is_null($user->email))? 'disabled' : ''}}" target="_blank"><i class="bi bi-envelope"></i></a></li>
+                                    <li><a href="{{$user->email}}" class="{{(is_null($user->email))? 'disabled' : ''}}" target="_blank" title="Correo electrónico"><i class="bi bi-envelope"></i></a></li>
                                 @endif
-                                <li><a href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank"><i class="bi bi-whatsapp"></i></a></li>
-                                <li><a href="{{$user->linkedin}}" class="{{(is_null($user->linkedin))? 'disabled' : ''}}" target="_blank"><i class="bi bi-linkedin"></i></a></li>
-                                <li><a href="{{$user->instagram}}" class="{{(is_null($user->instagram))? 'disabled' : ''}}" target="_blank"><i class="bi bi-instagram"></i></a></li>
-                                <li><a href="{{$user->website}}" class="{{(is_null($user->website))? 'disabled' : ''}}" target="_blank"><i class="bi bi-cursor"></i></a></li>
+                                <li><a href="https://api.whatsapp.com/send?phone={{$user->whatsapp}}" target="_blank" class="{{(is_null($user->whatsapp))? 'disabled' : ''}}" target="_blank" title="WhatsApp"><i class="bi bi-whatsapp"></i></a></li>
+                                <li><a href="{{$user->linkedin}}" class="{{(is_null($user->linkedin))? 'disabled' : ''}}" target="_blank" title="LinkedIn"><i class="bi bi-linkedin"></i></a></li>
+                                <li><a href="{{$user->instagram}}" class="{{(is_null($user->instagram))? 'disabled' : ''}}" target="_blank" title="Instagram"><i class="bi bi-instagram"></i></a></li>
+                                <li><a href="{{$user->website}}" class="{{(is_null($user->website))? 'disabled' : ''}}" target="_blank" title="Sitio Web"><i class="bi bi-globe"></i></a></li>
                             </ul>
                         </div>
                         <h1>{{$user->fullname}}</h1>

@@ -173,6 +173,7 @@ class UserController extends Controller
             if ($value !== $user->$key) {
                 $user->$key = $value;
             }
+            $user->save();
         }
 
         if($request->is_email == 'on'){
