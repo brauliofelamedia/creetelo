@@ -98,15 +98,11 @@ class FrontController extends Controller
         $query->orderBy('created_at', 'desc');
         $users = $query->with('additional')->paginate(20);
 
-        $countriesResponse = \Nnjeim\World\World::countries([
-            'fields' => 'id,name,iso2'
-        ]);
-    
-        // Check if the response is successful and has data
-        $countriesMap = [];
-        if ($countriesResponse->success && !empty($countriesResponse->data)) {
-            $countriesMap = collect($countriesResponse->data)->pluck('iso2', 'id')->toArray();
-        }
+        $countriesMap = DB::table('countries')
+            ->select('id', 'iso2')
+            ->get()
+            ->pluck('iso2', 'id')
+            ->toArray();
 
         return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'citiesFinal'));
     }
@@ -141,15 +137,11 @@ class FrontController extends Controller
         $user = User::where('slug', $slug)->with('abilities')->first();
         $otherUsers = User::where('slug', '!=', $slug)->where('country', $user->country)->inRandomOrder()->limit(6)->get();
 
-        $countriesResponse = World::countries([
-            'fields' => 'id,name,iso2'
-        ]);
-    
-        // Check if the response is successful and has data
-        $countriesMap = [];
-        if ($countriesResponse->success && !empty($countriesResponse->data)) {
-            $countriesMap = collect($countriesResponse->data)->pluck('iso2', 'id')->toArray();
-        }
+        $countriesMap = DB::table('countries')
+            ->select('id', 'iso2')
+            ->get()
+            ->pluck('iso2', 'id')
+            ->toArray();
 
         return view('front.contact.detail', compact('user', 'otherUsers','countriesMap'));
     }
