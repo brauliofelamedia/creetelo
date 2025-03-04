@@ -454,8 +454,7 @@
                         @foreach($users as $contact)
                             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6 col-12">
                                 <div class="candidates-1 d-flex flex-column align-items-center justify-content-center">
-                                    <div class="round-pic">
-                                        <img src="{{$contact->avatar}}" alt="{{$contact->name}}">
+                                    <div class="round-pic" style="background-image:url('{{$contact->avatar}}');">
                                         @if($contact->country && isset($countriesMap[$contact->country]))
                                             <span class="country">{{ flag($countriesMap[$contact->country], 'w-32') }}</span>
                                         @endif
