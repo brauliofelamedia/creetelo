@@ -84,3 +84,13 @@ Route::middleware('auth')->prefix('admin/configs')->group(function () {
     Route::get('renew', [ConfigController::class, 'renewToken'])->name('config.renewtoken');
     Route::get('authorization', [ConfigController::class, 'getAuthorizationCode'])->name('config.authorization');
 });
+
+// Magic Link Routes (rutas públicas)
+Route::middleware(['web'])->group(function () {
+    Route::get('magic-link-request', App\Filament\Pages\MagicLinkLogin::class)
+        ->name('magic-link.request')
+        ->middleware('guest');
+    Route::get('magic-link/{token}', [App\Http\Controllers\MagicLinkController::class, 'login'])
+        ->name('magic-link.login')
+        ->middleware('guest');
+});

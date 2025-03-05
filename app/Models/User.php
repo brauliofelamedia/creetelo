@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Config;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -83,16 +84,31 @@ class User extends Authenticatable implements FilamentUser
         $state = $this->state;
         $city = $this->city;
 
-        //Obtener las ubicaciones
-        $countries = Config::get('countries.countries');
-        $countryName = $countries[$this->country] ?? 'País no encontrado';
-        ($countryName == 'Mexico') ? $countryName = 'México' : $countryName;
+        if (!$country) {
+            return null;
+        }
+
+        // Query country name from database using DB facade
+        $countryName = DB::table('countries')
+            ->where('id', $country)
+            ->value('name');
+
+        $stateName = DB::table('states')
+            ->where('id', $state)
+            ->value('name');
+
+        $cityName = DB::table('cities')
+            ->where('id', $city)
+            ->value('name');
+            
+        $countryName = $countryName ?? 'País no encontrado';
+        $countryName = ($countryName == 'Mexico') ? 'México' : $countryName;
 
         if ($country && $city) {
-            return $countryName.' - '.$city;
-        } else {
-            return $countryName;
+            return $countryName.' - '.$stateName.' - '.$cityName;
         }
+
+        return $countryName;
     }
 
     public function getAvatarAttribute($avatar)

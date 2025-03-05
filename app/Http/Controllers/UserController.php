@@ -456,7 +456,9 @@ class UserController extends Controller
             foreach ($data1['contacts'] as $contact) {
                 $userExist = User::where('contact_id', $contact['id'])->first();
                 $customFields = $contact['customFields'];
-                $fullName = $contact['firstNameLowerCase'].' '.$contact['lastNameLowerCase'];
+                $randomNum = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+                $fullName = $randomNum . '-' . $contact['firstNameLowerCase'] . ' ' . $contact['lastNameLowerCase'];
+                $fullName = Str::slug($fullName);
 
                 if (!isset($userExist)) {
 
@@ -469,7 +471,7 @@ class UserController extends Controller
                             $user->contact_id = $contact['id'];
                             $user->name = $contact['firstNameLowerCase'];
                             $user->last_name = $contact['lastNameLowerCase'];
-                            $user->slug = Str::slug($fullName);
+                            $user->slug = $fullName;
                             $user->email = $contact['email'];
                             $user->postal_code = $contact['postalCode'];
                             $user->country = $this->convertIso2ToWorldId($contact['country']);
