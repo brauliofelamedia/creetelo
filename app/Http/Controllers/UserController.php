@@ -93,18 +93,18 @@ class UserController extends Controller
         $rules = [
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Archivo de imagen, máximo 2MB
             'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255', 
             'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
             'whatsapp' => 'nullable|string|max:20',
-            'country' => 'required|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'city' => 'required|string|max:255',
-            'instagram' => 'nullable|url|max:255',
-            'linkedin' => 'nullable|url|max:255',
+            'country' => 'string',
+            'state' => 'string', 
+            'city' => 'string',
+            'instagram' => 'nullable|max:255',
+            'linkedin' => 'nullable|max:255',
             'website' => 'nullable|url|max:255',
             'about_me' => 'required|string|max:1000',
             'abilities' => 'required|array',
-            'how_vain' => 'nullable|string|max:1000',
+            'how_vain' => 'nullable|string|max:1000', 
             'biggest_dream' => 'nullable|string|max:1000',
             'brings_you_happiness' => 'nullable|string|max:1000',
             'looking_for_in_creelo' => 'nullable|string|max:1000',
@@ -113,7 +113,7 @@ class UserController extends Controller
             'ideal_audience' => 'nullable|string|max:1000',
             'values' => 'nullable|string|max:1000',
             'tone' => 'nullable|string|max:1000',
-            'mission' => 'nullable|string|max:1000',
+            'mission' => 'nullable|string|max:1000', 
             'dont_work_with' => 'nullable|string|max:1000',
             'achievement' => 'nullable|string|max:1000',
             'corporate_job' => 'nullable|string|max:1000',
@@ -133,16 +133,18 @@ class UserController extends Controller
             'gift' => 'nullable|string|max:1000',
             'gift_link' => 'nullable|url|max:255',
         ];
-    
-        // Mensajes personalizados (opcional)
+        
+        // Mensajes personalizados
         $messages = [
             'name.required' => 'El campo nombre es obligatorio.',
             'last_name.required' => 'El campo apellidos es obligatorio.',
             'email.required' => 'El campo correo electrónico es obligatorio.',
             'email.unique' => 'El correo electrónico ya está en uso.',
+            'country.required' => 'El campo país es obligatorio.',
+            'state.required' => 'El campo estado/provincia es obligatorio.',
+            'city.required' => 'El campo ciudad es obligatorio.',
             'about_me.required' => 'El campo bio corta es obligatorio.',
             'abilities.required' => 'Debes seleccionar al menos una habilidad.',
-            'interests.required' => 'Debes seleccionar al menos un interés.',
             'ocupation.required' => 'El campo ocupación es obligatorio.',
             'business_about.required' => 'El campo sobre mi negocio es obligatorio.',
         ];

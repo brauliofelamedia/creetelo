@@ -12,6 +12,10 @@
         padding: 10px;
     }
 
+    li {
+        list-style-type: none;
+    }
+
     .select2-container--bootstrap-5 .select2-selection {
         min-height: 60px!important;
         border-radius: 5px!important;
@@ -307,19 +311,19 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Nombre: <span class="required">*</span></label>
-                            <input type="text" class="form-control" name="name" value="{{ old('name', ucfirst($user->name)) }}" required>
+                            <input type="text" class="form-control @error('name') is-invalid border-danger @enderror" name="name" value="{{ old('name', ucfirst($user->name)) }}" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Apellidos: <span class="required">*</span></label>
-                            <input type="text" class="form-control" name="last_name" value="{{ old('last_name', ucfirst($user->last_name)) }}" required>
+                            <input type="text" class="form-control @error('last_name') is-invalid border-danger @enderror" name="last_name" value="{{ old('last_name', ucfirst($user->last_name)) }}" required>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Correo electrónico: <span class="required">*</span></label>
-                            <input type="email" class="form-control" name="email" value="{{$user->email}}" readonly required>
+                            <input type="email" class="form-control @error('email') is-invalid border-danger @enderror" name="email" value="{{$user->email}}" readonly required>
                             <div class="form-check" style="float: right;margin-top: 11px;">
                                 <input class="form-check-input" type="checkbox" name="is_email" {{ old('is_email', $user->is_email) == 1 ? 'checked' : '' }} style="padding: 10px !important;" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault" style="font-size: 14px;margin-left:8px;">Mostrar el correo</label>
@@ -328,22 +332,22 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">WhatsApp:</label>
+                            <label class="mb-10 form-label">WhatsApp: <small style="color:#ff5600;">Recuerda agregar el código de tu país.</small></label>
                             <input class="form-control" type="tel" name="whatsapp" value="{{ old('whatsapp', $user->whatsapp) }}" placeholder="Ejemplo: 523114174458">
-                            <small class="message-danger">Recuerda agregar el código de tu país.</small>
+                            <small class="message-danger">Si llenas el campo de WhatsApp, será público y se mostrará en tu biografía.</small>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label">País:<span class="required">*</span></label>
-                            <select class="form-control" name="country" id="country" required>
+                            <select class="form-control @error('country') is-invalid border-danger @enderror" name="country" id="country" required>
                                 <option value="">Selecciona un país</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="mb-10 form-label">Estado:</label>
+                            <label class="mb-10 form-label">Estado:<span class="required">*</span></label>
                             <select class="form-control" name="state" id="state" required>
                                 <option value="">Selecciona un estado</option>
                             </select>
@@ -360,13 +364,19 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Instagram:</label>
-                            <input class="form-control" type="url" name="instagram" value="{{ old('instagram', $user->instagram) }}">
+                            <div class="input-group">
+                                <span class="input-group-text">https://instagram.com/</span>
+                                <input class="form-control" type="text" name="instagram" value="{{ old('instagram', $user->instagram) }}">
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Linkedin:</label>
-                            <input class="form-control" type="url" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
+                            <div class="input-group">
+                                <span class="input-group-text">https://linkedin.com/in/</span>
+                                <input class="form-control" type="text" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -383,7 +393,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label class="mb-10 form-label">Bio corta:<span class="required">*</span></label>
-                            <textarea name="about_me" rows="5" required maxlength="1000" class="form-control">{{ old('about_me', $user->about_me) }}</textarea>
+                            <textarea name="about_me" rows="5" required maxlength="1000" class="form-control @error('amout_me') is-invalid border-danger @enderror">{{ old('about_me', $user->about_me) }}</textarea>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -462,13 +472,13 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="mb-10 form-label">Ocupación:<span class="required">*</span></label>
-                                <input class="form-control" type="text" name="ocupation" value="{{ old('ocupation', $user->ocupation) }}" required>
+                                <input class="form-control @error('ocupation') is-invalid border-danger @enderror" type="text" name="ocupation" value="{{ old('ocupation', $user->ocupation) }}" required>
                             </div>
                         </div>  
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label class="mb-10 form-label">Mi emprendimiento/negocio/trabajo trata sobre: <span class="required">*</span></label>
-                                <textarea class="form-control" name="business_about" required>{{ old('business_about', @$user->additional->business_about) }}</textarea>
+                                <textarea class="form-control @error('business_about') is-invalid border-danger @enderror" name="business_about" required>{{ old('business_about', @$user->additional->business_about) }}</textarea>
                             </div>
                         </div> 
                         <div class="col-lg-6">
