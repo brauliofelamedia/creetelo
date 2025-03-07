@@ -10,6 +10,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Filament\Facades\Filament;
 
 class AppServiceProvider extends ServiceProvider
 {

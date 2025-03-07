@@ -75,6 +75,11 @@ Route::get('create-slug',function(){
     }
 });
 
+//Magic logic
+Route::get('magic/login',[FrontController::class,'magic'])->name('front.magic');
+Route::post('magic/login/generate',[FrontController::class,'magic_generate'])->name('front.magic.generate');
+Route::get('magic/login/code/{code}',[FrontController::class,'login_code'])->name('front.login.code');
+
 //Configs
 Route::middleware('auth')->prefix('admin/configs')->group(function () {
     Route::get('callback', [ConfigController::class, 'callback'])->name('config.callback');
@@ -83,14 +88,4 @@ Route::middleware('auth')->prefix('admin/configs')->group(function () {
     Route::get('connect', [ConfigController::class, 'connect'])->name('config.connect');
     Route::get('renew', [ConfigController::class, 'renewToken'])->name('config.renewtoken');
     Route::get('authorization', [ConfigController::class, 'getAuthorizationCode'])->name('config.authorization');
-});
-
-// Magic Link Routes (rutas públicas)
-Route::middleware(['web'])->group(function () {
-    Route::get('magic-link-request', App\Filament\Pages\MagicLinkLogin::class)
-        ->name('magic-link.request')
-        ->middleware('guest');
-    Route::get('magic-link/{token}', [App\Http\Controllers\MagicLinkController::class, 'login'])
-        ->name('magic-link.login')
-        ->middleware('guest');
 });

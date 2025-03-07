@@ -469,12 +469,11 @@
                                                         {{$contact->full_name }}
                                                     @endif
                                                 </h3>
-                                                @php
-                                                    $countries = Config::get('countries.countries');
-                                                    $countryName = $countries[$contact['country']] ?? '-';
-                                                    ($countryName == 'Mexico')? $countryName = 'México': $countryName;
-                                                @endphp
-                                                <span>{{$countryName}}</span>
+                                                @if($contact->country)
+                                                <span>{{$countriesMap[$contact->country]}}</span>
+                                                @else
+                                                    -
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="pt-20 top-grid-4 d-flex flex-column align-items-center justify-content-center">

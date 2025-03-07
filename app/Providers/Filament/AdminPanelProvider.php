@@ -25,6 +25,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\MenuItem;
 use App\Filament\Pages\Settings;
+use App\Filament\Pages\Auth\Login;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -80,7 +81,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
-                \App\Http\Middleware\CheckUserRole::class,
+                //\App\Http\Middleware\CheckUserRole::class,
             ])
             ->navigationItems([
                 NavigationItem::make('Sistema')

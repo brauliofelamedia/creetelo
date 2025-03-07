@@ -361,6 +361,10 @@
 
     @media (max-width: 480px) {
 
+        .container {
+            max-width: 95%;
+        }
+
         .individual-banner {
             height: 220px;
             background-position: right;
@@ -380,6 +384,14 @@
         .skills {
             text-align: center;
         }
+
+        .skills li {
+            width: 100%;
+            font-size: 13px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+
         .social-link-front {
             position: relative;
             text-align: center;
@@ -582,7 +594,8 @@
                                 <h5>¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</h5><p>{{(@$user->additional->gift)? $user->additional->gift :'-'}}</p>
                             </div>
                             <div class="mb-10 candidate-list-2">
-                                <h5>Comparte un link:</h5><p>{{(@$user->additional->gift_link)? $user->additional->gift_link :'-'}}</p>
+                                <h5>Comparte un link:</h5>
+                                <p>@if(@$user->additional->gift_link)<a class="a-whatsapp" href="{{$user->additional->gift_link}}" target="_blank"><i class="bi bi-gift"></i> Abrir link de regalo</a>@else - @endif</p>
                             </div>
                         </div>
                     </div>

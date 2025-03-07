@@ -99,9 +99,9 @@ class FrontController extends Controller
         $users = $query->with('additional')->paginate(20);
 
         $countriesMap = DB::table('countries')
-            ->select('id', 'iso2')
+            ->select('id','iso2','name')
             ->get()
-            ->pluck('iso2', 'id')
+            ->pluck('name','id')
             ->toArray();
 
         return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'citiesFinal'));
@@ -304,5 +304,63 @@ class FrontController extends Controller
          Auth::login($user);
 
          return redirect()->route('dashboard.account.index')->with(['message'=>'Se ha creado correctamente la contraseña.']);
+    }
+
+    //Magic login
+    public function magic()
+    {
+        return view('front.magic');
+    }
+
+    public function magic_generate(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if($user){
+            $code = hash('sha256', random_bytes(32));
+
+            try {
+                // Send Weebhook data
+                $link = config('app.url') . '/magic/login/code/' . $code;
+                
+                $response = Http::post('https://services.leadconnectorhq.com/hooks/4z3IHPMw9JB3Qkz8ttK8/webhook-trigger/151b0486-284b-47a7-9ca6-3672458eb0be', [
+                    'link' => $link,
+                    'email' => $request->email
+                ]);
+
+                if (!$response->successful()) {
+                    throw new \Exception('Failed to send webhook');
+                }
+
+                // Update user only after successful email sending
+                $user->magic_link_token = $code;
+                $user->magic_link_expires_at = now()->addMinutes(5);
+                $user->save();
+
+                return redirect()->route('front.magic')->with('success', 'Se ha enviado un enlace mágico a tu correo.');
+            } catch (\Exception $e) {
+                return redirect()->route('front.magic')->with('error', 'Hubo un error al enviar el correo');
+            }
+        } else {
+            return redirect()->route('front.magic')->with('error', 'El correo no concuerda con nuestros registros');
+        }
+    }
+
+    public function login_code($code)
+    {
+        $user = User::where('magic_link_token', $code)
+            ->where('magic_link_expires_at', '>=', now())
+            ->first();
+
+        if (!$user) {
+            return redirect()->route('front.magic')->with('error', 'El enlace ha expirado o es inválido, solicita uno nuevo');
+        }
+
+        Auth::login($user);
+        $user->magic_link_token = null;
+        $user->magic_link_expires_at = null;
+        $user->save();
+        
+        return redirect()->route('dashboard.account.index');
     }
 }

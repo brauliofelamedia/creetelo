@@ -14,7 +14,6 @@ class CheckUserRole
 {
     public function handle(Request $request, Closure $next): Response
     {
-
         $auth = Filament::auth();
         $user = $auth->user();
 

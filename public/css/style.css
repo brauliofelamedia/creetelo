@@ -4357,6 +4357,13 @@ ul.navbar-menu {
     margin-right: 0;
 }
 
+.fi-fo-actions .fi-ac {
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 @media (max-width: 768px) {
     .theme-main-menu {
         padding: 20px!important;
@@ -4369,6 +4376,9 @@ ul.navbar-menu {
     }
     .hidden-phone {
         display: none!important;
+    }
+    .theme-main-menu {
+        padding: 20px 0!important;
     }
 }
 
