@@ -319,28 +319,25 @@ class FrontController extends Controller
         if($user){
             $code = hash('sha256', random_bytes(32));
 
-            try {
-                // Send Weebhook data
-                $link = config('app.url') . '/magic/login/code/' . $code;
-                
-                $response = Http::post('https://services.leadconnectorhq.com/hooks/4z3IHPMw9JB3Qkz8ttK8/webhook-trigger/151b0486-284b-47a7-9ca6-3672458eb0be', [
-                    'link' => $link,
-                    'email' => $request->email
-                ]);
+            // Send Weebhook data
+            $link = config('app.url') . '/magic/login/code/' . $code;
+            
+            $response = Http::post('https://services.leadconnectorhq.com/hooks/4z3IHPMw9JB3Qkz8ttK8/webhook-trigger/151b0486-284b-47a7-9ca6-3672458eb0be', [
+                'link' => $link,
+                'email' => $request->email
+            ]);
 
-                if (!$response->successful()) {
-                    throw new \Exception('Failed to send webhook');
-                }
-
-                // Update user only after successful email sending
-                $user->magic_link_token = $code;
-                $user->magic_link_expires_at = now()->addMinutes(5);
-                $user->save();
-
-                return redirect()->route('front.magic')->with('success', 'Se ha enviado un enlace mágico a tu correo.');
-            } catch (\Exception $e) {
-                return redirect()->route('front.magic')->with('error', 'Hubo un error al enviar el correo');
+            if (!$response->successful()) {
+                throw new \Exception('Failed to send webhook');
             }
+
+            // Update user only after successful email sending
+            $user->magic_link_token = $code;
+            $user->magic_link_expires_at = now()->addMinutes(5);
+            $user->save();
+
+            return redirect()->route('front.magic')->with('success', 'Se ha enviado un enlace mágico a tu correo.');
+            
         } else {
             return redirect()->route('front.magic')->with('error', 'El correo no concuerda con nuestros registros');
         }
