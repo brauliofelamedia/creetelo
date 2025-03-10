@@ -447,7 +447,7 @@ class UserController extends Controller
     public function deleteContacts()
     {
         //User::onlyTrashed()->forceDelete();
-        $users = User::all();
+        $users = User::whereNotIn('id', [1, 2])->get();
         foreach($users as $user) {
             $user->delete();
         }
