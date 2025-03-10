@@ -623,12 +623,12 @@ class UserController extends Controller
                                     $user->slug = Str::slug($fullName);
                                     $user->email = $contact['email'];
                                     $user->postal_code = $contact['postalCode'];
-                                    $user->country = $this->convertIso2ToWorldId($contact['country']);;
+                                    //$user->country = $this->convertIso2ToWorldId($contact['country']);;
                                     $user->address = $contact['address'];
                                     $user->website = $contact['website'];
-                                    $user->state = $contact['state'];
+                                    //$user->state = $contact['state'];
                                     $user->phone = $contact['phone'];
-                                    $user->city = $contact['city'];
+                                    //$user->city = $contact['city'];
                                     $user->save();
                 
                                     $user->assignRole('user');
@@ -645,12 +645,12 @@ class UserController extends Controller
                             $userExist->name = $contact['firstNameLowerCase'];
                             $userExist->last_name = $contact['lastNameLowerCase'];
                             $userExist->postal_code = $contact['postalCode'];
-                            $userExist->country = $this->convertIso2ToWorldId($contact['country']);
+                            //$userExist->country = $this->convertIso2ToWorldId($contact['country']);
                             $userExist->address = $contact['address'];
                             $userExist->website = $contact['website'];
-                            $userExist->state = $contact['state'];
+                            //$userExist->state = $contact['state'];
                             $userExist->phone = $contact['phone'];
-                            $userExist->city = $contact['city'];
+                            //$userExist->city = $contact['city'];
                             $userExist->save();
 
                             $this->syncCustomFields($userExist, $customFields);
