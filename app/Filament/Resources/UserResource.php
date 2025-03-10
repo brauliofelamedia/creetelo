@@ -96,7 +96,7 @@ class UserResource extends Resource
                     ->action(function () {
                         try {
                             // Llamada a la ruta de sincronización
-                            $response = Http::withoutVerifying()->get(route('dashboard.sync.crm'));
+                            $response = Http::withoutVerifying()->get(route('dashboard.sync'));
                             
                             if ($response->successful()) {
                                 Notification::make()

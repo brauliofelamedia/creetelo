@@ -93,27 +93,12 @@ class ContactServices
                         [
                             'field' => 'tags',
                             'operator' => 'eq',
-                            'value' => ['únete a créetelo2.0_mensual'],
-                        ],
-                        [
-                            'field' => 'tags',
-                            'operator' => 'eq',
                             'value' => ['creetelo_anual'],
                         ],
                         [
                             'field' => 'tags',
                             'operator' => 'eq',
                             'value' => ['créetelo_anual'],
-                        ],
-                        [
-                            'field' => 'tags',
-                            'operator' => 'eq',
-                            'value' => ['wowfriday_excreida anual'],
-                        ],
-                        [
-                            'field' => 'tags',
-                            'operator' => 'eq',
-                            'value' => ['únete a créetelo2.0_anual'],
                         ],
                     ],
                 ],
@@ -146,27 +131,12 @@ class ContactServices
                         [
                             'field' => 'tags',
                             'operator' => 'eq',
-                            'value' => ['únete a créetelo2.0_mensual'],
-                        ],
-                        [
-                            'field' => 'tags',
-                            'operator' => 'eq',
                             'value' => ['creetelo_anual'],
                         ],
                         [
                             'field' => 'tags',
                             'operator' => 'eq',
                             'value' => ['créetelo_anual'],
-                        ],
-                        [
-                            'field' => 'tags',
-                            'operator' => 'eq',
-                            'value' => ['wowfriday_excreida anual'],
-                        ],
-                        [
-                            'field' => 'tags',
-                            'operator' => 'eq',
-                            'value' => ['únete a créetelo2.0_anual'],
                         ],
                     ],
                 ],
@@ -176,7 +146,7 @@ class ContactServices
         $data = [
             'locationId' => $this->config->location_id,
             'page' => intval($page),
-            'pageLimit' => 20,
+            'pageLimit' => 100,
             'filters' => $filters,
         ];
 

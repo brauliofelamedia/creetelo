@@ -444,152 +444,123 @@ class UserController extends Controller
         return null;
     }
 
-    public function syncContacts()
+    public function deleteContacts()
     {
+        User::onlyTrashed()->forceDelete();
+        $users = User::all();
+        foreach($users as $user) {
+            $user->delete();
+        }
+        
         $contactServices = new ContactServices;
         $data = $contactServices->getContacts(null, 1);
         $total = $data['total'];
-        $iteration = intval(ceil($total / 20));
+        $iteration = intval(ceil($total / 100));
 
         for ($i = 0; $i < $iteration; $i++) {
             $data1 = $contactServices->getContacts(null, $i + 1);
 
             //Create and update users
             foreach ($data1['contacts'] as $contact) {
-                $userExist = User::where('contact_id', $contact['id'])->first();
-                $customFields = $contact['customFields'];
-                $randomNum = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
-                $fullName = $randomNum . '-' . $contact['firstNameLowerCase'] . ' ' . $contact['lastNameLowerCase'];
-                $fullName = Str::slug($fullName);
+                $userExist = User::withTrashed()->where('contact_id', $contact['id'])->first();
 
-                if (!isset($userExist)) {
-
-                    if($contact['email'] !== null){
-
-                        $emailExist = User::where('email',$contact['email'])->first();
-                        if(!$emailExist){
-                            $user = new User;
-                            $user->password = bcrypt('password');
-                            $user->contact_id = $contact['id'];
-                            $user->name = $contact['firstNameLowerCase'];
-                            $user->last_name = $contact['lastNameLowerCase'];
-                            $user->slug = $fullName;
-                            $user->email = $contact['email'];
-                            $user->postal_code = $contact['postalCode'];
-                            $user->country = $this->convertIso2ToWorldId($contact['country']);
-                            $user->address = $contact['address'];
-                            $user->website = $contact['website'];
-                            $user->state = $contact['state'];
-                            $user->phone = $contact['phone'];
-                            $user->city = $contact['city'];
-                            $user->save();
-        
-                            $user->assignRole('user');
-        
-                            $additional = new Additional();
-                            $additional->user_id = $user->id;
-                            $additional->save();
-        
-                            //Si tienes custom fields obtenerlos.
-                            $fieldMappings = [
-                                'how_vain' => 'sixYg1SDbGp1Dr83ecgL',
-                                'skills' => 'PSO3jtCSiTYWEPXqWlEl',
-                                'business_about' => 'Fm8fWY7tYe9EDr2UFzoE',
-                                'corporate_job' => '1PxpPNM77dNI7ROGigcn',
-                                'mission' => 'Ne4Papu31MsOMVWqnUhQ',
-                                'ideal_audience' => 'GH51Vq5vHbzfrqGTOHpa',
-                                'dont_work_with' => 'IyRQeegggS20PElYpJSQ',
-                                'values' => '07s42m66gEKrbFT6J5hP',
-                                'tone' => 'C1LLobFuQR7dfdNCJhxi',
-                                'looking_for_in_creelo' => 'tZzHUsQVOZgKnteOjpBu',
-                                'birthplace' => 'q3BHfdxzT2uKfNO3icXG',
-                                'sign' => 'JuiCbkHWsSc3iKfmOBpo',
-                                'hobbies' => '6HdseExNUaBuLIxAyQPA',
-                                'favorite_drink' => 'CoYlNTkC5eumwPqo4gXM',
-                                'has_children' => 'xy0zfzMRFpOdXYJkHS2c',
-                                'is_married' => '1fFJJsONHbRMQJCstvg1',
-                                'favorite_trip' => 'iofVGERZPPqeC8FHkcgz',
-                                'next_trip' => 'CFCeOt6NQHr72WQIj7N2',
-                                'favorite_dessert' => 'Kn7tmKz8ESe3HEB02w7b',
-                                'favorite_food' => 'aou0gq7fDscz6n8DJFyk',
-                                'movie_recommendation' => 'jH0uBem7yGWoCKa94CDw',
-                                'book_recommendation' => 'rvCxO1sqFsTMoHwT98Dz',
-                                'podcast_recommendation' => 'HelwPSnquD5zPTRYu26H',
-                                'irreplaceable' => 'D1O41ZwrhZGnCkDmFE8V',
-                                'achievement' => 'i3qCyUklW7qd5nHflDIg',
-                                'biggest_dream' => 'pJgAz1qIItYg22DoR0rU',
-                                'gift' => 'd8XcWxaZcBu4erXZ56iq',
-                                'gift_link' => '25W5tvKnlj0BmAN4WgHs',
-                                'like_to_receive' => '6LQ12hAVi2eqWHyiudVg',
-                                'brings_you_happiness' => 'u8FAHwpq7qUJsucDxwUY',
-                            ];
-                            
-                            foreach ($fieldMappings as $attribute => $id) {
-                                $user->additional->$attribute = $this->getCustomFieldValue($customFields, $id);
-                            }
-        
-                            $additional->save();
-                        }
-                    }
-                    
-                } else {
-                    //$userExist->password = bcrypt('password');
-                    //$userExist->contact_id = $contact['id'];
-                    $userExist->name = $contact['firstNameLowerCase'];
-                    $userExist->last_name = $contact['lastNameLowerCase'];
-                    //$userExist->slug = Str::slug($fullName);
-                    //$userExist->email = $contact['email'];
-                    $userExist->postal_code = $contact['postalCode'];
-                    $userExist->country = $this->convertIso2ToWorldId($contact['country']);
-                    $userExist->address = $contact['address'];
-                    $userExist->website = $contact['website'];
-                    $userExist->state = $contact['state'];
-                    $userExist->phone = $contact['phone'];
-                    $userExist->city = $contact['city'];
-                    $userExist->save();
-
-                    //Si tienes custom fields obtenerlos.
-                    $fieldMappings = [
-                        'how_vain' => 'sixYg1SDbGp1Dr83ecgL',
-                        'skills' => 'PSO3jtCSiTYWEPXqWlEl',
-                        'business_about' => 'Fm8fWY7tYe9EDr2UFzoE',
-                        'corporate_job' => '1PxpPNM77dNI7ROGigcn',
-                        'mission' => 'Ne4Papu31MsOMVWqnUhQ',
-                        'ideal_audience' => 'GH51Vq5vHbzfrqGTOHpa',
-                        'dont_work_with' => 'IyRQeegggS20PElYpJSQ',
-                        'values' => '07s42m66gEKrbFT6J5hP',
-                        'tone' => 'C1LLobFuQR7dfdNCJhxi',
-                        'looking_for_in_creelo' => 'tZzHUsQVOZgKnteOjpBu',
-                        'birthplace' => 'q3BHfdxzT2uKfNO3icXG',
-                        'sign' => 'JuiCbkHWsSc3iKfmOBpo',
-                        'hobbies' => '6HdseExNUaBuLIxAyQPA',
-                        'favorite_drink' => 'CoYlNTkC5eumwPqo4gXM',
-                        'has_children' => 'xy0zfzMRFpOdXYJkHS2c',
-                        'is_married' => '1fFJJsONHbRMQJCstvg1',
-                        'favorite_trip' => 'iofVGERZPPqeC8FHkcgz',
-                        'next_trip' => 'CFCeOt6NQHr72WQIj7N2',
-                        'favorite_dessert' => 'Kn7tmKz8ESe3HEB02w7b',
-                        'favorite_food' => 'aou0gq7fDscz6n8DJFyk',
-                        'movie_recommendation' => 'jH0uBem7yGWoCKa94CDw',
-                        'book_recommendation' => 'rvCxO1sqFsTMoHwT98Dz',
-                        'podcast_recommendation' => 'HelwPSnquD5zPTRYu26H',
-                        'irreplaceable' => 'D1O41ZwrhZGnCkDmFE8V',
-                        'achievement' => 'i3qCyUklW7qd5nHflDIg',
-                        'biggest_dream' => 'pJgAz1qIItYg22DoR0rU',
-                        'gift' => 'd8XcWxaZcBu4erXZ56iq',
-                        'gift_link' => '25W5tvKnlj0BmAN4WgHs',
-                        'like_to_receive' => '6LQ12hAVi2eqWHyiudVg',
-                        'brings_you_happiness' => 'u8FAHwpq7qUJsucDxwUY',
-                    ];
-                    
-                    foreach ($fieldMappings as $attribute => $id) {
-                        $userExist->additional->$attribute = $this->getCustomFieldValue($customFields, $id);
-                    }
-
-                    $userExist->additional->save();
+                if($userExist){
+                    $userExist->restore();
                 }
             }
         }
+    }
+
+    public function syncContacts()
+    {
+        try {
+            $contactServices = new ContactServices;
+            $data = $contactServices->getContacts(null, 1);
+            $total = $data['total'];
+            $iteration = intval(ceil($total / 20));
+
+            //return response()->json(['status' => 'success', 'message' => $data]);
+
+            for ($i = 0; $i < $iteration; $i++) {
+                $data1 = $contactServices->getContacts(null, $i + 1);
+
+                //Create and update users
+                foreach ($data1['contacts'] as $contact) {
+                    $userExist = User::where('email', $contact['email'])->first();
+                    $customFields = $contact['customFields'];
+                    $randomNum = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+                    $fullName = $randomNum . '-' . $contact['firstNameLowerCase'] . ' ' . $contact['lastNameLowerCase'];
+                    $fullName = Str::slug($fullName);
+
+                    if (!isset($userExist)) {
+                        $user = new User;
+                        $user->password = bcrypt('password');
+                        $user->contact_id = $contact['id'];
+                        $user->name = $contact['firstNameLowerCase'];
+                        $user->last_name = $contact['lastNameLowerCase'];
+                        $user->slug = $fullName;
+                        $user->email = $contact['email'];
+                        $user->postal_code = $contact['postalCode'];
+                        $user->country = $this->convertIso2ToWorldId($contact['country']);
+                        $user->address = $contact['address'];
+                        $user->website = $contact['website'];
+                        $user->state = $contact['state'];
+                        $user->phone = $contact['phone'];
+                        $user->city = $contact['city'];
+                        $user->save();
+
+                        $user->assignRole('user');
+
+                        $additional = new Additional();
+                        $additional->user_id = $user->id;
+                        $additional->save();
+
+                        $fieldMappings = [
+                            'how_vain' => 'sixYg1SDbGp1Dr83ecgL',
+                            'skills' => 'PSO3jtCSiTYWEPXqWlEl',
+                            'business_about' => 'Fm8fWY7tYe9EDr2UFzoE',
+                            'corporate_job' => '1PxpPNM77dNI7ROGigcn',
+                            'mission' => 'Ne4Papu31MsOMVWqnUhQ',
+                            'ideal_audience' => 'GH51Vq5vHbzfrqGTOHpa',
+                            'dont_work_with' => 'IyRQeegggS20PElYpJSQ',
+                            'values' => '07s42m66gEKrbFT6J5hP',
+                            'tone' => 'C1LLobFuQR7dfdNCJhxi',
+                            'looking_for_in_creelo' => 'tZzHUsQVOZgKnteOjpBu',
+                            'birthplace' => 'q3BHfdxzT2uKfNO3icXG',
+                            'sign' => 'JuiCbkHWsSc3iKfmOBpo',
+                            'hobbies' => '6HdseExNUaBuLIxAyQPA',
+                            'favorite_drink' => 'CoYlNTkC5eumwPqo4gXM',
+                            'has_children' => 'xy0zfzMRFpOdXYJkHS2c',
+                            'is_married' => '1fFJJsONHbRMQJCstvg1',
+                            'favorite_trip' => 'iofVGERZPPqeC8FHkcgz',
+                            'next_trip' => 'CFCeOt6NQHr72WQIj7N2',
+                            'favorite_dessert' => 'Kn7tmKz8ESe3HEB02w7b',
+                            'favorite_food' => 'aou0gq7fDscz6n8DJFyk',
+                            'movie_recommendation' => 'jH0uBem7yGWoCKa94CDw',
+                            'book_recommendation' => 'rvCxO1sqFsTMoHwT98Dz',
+                            'podcast_recommendation' => 'HelwPSnquD5zPTRYu26H',
+                            'irreplaceable' => 'D1O41ZwrhZGnCkDmFE8V',
+                            'achievement' => 'i3qCyUklW7qd5nHflDIg',
+                            'biggest_dream' => 'pJgAz1qIItYg22DoR0rU',
+                            'gift' => 'd8XcWxaZcBu4erXZ56iq',
+                            'gift_link' => '25W5tvKnlj0BmAN4WgHs',
+                            'like_to_receive' => '6LQ12hAVi2eqWHyiudVg',
+                            'brings_you_happiness' => 'u8FAHwpq7qUJsucDxwUY',
+                        ];
+                        
+                        foreach ($fieldMappings as $attribute => $id) {
+                            $user->additional->$attribute = $this->getCustomFieldValue($customFields, $id);
+                        }
+
+                        $additional->save();
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Error sincronizando contactos: ' . $e->getMessage()], 500);
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'Contactos sincronizados correctamente']);
     }
 
     public function syncContactsCRM()

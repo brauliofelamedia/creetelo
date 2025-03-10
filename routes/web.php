@@ -27,6 +27,15 @@ Route::get('/storage-link', function (Request $request) {
     }
 })->middleware('auth');
 
+Route::get('/migrate', function (Request $request) {
+    try {
+        Artisan::call('migrate');
+        return 'Migrations executed successfully.';
+    } catch (\Exception $e) {
+        return 'Error running migrations: ' . $e->getMessage();
+    }
+})->middleware('auth');
+
 //Login & Logout
 Route::get('login', function () {
     return redirect()->route('filament.admin.auth.login');
@@ -47,10 +56,11 @@ Route::put('dashboard/socials/update',[UserController::class,'social_update'])->
 Route::post('dashboard/socials/delete',[UserController::class,'social_delete'])->middleware('auth')->name('dashboard.social.delete');
 Route::get('dashboard/updateiso',[UserController::class,'changeIso'])->middleware('auth')->name('dashboard.iso.update');
 Route::get('dashboard/deletastate',[UserController::class,'deleteStatesAndCities'])->middleware('auth')->name('dashboard.delete.state');
+Route::get('dashboard/deletecontacts',[UserController::class,'deleteContacts'])->middleware('auth')->name('dashboard.delete.contacts');
 //Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
 
 //Sync contacts
-Route::get('dashboard/sync',[UserController::class,'syncContacts'])->middleware('auth')->name('dashboard.sync');
+Route::get('dashboard/sync',[UserController::class,'syncContacts'])->name('dashboard.sync');
 Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->middleware('auth')->name('dashboard.sync.crm');
 
 //Front
