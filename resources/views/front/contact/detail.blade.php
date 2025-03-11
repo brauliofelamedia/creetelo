@@ -191,7 +191,7 @@
         }
 
         #about-me, .recent-job {
-            padding: 0 30px;
+            padding: 35px 30px;
         }
     }
 
