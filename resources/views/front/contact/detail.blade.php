@@ -133,9 +133,11 @@
     .skills li {
         background-color: #292775;
         display: inline-block;
-        border-radius: 9px;
+        border-radius: 5px;
         padding: 7px 10px;
         color: white;
+        margin-bottom: 5px;
+        font-size: 14px;
     }
 
     .skills li:hover {
