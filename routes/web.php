@@ -65,6 +65,7 @@ Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->midd
 
 //Front
 Route::get('{page?}',[FrontController::class,'index'])->middleware('auth')->name('front.home');
+Route::get('change/all',[FrontController::class,'changeCountry']);
 
 //Webhook
 Route::post('admin/create_user_weebhook',[FrontController::class,'create_user_weebhook'])->name('front.create_user_weebhook');

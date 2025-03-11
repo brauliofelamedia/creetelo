@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Nnjeim\World\World;
 use Illuminate\Support\Facades\DB;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\City;
+use Nnjeim\World\Models\State;
 
 class FrontController extends Controller
 {
@@ -46,18 +49,7 @@ class FrontController extends Controller
         $citiesFinal = [];
 
         //dd($cities); 72118 Tepic
-        if($cities){
-            $query = "SELECT DISTINCT id, name FROM cities WHERE id IN (" . implode(',', $cities) . ")";
-            $citiesResult = DB::select($query);
-    
-            if(!empty($citiesResult)) {
-                $citiesFinal = array_map(function($city) {
-                    return $city->name;
-                }, $citiesResult);
-            } else {
-                $citiesFinal = $cities;
-            }
-        }
+        $citiesFinal = City::whereIn('name', $cities)->pluck('id','name')->toArray();
 
         $query = User::query();
 
@@ -101,10 +93,25 @@ class FrontController extends Controller
         $countriesMap = DB::table('countries')
             ->select('id','iso2','name')
             ->get()
-            ->pluck('name','id')
+            ->pluck('name','iso2')
             ->toArray();
 
         return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'citiesFinal'));
+    }
+
+    public function changeCountry()
+    {
+        $users = User::all();
+        foreach($users as $user){
+            $country = Country::where('id', $user->country)->first();
+            $state = State::where('id', $user->state)->first();
+            $city = City::where('id', $user->city)->first();
+
+            $user->country = $country ? $country->iso2 : null;
+            $user->state = $state ? $state->name : null;
+            $user->city = $city ? $city->name : null;
+            $user->save();
+        }
     }
 
     public function addNewUser($contact)
