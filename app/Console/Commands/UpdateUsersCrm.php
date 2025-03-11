@@ -13,7 +13,7 @@ class UpdateUsersCrm extends Command
     public function handle()
     {
          // Genera la URL completa a partir del nombre de la ruta
-         $url = route('dashboard.sync.crm');
+         $url = route('dashboard.sync');
         
          // Realiza la petición GET a la URL
          $response = Http::get($url);
