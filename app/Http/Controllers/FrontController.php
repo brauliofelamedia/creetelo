@@ -90,11 +90,7 @@ class FrontController extends Controller
         $query->orderBy('created_at', 'desc');
         $users = $query->with('additional')->paginate(20);
 
-        $countriesMap = DB::table('countries')
-            ->select('id','iso2','name')
-            ->get()
-            ->pluck('name','iso2')
-            ->toArray();
+        $countriesMap = Country::all()->pluck('name','iso2')->toArray();
 
         return view('front.home', compact('search', 'users','skillSelect', 'interests' ,'countriesMap' , 'citySelect','signSelect','interestSelect','skills','childrenSelect', 'citiesFinal'));
     }

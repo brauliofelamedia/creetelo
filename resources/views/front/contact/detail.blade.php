@@ -418,8 +418,8 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
                     <div class="avatar" style="background-image:url('{{$user->avatar}}');">
-                        @if($user->country && isset($countriesMap[$user->country]))
-                            <span class="country">{{ flag($countriesMap[$user->country], 'w-32') }}</span>
+                        @if($user->country && isset($user->country))
+                            <span class="country">{{ flag($user->country, 'w-32') }}</span>
                         @endif
                     </div>
                 </div>
