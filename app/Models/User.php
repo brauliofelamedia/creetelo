@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Config;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -90,23 +92,11 @@ class User extends Authenticatable implements FilamentUser
         }
 
         // Query country name from database using DB facade
-        $countryName = DB::table('countries')
-            ->where('id', $country)
-            ->value('name');
-
-        $stateName = DB::table('states')
-            ->where('id', $state)
-            ->value('name');
-
-        $cityName = DB::table('cities')
-            ->where('id', $city)
-            ->value('name');
-            
+        $countryName = Country::where('iso2', $this->country)->value('name');
         $countryName = $countryName ?? 'País no encontrado';
-        $countryName = ($countryName == 'Mexico') ? 'México' : $countryName;
 
         if ($country && $city) {
-            return $countryName.' - '.$stateName.' - '.$cityName;
+            return $countryName.' - '.$this->state.' - '.$this->city;
         }
 
         return $countryName;
