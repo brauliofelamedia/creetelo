@@ -341,16 +341,16 @@
                         <div class="form-group">
                             <label class="form-label">País:<span class="required">*</span></label>
                             <select class="form-control @error('country') is-invalid border-danger @enderror" name="country" id="country" required>
-                                <option value="">Selecciona un país</option>
+                                @foreach($countries as $country)
+                                    <option value="{{$country->iso2}}" {{($country->iso2 == $user->country)? 'selected' : ''}}>{{$country->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label class="mb-10 form-label">Estado:<span class="required">*</span></label>
-                            <select class="form-control" name="state" id="state" required>
-                                <option value="">Selecciona un estado</option>
-                            </select>
+                            <select class="form-control" name="state" id="state" required></select>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -668,148 +668,99 @@
             }
         }
     });
+    
+    // Function to load initial state and city values
+    function loadInitialStateAndCity() {
+        if ($('#country').val()) {
+            $.ajax({
+                url: '{{route('api.new.states')}}',
+                type: 'POST',
+                data: {
+                    country: $('#country').val(),
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    $('#state').empty();
+                    $('#state').append('<option value="">Selecciona un estado</option>');
+                    $.each(response, function(key, value) {
+                        let selected = value.name === '{{$user->state}}' ? 'selected' : '';
+                        $('#state').append('<option value="' + value.name + '" ' + selected + '>' + value.name + '</option>');
+                    });
 
-    // Disable state and city initially
-    $('#state, #city').prop('disabled', true);
-
-    async function loadInitialData() {
-        try {
-            // Show loading state
-            $('#country').prop('disabled', true);
-            
-            const countryResponse = await $.ajax({
-                url: '/api/countries',
-                type: 'GET'
+                    // Load cities after state is loaded
+                    if ('{{$user->state}}') {
+                        $.ajax({
+                            url: '{{route('api.new.cities')}}',
+                            type: 'POST',
+                            data: {
+                                country: $('#country').val(),
+                                state: '{{$user->state}}',
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                $('#city').empty();
+                                $('#city').append('<option value="">Selecciona una ciudad</option>');
+                                $.each(response, function(key, value) {
+                                    let selected = value.name === '{{$user->city}}' ? 'selected' : '';
+                                    $('#city').append('<option value="' + value.name + '" ' + selected + '>' + value.name + '</option>');
+                                });
+                            }
+                        });
+                    }
+                }
             });
-
-            let countrySelect = $('#country');
-            countrySelect.empty();
-            countrySelect.append('<option value="">Selecciona un país</option>');
-            
-            let defaultCountryId = null;
-            countryResponse.data.forEach(function(country) {
-                // Assuming USA has ID 234 (verify this in your database)
-                defaultCountryId = 236;
-                let selected = country.id === parseInt("{{$user->country}}") ? 'selected' : '';
-                countrySelect.append(`<option value="${country.id}" data-name="${country.name}" ${selected}>${country.name}</option>`);
-            });
-
-            // Enable country select
-            $('#country').prop('disabled', false);
-
-            // If user has a country, use that, otherwise use USA
-            const countryId = "{{$user->country}}" || defaultCountryId;
-            
-            if(countryId) {
-                countrySelect.val(countryId).trigger('change');
-                await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure select2 is ready
-                await loadStates(countryId);
-            }
-        } catch (error) {
-            console.error('Error loading initial data:', error);
-            $('#country').prop('disabled', false);
         }
     }
 
-    async function loadStates(countryId) {
-        try {
-            // Disable and clear dependent selects
-            $('#state, #city').prop('disabled', true).empty();
-            $('#state').append('<option value="">Selecciona un estado</option>');
-            $('#city').append('<option value="">Selecciona una ciudad</option>');
-
-            const stateResponse = await $.ajax({
-                url: `/api/states/${countryId}`,
-                type: 'GET'
-            });
-
-            let stateSelect = $('#state');
-            
-            if (stateResponse && Array.isArray(stateResponse)) {
-                stateResponse.forEach(function(state) {
-                    let selected = state.id === parseInt("{{$user->state}}") ? 'selected' : '';
-                    stateSelect.append(`<option value="${state.id}" ${selected}>${state.name}</option>`);
-                });
-            } else if (stateResponse && Array.isArray(stateResponse.data)) {
-                stateResponse.data.forEach(function(state) {
-                    let selected = state.id === parseInt("{{$user->state}}") ? 'selected' : '';
-                    stateSelect.append(`<option value="${state.id}" ${selected}>${state.name}</option>`);
-                });
-            }
-
-            $('#state').prop('disabled', false);
-
-            // If there's a selected state, wait for select2 to initialize before loading cities
-            if("{{$user->state}}") {
-                await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure select2 is ready
-                await loadCities(countryId, "{{$user->state}}");
-            }
-        } catch (error) {
-            console.error('Error loading states:', error);
-            $('#state').prop('disabled', false);
-        }
-    }
-
-    async function loadCities(countryId, stateId) {
-        try {
-            $('#city').prop('disabled', true).empty();
-            $('#city').append('<option value="">Selecciona una ciudad</option>');
-
-            const cityResponse = await $.ajax({
-                url: `/api/cities/${countryId}/${stateId}`,
-                type: 'GET'
-            });
-
-            let citySelect = $('#city');
-            
-            if (cityResponse && Array.isArray(cityResponse)) {
-                cityResponse.forEach(function(city) {
-                    let selected = city.id === parseInt("{{$user->city}}") ? 'selected' : '';
-                    citySelect.append(`<option value="${city.id}" ${selected}>${city.name}</option>`);
-                });
-            } else if (cityResponse && Array.isArray(cityResponse.data)) {
-                cityResponse.data.forEach(function(city) {
-                    let selected = city.id === parseInt("{{$user->city}}") ? 'selected' : '';
-                    citySelect.append(`<option value="${city.id}" ${selected}>${city.name}</option>`);
-                });
-            }
-
-            $('#city').prop('disabled', false);
-        } catch (error) {
-            console.error('Error loading cities:', error);
-            $('#city').prop('disabled', false);
-        }
-    }
-
-    // Event Handlers using Select2 events
-    $('#country').on('select2:select select2:clear', async function(e) {
-        const countryId = $(this).val();
-        if(countryId) {
-            await loadStates(countryId);
-        } else {
-            $('#state, #city').prop('disabled', true).empty();
-            $('#state').append('<option value="">Selecciona un estado</option>');
-            $('#city').append('<option value="">Selecciona una ciudad</option>');
-            $('#state, #city').trigger('change');
-        }
-    });
-
-    $('#state').on('select2:select select2:clear', async function(e) {
-        const countryId = $('#country').val();
-        const stateId = $(this).val();
-        if(countryId && stateId) {
-            await loadCities(countryId, stateId);
-        } else {
-            $('#city').prop('disabled', true).empty();
-            $('#city').append('<option value="">Selecciona una ciudad</option>');
-            $('#city').trigger('change');
-        }
-    });
-
-    // Initialize on document ready
+    // Load initial values when document is ready
     $(document).ready(function() {
-        loadInitialData();
+        loadInitialStateAndCity();
     });
+
+    // Event handlers for dropdown changes
+    $('#country').on('change', function(){
+        $.ajax({
+            url: '{{route('api.new.states')}}',
+            type: 'POST',
+            data: {
+                country: $(this).val(),
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                $('#state').empty();
+                $('#state').append('<option value="">Selecciona un estado</option>');
+                $.each(response, function(key, value) {
+                    $('#state').append('<option value="' + value.name + '">' + value.name + '</option>');
+                });
+            },
+            error: function(xhr) {
+                console.log('Error:', xhr);
+            }
+        });
+    });
+
+    $('#state').on('change', function(){
+        $.ajax({
+            url: '{{route('api.new.cities')}}',
+            type: 'POST', 
+            data: {
+                country: $('#country').val(),
+                state: $(this).val(),
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                $('#city').empty();
+                $('#city').append('<option value="">Selecciona una ciudad</option>');
+                $.each(response, function(key, value) {
+                    $('#city').append('<option value="' + value.name + '">' + value.name + '</option>');
+                });
+            },
+            error: function(xhr) {
+                console.log('Error:', xhr);
+            }
+        });
+    });
+
 </script>
 <script>
     $(document).ready(function () {

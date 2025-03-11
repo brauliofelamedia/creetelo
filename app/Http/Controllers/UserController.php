@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
+use Nnjeim\World\Models\City;
+
 class UserController extends Controller
 {
     public function index()
@@ -46,7 +50,9 @@ class UserController extends Controller
         $skills = Skill::get();
         $interests = Interest::get();
 
-        return view('front.user.index', compact('user','services', 'skills', 'interests','userServices', 'userSkills','userInterests'));
+        $countries = Country::select('id','iso2','name')->get();
+
+        return view('front.user.index', compact('user','services', 'skills', 'interests','userServices', 'userSkills','userInterests','countries'));
     }
 
     public function social_update(Request $request)
@@ -488,39 +494,60 @@ class UserController extends Controller
                 foreach ($data1['contacts'] as $contact) {
                     $userExist = User::where('email', $contact['email'])->first();
                     $customFields = $contact['customFields'];
-                    $randomNum = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
-                    $fullName = $randomNum . '-' . $contact['firstNameLowerCase'] . ' ' . $contact['lastNameLowerCase'];
-                    $fullName = Str::slug($fullName);
-
-                    if ($userExist && ($userExist->hasRole('super_admin') || $userExist->hasRole('admin'))) {
+                    
+                    // Si el usuario existe y tiene rol admin/super_admin, saltar al siguiente
+                    if ($userExist) {
                         continue;
                     }
 
-                    $user = new User;
-                    $user->password = bcrypt('password');
-                    $user->contact_id = $contact['id'];
-                    $user->name = $contact['firstNameLowerCase'];  
-                    $user->last_name = $contact['lastNameLowerCase'];
-                    $user->slug = $fullName;
-                    $user->email = $contact['email'];
-                    $user->postal_code = $contact['postalCode'];
-                    $user->country = $this->convertIso2ToWorldId($contact['country']);
-                    $user->address = $contact['address'];
-                    $user->website = $contact['website'];
-                    $user->state = $contact['state'];
-                    $user->phone = $contact['phone'];
-                    $user->city = $contact['city'];
-                    $user->save();
+                    // Si el usuario ya existe, actualizar sus datos
+                    if ($userExist) {
+                        $userExist->contact_id = $contact['id'];
+                        $userExist->name = $contact['firstNameLowerCase'];
+                        $userExist->last_name = $contact['lastNameLowerCase'];
+                        $userExist->postal_code = $contact['postalCode'];
+                        $userExist->country = $this->convertIso2ToWorldId($contact['country']);
+                        $userExist->address = $contact['address'];
+                        $userExist->website = $contact['website']; 
+                        $userExist->state = $contact['state'];
+                        $userExist->phone = $contact['phone'];
+                        $userExist->city = $contact['city'];
+                        $userExist->save();
 
-                    $user->assignRole('user');
+                        $user = $userExist;
+                    } else {
+                        // Si no existe, crear nuevo usuario
+                        $randomNum = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+                        $fullName = $randomNum . '-' . $contact['firstNameLowerCase'] . ' ' . $contact['lastNameLowerCase'];
+                        $fullName = Str::slug($fullName);
 
-                    $additional = new Additional();
-                    $additional->user_id = $user->id;
-                    $additional->save();
+                        $user = new User;
+                        $user->password = bcrypt('password');
+                        $user->contact_id = $contact['id'];
+                        $user->name = $contact['firstNameLowerCase'];
+                        $user->last_name = $contact['lastNameLowerCase'];
+                        $user->slug = $fullName;
+                        $user->email = $contact['email'];
+                        $user->postal_code = $contact['postalCode'];
+                        $user->country = $this->convertIso2ToWorldId($contact['country']);
+                        $user->address = $contact['address'];
+                        $user->website = $contact['website'];
+                        $user->state = $contact['state'];
+                        $user->phone = $contact['phone'];
+                        $user->city = $contact['city'];
+                        $user->save();
 
+                        $user->assignRole('user');
+
+                        $additional = new Additional();
+                        $additional->user_id = $user->id;
+                        $additional->save();
+                    }
+
+                    // Actualizar campos adicionales
                     $fieldMappings = [
                         'how_vain' => 'sixYg1SDbGp1Dr83ecgL',
-                        'skills' => 'PSO3jtCSiTYWEPXqWlEl', 
+                        'skills' => 'PSO3jtCSiTYWEPXqWlEl',
                         'business_about' => 'Fm8fWY7tYe9EDr2UFzoE',
                         'corporate_job' => '1PxpPNM77dNI7ROGigcn',
                         'mission' => 'Ne4Papu31MsOMVWqnUhQ',

@@ -17,9 +17,9 @@ use App\Http\Controllers\SkillController;
 |
 */
 
-Route::get('/countries',[WorldController::class,'countries']);
-Route::get('/states/{country_id}',[WorldController::class,'states']);
-Route::get('/cities/{country_id}/{state_id}',[WorldController::class,'cities']);
+Route::get('new/countries',[WorldController::class,'countries'])->name('api.new.countries');
+Route::post('new/states',[WorldController::class,'states'])->name('api.new.states');
+Route::post('new/cities',[WorldController::class,'cities'])->name('api.new.cities');
 
 //Interests
 Route::post('/interests/create', [InterestController::class, 'create'])->name('api.interest.create');

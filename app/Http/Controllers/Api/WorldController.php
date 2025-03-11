@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 use Nnjeim\World\World;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Nnjeim\World\Models\Country;
+use Nnjeim\World\Models\State;
+use Nnjeim\World\Models\City;
 
 class WorldController extends Controller
 {
     public function countries()
     {
         try {
-            $countries = DB::table('countries')
-                ->select('id', 'name')
-                ->get();
-
+            $countries = Country::select('id','name','iso2')->get();
             return $countries;
         } catch (\Exception $e) {
             Log::error('Error fetching countries:', ['error' => $e->getMessage()]);
@@ -24,14 +24,13 @@ class WorldController extends Controller
         }
     }
 
-    public function states($country_id = null)
+    public function states(Request $request)
     {
+        $country = $request->input('country');
         try {
-            
-            $response = DB::table('states')
-                ->select('id', 'name')
-                ->when($country_id, function ($query) use ($country_id) {
-                    return $query->where('country_id', $country_id);
+            $response = State::select('id','name','country_code')
+                ->when($country, function ($query) use ($country) {
+                    return $query->where('country_code', $country);
                 })
                 ->get();
             
@@ -42,12 +41,17 @@ class WorldController extends Controller
         }
     }
 
-    public function cities($country_id, $state_id)
+    public function cities(Request $request)
     {
+        $country = $request->input('country');
+        $state = $request->input('state');
+
+        $state = State::where('name', $state)->first();
+        $state_id = $state->id;
+
         try {
-            $response = DB::table('cities')
-                ->select('id', 'name')
-                ->where('country_id', $country_id)
+            $response = City::select('id','name','country_code')
+                ->where('country_code', $country)
                 ->where('state_id', $state_id)
                 ->get();
             

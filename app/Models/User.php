@@ -124,6 +124,11 @@ class User extends Authenticatable implements FilamentUser
         return $avatar;
     }
 
+    public function getCountryAttribute($value)
+    {
+        return $value ?? 'US';
+    }
+
     public function getRoleAttribute()
     {
         $role = $this->roles->first();
