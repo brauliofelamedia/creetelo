@@ -461,8 +461,8 @@
                                                         {{$contact->full_name }}
                                                     @endif
                                                 </h3>
-                                                @if($contact->country)
-                                                <span>{{$countriesMap[$contact->country]}}</span>
+                                                @if($contact->country && isset($countriesMap[$contact->country]))
+                                                    <span>{{ $countriesMap[$contact->country] }}</span>
                                                 @else
                                                     -
                                                 @endif

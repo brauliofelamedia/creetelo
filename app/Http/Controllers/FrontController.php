@@ -181,7 +181,7 @@ class FrontController extends Controller
 
     public function create_user_weebhook(Request $request)
     {
-        $token = Str::random(60); 
+        $token = Str::random(60);
         $expiresAt = Carbon::now()->addHours(72);
         $userExist = User::where('email',$request->email)->first();
 
