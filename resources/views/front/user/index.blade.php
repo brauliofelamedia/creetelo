@@ -374,7 +374,7 @@
                         <div class="form-group">
                             <label class="mb-10 form-label">Linkedin:</label>
                             <div class="input-group">
-                                <span class="input-group-text">https://linkedin.com/in/</span>
+                                <span class="input-group-text">https://linkedin.com/</span>
                                 <input class="form-control" type="text" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
                             </div>
                         </div>
