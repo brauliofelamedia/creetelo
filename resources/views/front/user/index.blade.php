@@ -611,7 +611,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label  class="mb-10 form-label">¿Qué libro recomiendas? (Aparte de Hello Fears, obvi):</label>
+                            <label  class="mb-10 form-label">¿Qué libro recomiendas? (Aparte de Hello Fears, obvio):</label>
                             <textarea class="form-control" name="book_recommendation">{{ old('book_recommendation', @$user->additional->book_recommendation) }}</textarea>
                         </div>
                     </div>
