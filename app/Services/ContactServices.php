@@ -100,6 +100,11 @@ class ContactServices
                             'operator' => 'eq',
                             'value' => ['créetelo_anual'],
                         ],
+                        [
+                            'field' => 'tags',
+                            'operator' => 'eq',
+                            'value' => ['directorio'],
+                        ],
                     ],
                 ],
             ];
