@@ -315,38 +315,46 @@ class UserController extends Controller
             ],
         ];
 
-        $user->additional->fill([
-            'how_vain' => $request->how_vain,
-            'skills' => $request->skills,
-            'business_about' => $request->business_about,
-            'corporate_job' => $request->corporate_job,
-            'mission' => $request->mission,
-            'ideal_audience' => $request->ideal_audience,
-            'dont_work_with' => $request->dont_work_with,
-            'values' => $request->values,
-            'tone' => $request->tone,
-            'looking_for_in_creelo' => $request->looking_for_in_creelo,
-            'birthplace' => $request->birthplace,
-            'sign' => $request->sign,
-            'hobbies' => $request->hobbies,
-            'favorite_drink' => $request->favorite_drink,
-            'has_children' => $request->has_children,
-            'is_married' => $request->is_married,
-            'favorite_trip' => $request->favorite_trip,
-            'next_trip' => $request->next_trip,
-            'favorite_dessert' => $request->favorite_dessert,
-            'favorite_food' => $request->favorite_food,
-            'movie_recommendation' => $request->movie_recommendation,
-            'book_recommendation' => $request->book_recommendation,
-            'podcast_recommendation' => $request->podcast_recommendation,
-            'irreplaceable' => $request->irreplaceable,
-            'achievement' => $request->achievement,
-            'biggest_dream' => $request->biggest_dream,
-            'gift' => $request->gift,
-            'gift_link' => $request->gift_link,
-            'like_to_receive' => $request->like_to_receive,
-            'brings_you_happiness' => $request->brings_you_happiness,
-        ])->save();
+        $updateData = [
+            'how_vain' => $request->how_vain ?? null,
+            'skills' => $request->skills ?? null, 
+            'business_about' => $request->business_about ?? null,
+            'corporate_job' => $request->corporate_job ?? null,
+            'mission' => $request->mission ?? null,
+            'ideal_audience' => $request->ideal_audience ?? null,
+            'dont_work_with' => $request->dont_work_with ?? null,
+            'values' => $request->values ?? null,
+            'tone' => $request->tone ?? null,
+            'looking_for_in_creelo' => $request->looking_for_in_creelo ?? null,
+            'birthplace' => $request->birthplace ?? null,
+            'sign' => $request->sign ?? null, 
+            'hobbies' => $request->hobbies ?? null,
+            'favorite_drink' => $request->favorite_drink ?? null,
+            'has_children' => $request->has_children ?? null,
+            'is_married' => $request->is_married ?? null,
+            'favorite_trip' => $request->favorite_trip ?? null,
+            'next_trip' => $request->next_trip ?? null,
+            'favorite_dessert' => $request->favorite_dessert ?? null,
+            'favorite_food' => $request->favorite_food ?? null,
+            'movie_recommendation' => $request->movie_recommendation ?? null,
+            'book_recommendation' => $request->book_recommendation ?? null,
+            'podcast_recommendation' => $request->podcast_recommendation ?? null,
+            'irreplaceable' => $request->irreplaceable ?? null,
+            'achievement' => $request->achievement ?? null,
+            'biggest_dream' => $request->biggest_dream ?? null,
+            'gift' => $request->gift ?? null,
+            'gift_link' => $request->gift_link ?? null,
+            'like_to_receive' => $request->like_to_receive ?? null,
+            'brings_you_happiness' => $request->brings_you_happiness ?? null,
+        ];
+
+        if (!$user->additional) {
+            $additional = new Additional();
+            $additional->user_id = $user->id;
+            $additional->save();
+        }
+        
+        $user->additional()->update($updateData);
 
         $request->merge([
             'custom_fields' => $custom_fields,
