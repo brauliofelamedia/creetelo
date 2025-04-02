@@ -17,7 +17,7 @@ class CheckToken
 
     public function __construct()
     {
-        $this->config = Config::where('id',1)->first();
+        $this->config = Config::first();
         $this->client = new Client([
             'base_uri' => 'https://services.leadconnectorhq.com',
         ]);
@@ -26,7 +26,7 @@ class CheckToken
     public function handle(Request $request, Closure $next): Response
     {
         // Fetch configuration data
-        $config = Config::where('id', 1)->firstOrFail();
+        $config = Config::first();
         $contactServices = new ContactServices();
         $token = $contactServices->checkToken();
 
@@ -60,7 +60,7 @@ class CheckToken
             if ($statusCode === 200) {
                 $responseData = json_decode($responseBody, true);
 
-                $config = Config::where('id',1)->first();
+                $config = Config::first();
                 $config->access_token = $responseData['access_token'];
                 $config->refresh_token = $responseData['refresh_token'];
                 $config->save();

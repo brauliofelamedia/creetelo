@@ -220,7 +220,7 @@ class ContactServices
     //SyncContact
     public function updateContact($user,$newData,$custom)
     {
-        $name = $newData['name'] !== $user->name ? $newData['name'] : $user->name;
+        $name = $newData['name'] !== $user->first_name ? $newData['name'] : $user->first_name;
         $last_name = $newData['last_name'] !== $user->last_name ? $newData['last_name'] : $user->last_name;
         $phone = $newData['whatsapp'] !== $user->whatsapp ? $newData['whatsapp'] : $user->whatsapp;
         $email = $newData['email'] !== $user->email ? $newData['email'] : $user->email;
@@ -240,7 +240,7 @@ class ContactServices
                 'json' => [
                     'firstName' => $name,
                     'lastName' => $last_name,
-                    'name' => $name.' '.$last_name,
+                    //'name' => $name.' '.$last_name,
                     'email' =>  $email,
                     'phone' =>  $phone,
                     //'address1' =>  $address,

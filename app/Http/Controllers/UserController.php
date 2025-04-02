@@ -96,6 +96,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $user = Auth::user();
+
         $rules = [
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Archivo de imagen, máximo 2MB
             'name' => 'required|string|max:255',
@@ -170,10 +171,10 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        $request->merge([
+        /*$request->merge([
             'name' => strtolower($request->name),
             'last_name' => strtolower($request->last_name),
-        ]);
+        ]);*/
 
         $newData = $request->only('name', 'last_name', 'email','about_me','skills','whatsapp','website','address','country','state','city','ocupation','instagram','linkedin');
 
@@ -389,10 +390,14 @@ class UserController extends Controller
         if (! $request->interests) {
             $user->interests()->delete();
         } else {
-            $currentInterests = $user->interests->pluck('id')->toArray();
+            $currentInterests = $user->interests->pluck('interests_id')->toArray();
             $interestsToAdd = array_diff($request->interests, $currentInterests);
             $interestsToRemove = array_diff($currentInterests, $request->interests);
-            $user->interests()->whereIn('id', $interestsToRemove)->delete();
+            
+            // Fix the ambiguous id column issue
+            UserInterest::where('user_id', $user->id)
+                ->whereIn('interests_id', $interestsToRemove)
+                ->delete();
 
             foreach ($interestsToAdd as $interestId) {
                 $interest = new UserInterest;
