@@ -243,10 +243,10 @@ class ContactServices
                     'name' => $name.' '.$last_name,
                     'email' =>  $email,
                     'phone' =>  $phone,
-                    'address1' =>  $address,
+                    //'address1' =>  $address,
                     'city' => $city,
                     'state' => $state,
-                    'postalCode' => $postal_code,
+                    //'postalCode' => $postal_code,
                     'country' => $country,
                     'customFields' => $custom
                 ],
