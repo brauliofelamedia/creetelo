@@ -187,12 +187,13 @@ class FrontController extends Controller
 
         if(!$userExist){
             try {
-            
+                $fullName = $request->name . ' ' . $request->last_name . '-' . rand(1000,9999);
+
                 $user = new User();
                 $user->name = $request->first_name;
                 $user->last_name = (isset($request->last_name))? $request->last_name : '';
                 $user->email = $request->email;
-                $user->slug = Str::slug($user->fullname);
+                $user->slug = Str::slug($fullName);
                 $user->password = bcrypt('2O6o&:_5IT55b(L}Z');
                 $user->password_assign_token = $token;
                 $user->password_assign_expires_at = $expiresAt;

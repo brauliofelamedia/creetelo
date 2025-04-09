@@ -93,6 +93,15 @@ Route::get('magic/login/code/{code}',[FrontController::class,'login_code'])->nam
 
 //Configs
 Route::middleware('auth')->prefix('admin/configs')->group(function () {
+    Route::get('update-slugs', function() {
+        $users = User::all();
+        foreach ($users as $user) {
+            $randomDigits = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+            $user->slug = Str::slug($user->name . '-' . $user->last_name) . '-' . $randomDigits;
+            $user->save();
+        }
+        return 'Slugs updated successfully';
+    })->name('config.update-slugs');
     Route::get('callback', [ConfigController::class, 'callback'])->name('config.callback');
     Route::get('webhook', [ConfigController::class, 'webhook'])->name('config.webhook');
     Route::get('finish', [ConfigController::class, 'finish'])->name('config.finish');

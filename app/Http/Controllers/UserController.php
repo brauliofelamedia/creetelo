@@ -160,8 +160,10 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         //Update slug
-        $fullName = $request->name . ' ' . $request->last_name;
-        $user->slug = Str::slug($fullName);
+        $fullName = $request->name . ' ' . $request->last_name . '-' . rand(1000,9999);
+        if (!$user->slug) {
+            $user->slug = Str::slug($fullName);
+        }
         $user->save();
     
         // Si la validación falla, redirigir con errores
