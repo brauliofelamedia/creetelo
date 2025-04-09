@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UserInterest;
 use Illuminate\Support\Str;
 
 Route::get('/clear-cache', function (Request $request) {
@@ -85,6 +86,31 @@ Route::get('create-slug',function(){
         $user->save();
     }
 });
+
+Route::get('remove-hobbies/remove', function () {
+    $users = User::all();
+    $deletedCount = 0;
+    
+    foreach($users as $user){
+        $interests = UserInterest::where('user_id', $user->id)
+            ->get()
+            ->groupBy('interests_id');
+        
+        foreach($interests as $interestGroup){
+            if($interestGroup->count() > 1) {
+                // Keep the first one, delete the rest
+                $firstInterest = $interestGroup->first();
+                foreach($interestGroup as $interest){
+                    if($interest->id !== $firstInterest->id){
+                        $interest->delete();
+                        $deletedCount++;
+                    }
+                }
+            }
+        }
+    }
+    return "Se han eliminado {$deletedCount} intereses duplicados";
+})->middleware('auth');
 
 //Magic logic
 Route::get('magic/login',[FrontController::class,'magic'])->name('front.magic');

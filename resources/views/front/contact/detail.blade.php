@@ -503,8 +503,8 @@
                             <div class="mb-10 candidate-list-2">
                                 <h5>¿Tus intereses/hobbies?:</h5>
                                 <ul style="margin: 0;display:inline-block!important;">
-                                    @foreach ($user->interests as $interest)
-                                      <li class="li-style">{{$interest->name}}</li>
+                                    @foreach ($user->interests as $int)
+                                      <li class="li-style">{{$int->name}}</li>
                                     @endforeach
                                 </ul>
                             </div>

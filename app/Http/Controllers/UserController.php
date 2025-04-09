@@ -389,23 +389,14 @@ class UserController extends Controller
         }
 
         //Actualizamos intereses
-        if (! $request->interests) {
-            $user->interests()->delete();
-        } else {
-            $currentInterests = $user->interests->pluck('interests_id')->toArray();
-            $interestsToAdd = array_diff($request->interests, $currentInterests);
-            $interestsToRemove = array_diff($currentInterests, $request->interests);
-            
-            // Fix the ambiguous id column issue
-            UserInterest::where('user_id', $user->id)
-                ->whereIn('interests_id', $interestsToRemove)
-                ->delete();
-
-            foreach ($interestsToAdd as $interestId) {
-                $interest = new UserInterest;
-                $interest->user_id = $user->id;
-                $interest->interests_id = $interestId;
-                $interest->save();
+        UserInterest::where('user_id', $user->id)->delete();
+        
+        if ($request->interests) {
+            foreach ($request->interests as $interestId) {
+                UserInterest::create([
+                    'user_id' => $user->id,
+                    'interests_id' => $interestId
+                ]);
             }
         }
 
