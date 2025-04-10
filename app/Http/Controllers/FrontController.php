@@ -337,7 +337,7 @@ class FrontController extends Controller
 
             // Update user only after successful email sending
             $user->magic_link_token = $code;
-            $user->magic_link_expires_at = now()->addMinutes(5);
+            $user->magic_link_expires_at = now()->addHours(2);
             $user->save();
 
             return redirect()->route('front.magic')->with('success', 'Se ha enviado un enlace mágico a tu correo.');
