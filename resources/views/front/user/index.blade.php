@@ -475,7 +475,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Soy increíble en (mis habilidades):<span class="required">*</span></label>
-                                                <select required name="abilities[]" id="selectSkills" class="form-control" multiple="multiple">
+                                                <select required name="abilities[]" id="selectSkills" class="form-control" multiple="multiple" style="width: 100%;">
                                                     @isset($userSkills)
                                                         @if(count($userSkills) > 0)
                                                             @foreach($skills as $skill)
