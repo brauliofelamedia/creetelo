@@ -220,39 +220,60 @@ class ContactServices
     //SyncContact
     public function updateContact($user,$newData,$custom)
     {
-        $name = $newData['name'] !== $user->first_name ? $newData['name'] : $user->first_name;
-        $last_name = $newData['last_name'] !== $user->last_name ? $newData['last_name'] : $user->last_name;
-        $phone = $newData['whatsapp'] !== $user->whatsapp ? $newData['whatsapp'] : $user->whatsapp;
-        $email = $newData['email'] !== $user->email ? $newData['email'] : $user->email;
-        //$address = $newData['address'] !== $user->address ? $newData['address'] : $user->address;
-        $city = $newData['city'] !== $user->city ? $newData['city'] : $user->city;
-        $state = $newData['state'] !== $user->state ? $newData['state'] : $user->state;
-        //$postal_code = $newData['postal_code'] !== $user->postal_code ? $newData['postal_code'] : $user->postal_code;
-        $country = $newData['country'] !== $user->country ? $newData['country'] : $user->country;
+        // Create an array with only the fields that need updating
+        $updateData = [];
+        
+        // Only add fields to updateData if they exist in $newData and are different from user's current data
+        if (isset($newData['name']) && $newData['name'] !== $user->first_name) {
+            $updateData['firstName'] = $newData['name'];
+        }
+        
+        if (isset($newData['last_name']) && $newData['last_name'] !== $user->last_name) {
+            $updateData['lastName'] = $newData['last_name'];
+        }
+        
+        if (isset($newData['whatsapp']) && $newData['whatsapp'] !== $user->whatsapp) {
+            $updateData['phone'] = $newData['whatsapp'];
+        }
+        
+        if (isset($newData['email']) && $newData['email'] !== $user->email) {
+            $updateData['email'] = $newData['email'];
+        }
+        
+        if (isset($newData['city']) && $newData['city'] !== $user->city) {
+            $updateData['city'] = $newData['city'];
+        }
+        
+        if (isset($newData['state']) && $newData['state'] !== $user->state) {
+            $updateData['state'] = $newData['state'];
+        }
+        
+        if (isset($newData['country']) && $newData['country'] !== $user->country) {
+            $updateData['country'] = $newData['country'];
+        }
+        
+        // Add custom fields if they exist
+        if (!empty($custom)) {
+            $updateData['customFields'] = $custom;
+        }
 
         try {
+            // Only proceed with the API call if there's data to update
+            if (!empty($updateData)) {
             $response = $this->client->put('contacts/'.$user->contact_id, [
                 'headers' => [
-                    'Accept' => 'application/json',
-                    'Version' => '2021-07-28',
-                    'Authorization' => 'Bearer ' . $this->config->access_token,
+                'Accept' => 'application/json',
+                'Version' => '2021-07-28',
+                'Authorization' => 'Bearer ' . $this->config->access_token,
                 ],
-                'json' => [
-                    'firstName' => $name,
-                    'lastName' => $last_name,
-                    //'name' => $name.' '.$last_name,
-                    'email' =>  $email,
-                    'phone' =>  $phone,
-                    //'address1' =>  $address,
-                    'city' => $city,
-                    'state' => $state,
-                    //'postalCode' => $postal_code,
-                    'country' => $country,
-                    'customFields' => $custom
-                ],
+                'json' => $updateData,
             ]);
-
+            
             return json_decode($response->getBody(), true);
+            }
+            
+            // If nothing to update, return success message
+            return ['success' => true, 'message' => 'No changes to update'];
         } catch (Exception $e) {
             if ($e->getCode() == 401) {
                 return response()->json(['error' => 'Unauthorized request'], 401);

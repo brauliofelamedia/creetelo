@@ -97,51 +97,10 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $rules = [
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Archivo de imagen, máximo 2MB
-            'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255', 
-            'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
-            'whatsapp' => 'nullable|string|max:20',
-            'country' => 'string',
-            'state' => 'string', 
-            'city' => 'string',
-            'instagram' => 'nullable|max:255',
-            'linkedin' => 'nullable|max:255',
-            'website' => 'nullable|url|max:255',
-            'about_me' => 'required|string|max:1000',
-            'abilities' => 'required|array',
-            'how_vain' => 'nullable|string|max:1000', 
-            'biggest_dream' => 'nullable|string|max:1000',
-            'brings_you_happiness' => 'nullable|string|max:1000',
-            'looking_for_in_creelo' => 'nullable|string|max:1000',
-            'ocupation' => 'required|string|max:255',
-            'business_about' => 'required|string|max:1000',
-            'ideal_audience' => 'nullable|string|max:1000',
-            'values' => 'nullable|string|max:1000',
-            'tone' => 'nullable|string|max:1000',
-            'mission' => 'nullable|string|max:1000', 
-            'dont_work_with' => 'nullable|string|max:1000',
-            'achievement' => 'nullable|string|max:1000',
-            'corporate_job' => 'nullable|string|max:1000',
-            'birthplace' => 'nullable|string|max:1000',
-            'sign' => 'nullable|string|max:255',
-            'hobbies' => 'nullable|string|max:1000',
-            'favorite_drink' => 'nullable|string|max:255',
-            'has_children' => 'nullable|string|max:255',
-            'favorite_trip' => 'nullable|string|max:1000',
-            'next_trip' => 'nullable|string|max:1000',
-            'favorite_dessert' => 'nullable|string|max:255',
-            'is_married' => 'nullable|string|max:255',
-            'favorite_food' => 'nullable|string|max:255',
-            'movie_recommendation' => 'nullable|string|max:1000',
-            'book_recommendation' => 'nullable|string|max:1000',
-            'podcast_recommendation' => 'nullable|string|max:1000',
-            'gift' => 'nullable|string|max:1000',
-            'gift_link' => 'nullable|url|max:255',
-        ];
+        // Determine which tab form was submitted and apply appropriate validation rules
+        $tabValidations = $this->getTabValidations($request->form_tab);
         
-        // Mensajes personalizados
+        // Validation messages
         $messages = [
             'name.required' => 'El campo nombre es obligatorio.',
             'last_name.required' => 'El campo apellidos es obligatorio.',
@@ -157,7 +116,7 @@ class UserController extends Controller
         ];
     
         // Validar los datos del formulario
-        $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $tabValidations, $messages);
 
         //Update slug
         $fullName = $request->name . ' ' . $request->last_name . '-' . rand(1000,9999);
@@ -170,154 +129,373 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('active_tab', $request->form_tab); // Pass the active tab to highlight it after redirect
         }
 
-        /*$request->merge([
-            'name' => strtolower($request->name),
-            'last_name' => strtolower($request->last_name),
-        ]);*/
+        // Continue with the rest of your update logic based on the tab
+        $this->updateUserBasedOnTab($request, $user);
 
-        $newData = $request->only('name', 'last_name', 'email','about_me','skills','whatsapp','website','address','country','state','city','ocupation','instagram','linkedin');
+        return redirect()->back()
+            ->with('success', 'Perfil actualizado correctamente.')
+            ->with('active_tab', $request->form_tab);
+    }
+
+    /**
+     * Get validation rules based on which tab was submitted
+     *
+     * @param string $tab
+     * @return array
+     */
+    private function getTabValidations($tab)
+    {
+        $commonRules = [
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'email|max:255|unique:users,email,' . auth()->id(),
+        ];
+
+        switch ($tab) {
+            case 'profile':
+                return array_merge($commonRules, [
+                    'name' => 'required|string|max:255',
+                    'last_name' => 'required|string|max:255',
+                    'country' => 'required|string',
+                    'state' => 'required|string',
+                    'city' => 'required|string',
+                    'whatsapp' => 'nullable|string|max:20',
+                    'instagram' => 'nullable|max:255',
+                    'linkedin' => 'nullable|max:255',
+                    'website' => 'nullable|url|max:255',
+                ]);
+            case 'about':
+                return array_merge($commonRules, [
+                    'about_me' => 'required|string|max:1000',
+                    'abilities' => 'required|array',
+                    'how_vain' => 'nullable|string|max:1000',
+                    'biggest_dream' => 'nullable|string|max:1000',
+                    'brings_you_happiness' => 'nullable|string|max:1000',
+                    'looking_for_in_creelo' => 'nullable|string|max:1000',
+                ]);
+            case 'work':
+                return array_merge($commonRules, [
+                    'ocupation' => 'required|string|max:255',
+                    'business_about' => 'required|string|max:1000',
+                    'ideal_audience' => 'nullable|string|max:1000',
+                    'values' => 'nullable|string|max:1000',
+                    'tone' => 'nullable|string|max:1000',
+                    'mission' => 'nullable|string|max:1000',
+                    'dont_work_with' => 'nullable|string|max:1000',
+                    'achievement' => 'nullable|string|max:1000',
+                    'corporate_job' => 'nullable|string|max:1000',
+                ]);
+            case 'know-me':
+                return array_merge($commonRules, [
+                    'birthplace' => 'nullable|string|max:1000',
+                    'sign' => 'nullable|string|max:255',
+                    'hobbies' => 'nullable|string|max:1000',
+                    'favorite_drink' => 'nullable|string|max:255',
+                    'has_children' => 'nullable|string|max:255',
+                    'is_married' => 'nullable|string|max:255',
+                    'favorite_trip' => 'nullable|string|max:1000',
+                    'next_trip' => 'nullable|string|max:1000',
+                    'favorite_dessert' => 'nullable|string|max:255',
+                    'favorite_food' => 'nullable|string|max:255',
+                    'movie_recommendation' => 'nullable|string|max:1000',
+                    'book_recommendation' => 'nullable|string|max:1000',
+                    'podcast_recommendation' => 'nullable|string|max:1000',
+                ]);
+            case 'gift':
+                return array_merge($commonRules, [
+                    'gift' => 'nullable|string|max:1000',
+                    'gift_link' => 'nullable|url|max:255',
+                ]);
+            default:
+                // If no tab is specified, use all validation rules
+                return [
+                    'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    'name' => 'required|string|max:255',
+                    'last_name' => 'required|string|max:255', 
+                    'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
+                    'whatsapp' => 'nullable|string|max:20',
+                    'country' => 'string',
+                    'state' => 'string', 
+                    'city' => 'string',
+                    'instagram' => 'nullable|max:255',
+                    'linkedin' => 'nullable|max:255',
+                    'website' => 'nullable|url|max:255',
+                    'about_me' => 'required|string|max:1000',
+                    'abilities' => 'required|array',
+                    'how_vain' => 'nullable|string|max:1000', 
+                    'biggest_dream' => 'nullable|string|max:1000',
+                    'brings_you_happiness' => 'nullable|string|max:1000',
+                    'looking_for_in_creelo' => 'nullable|string|max:1000',
+                    'ocupation' => 'required|string|max:255',
+                    'business_about' => 'required|string|max:1000',
+                    'ideal_audience' => 'nullable|string|max:1000',
+                    'values' => 'nullable|string|max:1000',
+                    'tone' => 'nullable|string|max:1000',
+                    'mission' => 'nullable|string|max:1000', 
+                    'dont_work_with' => 'nullable|string|max:1000',
+                    'achievement' => 'nullable|string|max:1000',
+                    'corporate_job' => 'nullable|string|max:1000',
+                    'birthplace' => 'nullable|string|max:1000',
+                    'sign' => 'nullable|string|max:255',
+                    'hobbies' => 'nullable|string|max:1000',
+                    'favorite_drink' => 'nullable|string|max:255',
+                    'has_children' => 'nullable|string|max:255',
+                    'favorite_trip' => 'nullable|string|max:1000',
+                    'next_trip' => 'nullable|string|max:1000',
+                    'favorite_dessert' => 'nullable|string|max:255',
+                    'is_married' => 'nullable|string|max:255',
+                    'favorite_food' => 'nullable|string|max:255',
+                    'movie_recommendation' => 'nullable|string|max:1000',
+                    'book_recommendation' => 'nullable|string|max:1000',
+                    'podcast_recommendation' => 'nullable|string|max:1000',
+                    'gift' => 'nullable|string|max:1000',
+                    'gift_link' => 'nullable|url|max:255',
+                ];
+        }
+    }
+
+    /**
+     * Update user data based on the submitted tab
+     *
+     * @param Request $request
+     * @param User $user
+     * @return void
+     */
+    private function updateUserBasedOnTab(Request $request, User $user)
+    {
+        // Upload avatar if provided (common to all tabs)
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+            $user->save();
+        }
+
+        // Process update based on tab
+        switch ($request->form_tab) {
+            case 'profile':
+                $this->updateProfileTab($request, $user);
+                break;
+            case 'about':
+                $this->updateAboutTab($request, $user);
+                break;
+            case 'work':
+                $this->updateWorkTab($request, $user);
+                break;
+            case 'know-me':
+                $this->updateKnowMeTab($request, $user);
+                break;
+            case 'gift':
+                $this->updateGiftTab($request, $user);
+                break;
+            default:
+                // If no specific tab, update everything
+                $this->updateAllUserFields($request, $user);
+                break;
+        }
+
+        // Actualizar campos del CRM para todos los tabs
+        $contactServices = new ContactServices;
+        $customFields = $this->prepareCustomFields($request, $user);
+        $newData = $request->only('name', 'last_name', 'email', 'about_me', 'skills', 'whatsapp', 'website', 'address', 'country', 'state', 'city', 'ocupation', 'instagram', 'linkedin');
+        $contactServices->updateContact($user, $newData, $customFields);
+    }
+
+    /**
+     * Update profile tab fields
+     */
+    private function updateProfileTab(Request $request, User $user)
+    {
+        $fieldsToUpdate = [
+            'name', 'last_name', 'whatsapp', 'country', 'state', 'city', 'instagram', 'linkedin', 'website'
+        ];
+
+        foreach ($fieldsToUpdate as $field) {
+            if ($request->has($field)) {
+                $user->$field = $request->$field;
+            }
+        }
+
+        // Email visibility
+        $user->is_email = $request->has('is_email');
+        $user->save();
+    }
+
+    /**
+     * Update about tab fields
+     */
+    private function updateAboutTab(Request $request, User $user)
+    {
+        // Update about_me field
+        if ($request->has('about_me')) {
+            $user->about_me = $request->about_me;
+            $user->save();
+        }
+
+        // Update abilities (skills)
+        if ($request->has('abilities')) {
+            $user->abilities()->delete();
+            foreach ($request->abilities as $skillId) {
+                $skill = new UserSkill;
+                $skill->user_id = $user->id;
+                $skill->skill_id = $skillId;
+                $skill->save();
+            }
+        }
+
+        // Update interests
+        if ($request->has('interests')) {
+            UserInterest::where('user_id', $user->id)->delete();
+            foreach ($request->interests as $interestId) {
+                UserInterest::create([
+                    'user_id' => $user->id,
+                    'interests_id' => $interestId
+                ]);
+            }
+        }
+
+        // Update additional fields
+        $this->updateAdditionalFields($request, $user, [
+            'how_vain', 'biggest_dream', 'brings_you_happiness', 'looking_for_in_creelo'
+        ]);
+    }
+
+    /**
+     * Update work tab fields
+     */
+    private function updateWorkTab(Request $request, User $user)
+    {
+        // Update ocupation
+        if ($request->has('ocupation')) {
+            $user->ocupation = $request->ocupation;
+            $user->save();
+        }
+
+        // Update additional fields
+        $this->updateAdditionalFields($request, $user, [
+            'business_about', 'ideal_audience', 'values', 'tone', 'mission', 
+            'dont_work_with', 'achievement', 'corporate_job'
+        ]);
+    }
+
+    /**
+     * Update know me tab fields
+     */
+    private function updateKnowMeTab(Request $request, User $user)
+    {
+        // Update additional fields
+        $this->updateAdditionalFields($request, $user, [
+            'birthplace', 'sign', 'hobbies', 'favorite_drink', 'has_children',
+            'is_married', 'favorite_trip', 'next_trip', 'favorite_dessert',
+            'favorite_food', 'movie_recommendation', 'book_recommendation', 'podcast_recommendation'
+        ]);
+    }
+
+    /**
+     * Update gift tab fields
+     */
+    private function updateGiftTab(Request $request, User $user)
+    {
+        // Update additional fields
+        $this->updateAdditionalFields($request, $user, [
+            'gift', 'gift_link'
+        ]);
+    }
+
+    /**
+     * Update additional fields for the user
+     */
+    private function updateAdditionalFields(Request $request, User $user, array $fields)
+    {
+        if (!$user->additional) {
+            $additional = new Additional();
+            $additional->user_id = $user->id;
+            $additional->save();
+        }
+
+        $updateData = [];
+        foreach ($fields as $field) {
+            if ($request->has($field)) {
+                $updateData[$field] = $request->$field;
+            }
+        }
+
+        $user->additional()->update($updateData);
+    }
+
+    /**
+     * Update all user fields (legacy approach for full form)
+     */
+    private function updateAllUserFields(Request $request, User $user)
+    {
+        $newData = $request->only('name', 'last_name', 'email', 'about_me', 'skills', 'whatsapp', 'website', 'address', 'country', 'state', 'city', 'ocupation', 'instagram', 'linkedin');
 
         foreach ($newData as $key => $value) {
             if ($value !== $user->$key) {
                 $user->$key = $value;
             }
-            $user->save();
         }
+        $user->save();
 
-        if($request->is_email == 'on'){
+        if ($request->is_email == 'on') {
             $user->is_email = true;
         } else {
             $user->is_email = false;
         }
         $user->save();
 
-        //Custom fields
-        $custom_fields = [
-            [
-                'id' => 'sixYg1SDbGp1Dr83ecgL',
-                'value' => $request->how_vain,
-            ],
-            [
-                'id' => 'PSO3jtCSiTYWEPXqWlEl',
-                'value' => $request->skills,
-            ],
-            [
-                'id' => 'Fm8fWY7tYe9EDr2UFzoE',
-                'value' => $request->business_about,
-            ],
-            [
-                'id' => '1PxpPNM77dNI7ROGigcn',
-                'value' => $request->corporate_job,
-            ],
-            [
-                'id' => 'Ne4Papu31MsOMVWqnUhQ',
-                'value' => $request->mission,
-            ],
-            [
-                'id' => 'GH51Vq5vHbzfrqGTOHpa',
-                'value' => $request->ideal_audience,
-            ],
-            [
-                'id' => 'IyRQeegggS20PElYpJSQ',
-                'value' => $request->dont_work_with,
-            ],
-            [
-                'id' => '07s42m66gEKrbFT6J5hP',
-                'value' => $request->values,
-            ],
-            [
-                'id' => 'C1LLobFuQR7dfdNCJhxi',
-                'value' => $request->tone,
-            ],
-            [
-                'id' => 'tZzHUsQVOZgKnteOjpBu',
-                'value' => $request->looking_for_in_creelo,
-            ],
-            [
-                'id' => 'q3BHfdxzT2uKfNO3icXG',
-                'value' => $request->birthplace,
-            ],
-            [
-                'id' => 'JuiCbkHWsSc3iKfmOBpo',
-                'value' => $request->sign,
-            ],
-            [
-                'id' => '6HdseExNUaBuLIxAyQPA',
-                'value' => $request->hobbies,
-            ],
-            [
-                'id' => 'CoYlNTkC5eumwPqo4gXM',
-                'value' => $request->favorite_drink,
-            ],
-            [
-                'id' => 'xy0zfzMRFpOdXYJkHS2c',
-                'value' => $request->has_children,
-            ],
-            [
-                'id' => '1fFJJsONHbRMQJCstvg1',
-                'value' => $request->is_married,
-            ],
-            [
-                'id' => 'iofVGERZPPqeC8FHkcgz',
-                'value' => $request->favorite_trip,
-            ],
-            [
-                'id' => 'CFCeOt6NQHr72WQIj7N2',
-                'value' => $request->next_trip,
-            ],
-            [
-                'id' => 'Kn7tmKz8ESe3HEB02w7b',
-                'value' => $request->favorite_dessert,
-            ],
-            [
-                'id' => 'aou0gq7fDscz6n8DJFyk',
-                'value' => $request->favorite_food,
-            ],
-            [
-                'id' => 'jH0uBem7yGWoCKa94CDw',
-                'value' => $request->movie_recommendation,
-            ],
-            [
-                'id' => 'rvCxO1sqFsTMoHwT98Dz',
-                'value' => $request->book_recommendation,
-            ],
-            [
-                'id' => 'HelwPSnquD5zPTRYu26H',
-                'value' => $request->podcast_recommendation,
-            ],
-            [
-                'id' => 'D1O41ZwrhZGnCkDmFE8V',
-                'value' => $request->irreplaceable,
-            ],
-            [
-                'id' => 'i3qCyUklW7qd5nHflDIg',
-                'value' => $request->achievement,
-            ],
-            [
-                'id' => 'pJgAz1qIItYg22DoR0rU',
-                'value' => $request->biggest_dream,
-            ],
-            [
-                'id' => 'd8XcWxaZcBu4erXZ56iq',
-                'value' => $request->gift,
-            ],
-            [
-                'id' => '25W5tvKnlj0BmAN4WgHs',
-                'value' => $request->gift_link,
-            ],
-            [
-                'id' => '6LQ12hAVi2eqWHyiudVg',
-                'value' => $request->like_to_receive,
-            ],
-            [
-                'id' => 'u8FAHwpq7qUJsucDxwUY',
-                'value' => $request->brings_you_happiness,
-            ],
-        ];
+        // Update abilities
+        if (! $request->abilities) {
+            $user->abilities()->delete();
+        } else {
+            $currentSkills = $user->abilities->pluck('id')->toArray();
+            $skillsToAdd = array_diff($request->abilities, $currentSkills);
+            $skillsToRemove = array_diff($currentSkills, $request->abilities);
+            $user->abilities()->whereIn('id', $skillsToRemove)->delete();
 
+            foreach ($skillsToAdd as $skillId) {
+                $skill = new UserSkill;
+                $skill->user_id = $user->id;
+                $skill->skill_id = $skillId;
+                $skill->save();
+            }
+        }
+
+        // Update interests
+        UserInterest::where('user_id', $user->id)->delete();
+        
+        if ($request->interests) {
+            foreach ($request->interests as $interestId) {
+                UserInterest::create([
+                    'user_id' => $user->id,
+                    'interests_id' => $interestId
+                ]);
+            }
+        }
+
+        // Update services
+        if (! $request->services) {
+            $user->services()->delete();
+        } else {
+            if (! is_null($user->services)) {
+                $currentServices = $user->services->pluck('id')->toArray();
+                $servicesToAdd = array_diff($request->services, $currentServices);
+                $servicesToRemove = array_diff($currentServices, $request->services);
+                $user->services()->whereIn('id', $servicesToRemove)->delete();
+            } else {
+                foreach ($request->services as $serviceId) {
+                    // Crear una nueva instancia de Service
+                    $service = new UserService;
+                    $service->user_id = $user->id;
+                    $service->service_id = $serviceId;
+                    $service->save();
+                }
+            }
+        }
+
+        // Update additional fields
         $updateData = [
             'how_vain' => $request->how_vain ?? null,
             'skills' => $request->skills ?? null, 
@@ -358,73 +536,137 @@ class UserController extends Controller
         }
         
         $user->additional()->update($updateData);
+    }
 
-        $request->merge([
-            'custom_fields' => $custom_fields,
-        ]);
+    /**
+     * Prepare custom fields for CRM update
+     */
+    private function prepareCustomFields(Request $request, User $user)
+    {
+        $customFields = [
+            [
+                'id' => 'sixYg1SDbGp1Dr83ecgL',
+                'value' => $request->how_vain ?? $user->additional->how_vain ?? null,
+            ],
+            [
+                'id' => 'PSO3jtCSiTYWEPXqWlEl',
+                'value' => $request->skills ?? $user->additional->skills ?? null,
+            ],
+            [
+                'id' => 'Fm8fWY7tYe9EDr2UFzoE',
+                'value' => $request->business_about ?? $user->additional->business_about ?? null,
+            ],
+            [
+                'id' => '1PxpPNM77dNI7ROGigcn',
+                'value' => $request->corporate_job ?? $user->additional->corporate_job ?? null,
+            ],
+            [
+                'id' => 'Ne4Papu31MsOMVWqnUhQ',
+                'value' => $request->mission ?? $user->additional->mission ?? null,
+            ],
+            [
+                'id' => 'GH51Vq5vHbzfrqGTOHpa',
+                'value' => $request->ideal_audience ?? $user->additional->ideal_audience ?? null,
+            ],
+            [
+                'id' => 'IyRQeegggS20PElYpJSQ',
+                'value' => $request->dont_work_with ?? $user->additional->dont_work_with ?? null,
+            ],
+            [
+                'id' => '07s42m66gEKrbFT6J5hP',
+                'value' => $request->values ?? $user->additional->values ?? null,
+            ],
+            [
+                'id' => 'C1LLobFuQR7dfdNCJhxi',
+                'value' => $request->tone ?? $user->additional->tone ?? null,
+            ],
+            [
+                'id' => 'tZzHUsQVOZgKnteOjpBu',
+                'value' => $request->looking_for_in_creelo ?? $user->additional->looking_for_in_creelo ?? null,
+            ],
+            [
+                'id' => 'q3BHfdxzT2uKfNO3icXG',
+                'value' => $request->birthplace ?? $user->additional->birthplace ?? null,
+            ],
+            [
+                'id' => 'JuiCbkHWsSc3iKfmOBpo',
+                'value' => $request->sign ?? $user->additional->sign ?? null,
+            ],
+            [
+                'id' => '6HdseExNUaBuLIxAyQPA',
+                'value' => $request->hobbies ?? $user->additional->hobbies ?? null,
+            ],
+            [
+                'id' => 'CoYlNTkC5eumwPqo4gXM',
+                'value' => $request->favorite_drink ?? $user->additional->favorite_drink ?? null,
+            ],
+            [
+                'id' => 'xy0zfzMRFpOdXYJkHS2c',
+                'value' => $request->has_children ?? $user->additional->has_children ?? null,
+            ],
+            [
+                'id' => '1fFJJsONHbRMQJCstvg1',
+                'value' => $request->is_married ?? $user->additional->is_married ?? null,
+            ],
+            [
+                'id' => 'iofVGERZPPqeC8FHkcgz',
+                'value' => $request->favorite_trip ?? $user->additional->favorite_trip ?? null,
+            ],
+            [
+                'id' => 'CFCeOt6NQHr72WQIj7N2',
+                'value' => $request->next_trip ?? $user->additional->next_trip ?? null,
+            ],
+            [
+                'id' => 'Kn7tmKz8ESe3HEB02w7b',
+                'value' => $request->favorite_dessert ?? $user->additional->favorite_dessert ?? null,
+            ],
+            [
+                'id' => 'aou0gq7fDscz6n8DJFyk',
+                'value' => $request->favorite_food ?? $user->additional->favorite_food ?? null,
+            ],
+            [
+                'id' => 'jH0uBem7yGWoCKa94CDw',
+                'value' => $request->movie_recommendation ?? $user->additional->movie_recommendation ?? null,
+            ],
+            [
+                'id' => 'rvCxO1sqFsTMoHwT98Dz',
+                'value' => $request->book_recommendation ?? $user->additional->book_recommendation ?? null,
+            ],
+            [
+                'id' => 'HelwPSnquD5zPTRYu26H',
+                'value' => $request->podcast_recommendation ?? $user->additional->podcast_recommendation ?? null,
+            ],
+            [
+                'id' => 'D1O41ZwrhZGnCkDmFE8V',
+                'value' => $request->irreplaceable ?? $user->additional->irreplaceable ?? null,
+            ],
+            [
+                'id' => 'i3qCyUklW7qd5nHflDIg',
+                'value' => $request->achievement ?? $user->additional->achievement ?? null,
+            ],
+            [
+                'id' => 'pJgAz1qIItYg22DoR0rU',
+                'value' => $request->biggest_dream ?? $user->additional->biggest_dream ?? null,
+            ],
+            [
+                'id' => 'd8XcWxaZcBu4erXZ56iq',
+                'value' => $request->gift ?? $user->additional->gift ?? null,
+            ],
+            [
+                'id' => '25W5tvKnlj0BmAN4WgHs',
+                'value' => $request->gift_link ?? $user->additional->gift_link ?? null,
+            ],
+            [
+                'id' => '6LQ12hAVi2eqWHyiudVg',
+                'value' => $request->like_to_receive ?? $user->additional->like_to_receive ?? null,
+            ],
+            [
+                'id' => 'u8FAHwpq7qUJsucDxwUY',
+                'value' => $request->brings_you_happiness ?? $user->additional->brings_you_happiness ?? null,
+            ],
+        ];
 
-        $user->save();
-
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
-            $user->save();
-          }
-
-        //Actualizamos habilidades
-        if (! $request->abilities) {
-            $user->abilities()->delete();
-        } else {
-            $currentSkills = $user->abilities->pluck('id')->toArray();
-            $skillsToAdd = array_diff($request->abilities, $currentSkills);
-            $skillsToRemove = array_diff($currentSkills, $request->abilities);
-            $user->abilities()->whereIn('id', $skillsToRemove)->delete();
-
-            foreach ($skillsToAdd as $skillId) {
-                $skill = new UserSkill;
-                $skill->user_id = $user->id;
-                $skill->skill_id = $skillId;
-                $skill->save();
-            }
-        }
-
-        //Actualizamos intereses
-        UserInterest::where('user_id', $user->id)->delete();
-        
-        if ($request->interests) {
-            foreach ($request->interests as $interestId) {
-                UserInterest::create([
-                    'user_id' => $user->id,
-                    'interests_id' => $interestId
-                ]);
-            }
-        }
-
-        //Actualizamos servicios
-        if (! $request->services) {
-            $user->services()->delete();
-        } else {
-            if (! is_null($user->services)) {
-                $currentServices = $user->services->pluck('id')->toArray();
-                $servicesToAdd = array_diff($request->services, $currentServices);
-                $servicesToRemove = array_diff($currentServices, $request->services);
-                $user->services()->whereIn('id', $servicesToRemove)->delete();
-            } else {
-                foreach ($request->services as $serviceId) {
-                    // Crear una nueva instancia de Service
-                    $service = new UserService;
-                    $service->user_id = $user->id;
-                    $service->service_id = $serviceId;
-                    $service->save();
-                }
-            }
-        }
-
-        //Actualizar campos del CRM
-        $contactServices = new ContactServices;
-        $contactServices->updateContact($user, $newData, $custom_fields);
-
-        return redirect()->back()->with('success', 'Perfil actualizado correctamente.');
+        return $customFields;
     }
 
     public function showLogin()
