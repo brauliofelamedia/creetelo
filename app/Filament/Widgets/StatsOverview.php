@@ -13,11 +13,15 @@ class StatsOverview extends BaseWidget
 {
     protected function getStats(): array
     {
-        $users = User::select('id')->count();
+        $usersInactive = User::select('id')->where('status',0)->count();
+        $usersActives = User::select('id')->where('status',1)->count();
         $skills = Skill::select('id')->count();
         $services = Service::select('id')->count();
         return [
-            Stat::make('Usuarios', number_format($users))
+            Stat::make('Usuarios inactivos', number_format($usersInactive))
+                ->description('Total de usuarios')
+                ->descriptionIcon('heroicon-m-arrow-trending-up', IconPosition::Before),
+            Stat::make('Usuarios activos', number_format($usersActives))
                 ->description('Total de usuarios')
                 ->descriptionIcon('heroicon-m-arrow-trending-up', IconPosition::Before),
             Stat::make('Habilidades', number_format($skills))

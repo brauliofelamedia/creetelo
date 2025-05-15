@@ -734,19 +734,12 @@ class UserController extends Controller
             $iteration = intval(ceil($total / 20));
 
             //return response()->json(['status' => 'success', 'message' => $data]);
-
             for ($i = 0; $i < $iteration; $i++) {
                 $data1 = $contactServices->getContacts(null, $i + 1);
 
-                //Create and update users
                 foreach ($data1['contacts'] as $contact) {
                     $userExist = User::where('email', $contact['email'])->first();
                     $customFields = $contact['customFields'];
-                    
-                    // Si el usuario existe y tiene rol admin/super_admin, saltar al siguiente
-                    if ($userExist) {
-                        continue;
-                    }
 
                     // Si el usuario ya existe, actualizar sus datos
                     if ($userExist) {
@@ -759,11 +752,13 @@ class UserController extends Controller
                         $userExist->website = $contact['website']; 
                         $userExist->state = $contact['state'];
                         $userExist->phone = $contact['phone'];
+                        $userExist->status = 1;
                         $userExist->city = $contact['city'];
                         $userExist->save();
 
-                        $user = $userExist;
+                        //$user = $userExist;
                     } else {
+
                         // Si no existe, crear nuevo usuario
                         $randomNum = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
                         $fullName = $randomNum . '-' . $contact['firstNameLowerCase'] . ' ' . $contact['lastNameLowerCase'];
@@ -771,11 +766,11 @@ class UserController extends Controller
 
                         $user = new User;
                         $user->password = bcrypt('password');
-                        $user->contact_id = $contact['id'];
+                        $user->contact_id = $contact['id'];  
                         $user->name = $contact['firstNameLowerCase'];
                         $user->last_name = $contact['lastNameLowerCase'];
                         $user->slug = $fullName;
-                        $user->email = $contact['email'];
+                        $user->email = $contact['email'] ?? (Str::slug($fullName) . '@example.com');
                         $user->postal_code = $contact['postalCode'];
                         $user->country = $this->convertIso2ToWorldId($contact['country']);
                         $user->address = $contact['address'];
@@ -783,6 +778,7 @@ class UserController extends Controller
                         $user->state = $contact['state'];
                         $user->phone = $contact['phone'];
                         $user->city = $contact['city'];
+                        $user->status = 1;
                         $user->save();
 
                         $user->assignRole('user');
@@ -826,13 +822,17 @@ class UserController extends Controller
                         'brings_you_happiness' => 'u8FAHwpq7qUJsucDxwUY',
                     ];
                     
-                    foreach ($fieldMappings as $attribute => $id) {
-                        $user->additional->$attribute = $this->getCustomFieldValue($customFields, $id);
+                    if (isset($user->additional)) {
+                        foreach ($fieldMappings as $attribute => $id) {
+                            $user->additional->$attribute = $this->getCustomFieldValue($customFields, $id);
+                        }
+                        $additional->save();
                     }
 
-                    $additional->save();
+                    
                 }
             }
+
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'Error sincronizando contactos: ' . $e->getMessage()], 500);
         }
@@ -851,7 +851,6 @@ class UserController extends Controller
             for ($i = 0; $i < $iteration; $i++) {
                 $data1 = $contactServices->getContacts(null, $i + 1);
 
-                //Create and update users
                 foreach ($data1['contacts'] as $contact) {
                     try {
                         $userExist = User::where('contact_id', $contact['id'])->first();
@@ -876,6 +875,7 @@ class UserController extends Controller
                                     $user->website = $contact['website'];
                                     //$user->state = $contact['state'];
                                     $user->phone = $contact['phone'];
+                                    $user->status = 1;
                                     //$user->city = $contact['city'];
                                     $user->save();
                 
@@ -898,6 +898,7 @@ class UserController extends Controller
                             $userExist->website = $contact['website'];
                             //$userExist->state = $contact['state'];
                             $userExist->phone = $contact['phone'];
+                            $userExist->status = 1;
                             //$userExist->city = $contact['city'];
                             $userExist->save();
 
@@ -909,7 +910,7 @@ class UserController extends Controller
                     }
                 }
             }
-            
+
             return response()->json(['status' => 'success', 'message' => 'Contactos sincronizados correctamente']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => 'Error en la sincronización: ' . $e->getMessage()], 500);

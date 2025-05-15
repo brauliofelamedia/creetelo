@@ -87,7 +87,7 @@ class FrontController extends Controller
             });
         }
         
-        $query->orderBy('created_at', 'desc');
+        $query->orderBy('created_at', 'desc')->where('status', 1);
         $users = $query->with('additional')->paginate(20);
 
         $countriesMap = Country::all()->pluck('name','iso2')->toArray();
@@ -125,6 +125,7 @@ class FrontController extends Controller
         $user->state = $contact['state'];
         $user->phone = $contact['phone'];
         $user->city = $contact['city'];
+        $user->status = 1;
         $user->save();
         $user->assignRole('user');
 
@@ -198,6 +199,7 @@ class FrontController extends Controller
                 $user->password_assign_token = $token;
                 $user->password_assign_expires_at = $expiresAt;
                 $user->contact_id = $request->contact_id;
+                $user->status = 1;
                 $user->assignRole('user');
                 $user->save();
 

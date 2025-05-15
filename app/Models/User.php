@@ -32,6 +32,7 @@ class User extends Authenticatable implements FilamentUser
         'country',
         'instragram',
         'linkedin',
+        'status',
         'avatar',
         'state',
         'password_assign_expires_at',
