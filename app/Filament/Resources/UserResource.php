@@ -133,11 +133,29 @@ class UserResource extends Resource
                     ->label('Rol'),
                 Tables\Columns\TextColumn::make('contact_id')
                     ->label('ID de contacto'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('CompleteProfile')
+                    ->label('Estado del perfil')
+                    ->badge()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->formatStateUsing(function ($state) {
+                        return match ($state) {
+                            'complete' => 'Completo',
+                            'incomplete' => 'Incompleto',
+                            'in_process' => 'En proceso',
+                        };
+                    })
+                    ->color(function ($state) {
+                        return match ($state) {
+                            'complete' => 'success',
+                            'incomplete' => 'danger',
+                            'in_process' => 'warning',
+                        };
+                    }),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime('d/F/Y \a \l\a\s H:i')
+                    ->label('Última actualización')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

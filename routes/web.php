@@ -60,6 +60,13 @@ Route::get('dashboard/deletastate',[UserController::class,'deleteStatesAndCities
 Route::get('dashboard/deletecontacts',[UserController::class,'deleteContacts'])->middleware('auth')->name('dashboard.delete.contacts');
 //Route::post('dashboard/login_process',[UserController::class,'login'])->name('dashboard.account.process');
 
+Route::get('update-users-status', function () {
+    $users = User::where('email', 'like', '%felamedia%')
+        ->orWhere('email', 'like', '%creetelo.club%')
+        ->update(['status' => 1]);
+    return 'Users status updated successfully';
+})->middleware('auth');
+
 //Sync contacts
 Route::get('dashboard/sync',[UserController::class,'syncContacts'])->name('dashboard.sync');
 Route::get('dashboard/sync/crm',[UserController::class,'syncContactsCRM'])->middleware('auth')->name('dashboard.sync.crm');

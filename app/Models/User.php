@@ -115,6 +115,53 @@ class User extends Authenticatable implements FilamentUser
         return $avatar;
     }
 
+    public function getCompleteProfileAttribute(){
+        //42 campos
+
+        $fields = [
+            'name','last_name', 'email', 'about_me', 'whatsapp', 'website', 'address', 
+            'country', 'state', 'city', 'postal_code', 'ocupation', 
+            'company_or_venture'
+        ];
+
+        $additional_fields = [
+            'how_vain', 'business_about', 'corporate_job', 'mission', 'ideal_audience',
+            'dont_work_with', 'values', 'tone', 'looking_for_in_creelo', 'birthplace',
+            'sign', 'hobbies', 'favorite_drink', 'has_children', 'is_married',
+            'favorite_trip', 'next_trip', 'favorite_dessert', 'favorite_food',
+            'movie_recommendation', 'book_recommendation', 'podcast_recommendation',
+            'irreplaceable', 'achievement', 'biggest_dream', 'gift', 'gift_link',
+            'like_to_receive', 'brings_you_happiness'
+        ];
+
+        $filled_count = 0;
+        $total_fields = count($fields) + count($additional_fields);
+
+        foreach ($fields as $field) {
+            if (!empty($this->$field)) {
+            $filled_count++;
+            }
+        }
+
+        if ($this->additional) {
+            foreach ($additional_fields as $field) {
+            if (!empty($this->additional->$field)) {
+                $filled_count++;
+            }
+            }
+        }
+
+        $percentage = ($filled_count / $total_fields) * 100;
+
+        if ($percentage >= 55) {
+            return 'complete';
+        } elseif ($percentage >= 15) {
+            return 'in_process';
+        } else {
+            return 'incomplete';
+        }
+    }
+
     public function getCountryAttribute($value)
     {
         return $value ?? 'US';
@@ -161,5 +208,29 @@ class User extends Authenticatable implements FilamentUser
     public function additional()
     {
         return $this->hasOne(Additional::class, 'user_id', 'id');
+    }
+
+    public static function getTotalCompleteProfiles()
+    {
+        $users = self::where('status', 1)->get();
+        return $users->filter(function($user) {
+            return $user->complete_profile === 'complete';
+        })->count();
+    }
+
+    public static function getTotalIncompleteProfiles()
+    {
+        $users = self::where('status', 1)->get();
+        return $users->filter(function($user) {
+            return $user->complete_profile === 'incomplete';
+        })->count();
+    }
+
+    public static function getTotalProcessProfiles()
+    {
+        $users = self::where('status', 1)->get();
+        return $users->filter(function($user) {
+            return $user->complete_profile === 'in_process';
+        })->count();
     }
 }
