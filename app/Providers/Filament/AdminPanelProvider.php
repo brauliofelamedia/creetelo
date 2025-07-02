@@ -26,6 +26,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\MenuItem;
 use App\Filament\Pages\Settings;
 use App\Filament\Pages\Auth\Login;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
+use Rmsramos\Activitylog\ActivitylogPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -66,6 +68,8 @@ class AdminPanelProvider extends PanelProvider
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 \Hasnayeen\Themes\ThemesPlugin::make(),
                 FilamentShieldPlugin::make(),
+                FilamentSpatieLaravelBackupPlugin::make(),
+                ActivitylogPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,

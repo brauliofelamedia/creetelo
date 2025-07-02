@@ -367,7 +367,7 @@
                         <div class="tab-content" id="profileTabsContent">
                             <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <!-- Contenido del perfil general -->
-                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form">
+                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form" autocomplete="off" data-form-type="other">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="form_tab" value="profile">
@@ -375,27 +375,27 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Actualizar avatar:</label>
-                                                <input type="file" class="form-control" name="avatar">
+                                                <input type="file" class="form-control" name="avatar" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Nombre: <span class="required">*</span></label>
-                                                <input type="text" class="form-control @error('name') is-invalid border-danger @enderror" name="name" value="{{ old('name', ucfirst($user->name)) }}" required>
+                                                <input type="text" class="form-control @error('name') is-invalid border-danger @enderror" name="name" value="{{ old('name', ucfirst($user->name)) }}" required autocomplete="off" data-form-type="other">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Apellidos: <span class="required">*</span></label>
-                                                <input type="text" class="form-control @error('last_name') is-invalid border-danger @enderror" name="last_name" value="{{ old('last_name', ucfirst($user->last_name)) }}" required>
+                                                <input type="text" class="form-control @error('last_name') is-invalid border-danger @enderror" name="last_name" value="{{ old('last_name', ucfirst($user->last_name)) }}" required autocomplete="off" data-form-type="other">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Correo electrónico: <span class="required">*</span></label>
-                                                <input type="email" class="form-control @error('email') is-invalid border-danger @enderror" name="email" value="{{$user->email}}" readonly required>
+                                                <input type="email" class="form-control @error('email') is-invalid border-danger @enderror" name="email" value="{{$user->email}}" readonly required autocomplete="off" data-form-type="other">
                                                 <div class="form-check" style="float: right;margin-top: 11px;">
-                                                    <input class="form-check-input" type="checkbox" name="is_email" {{ old('is_email', $user->is_email) == 1 ? 'checked' : '' }} style="padding: 10px !important;" id="flexCheckDefault">
+                                                    <input class="form-check-input" type="checkbox" name="is_email" {{ old('is_email', $user->is_email) == 1 ? 'checked' : '' }} style="padding: 10px !important;" id="flexCheckDefault" autocomplete="off">
                                                     <label class="form-check-label" for="flexCheckDefault" style="font-size: 14px;margin-left:8px;">Mostrar el correo</label>
                                                 </div>
                                             </div>
@@ -403,14 +403,14 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">WhatsApp: <small style="color:#ff5600;">Recuerda agregar el código de tu país.</small></label>
-                                                <input class="form-control" type="tel" name="whatsapp" value="{{ old('whatsapp', $user->whatsapp) }}" placeholder="Ejemplo: 523114174458">
+                                                <input class="form-control" type="tel" name="whatsapp" value="{{ old('whatsapp', $user->whatsapp) }}" placeholder="Ejemplo: 523114174458" autocomplete="off" data-form-type="other">
                                                 <small class="message-danger">Si llenas el campo de WhatsApp, será público y se mostrará en tu biografía.</small>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="form-label">País:<span class="required">*</span></label>
-                                                <select class="form-control @error('country') is-invalid border-danger @enderror" name="country" id="country" required>
+                                                <select class="form-control @error('country') is-invalid border-danger @enderror" name="country" id="country" required autocomplete="off">
                                                     @foreach($countries as $country)
                                                         <option value="{{$country->iso2}}" {{($country->iso2 == $user->country)? 'selected' : ''}}>{{$country->name}}</option>
                                                     @endforeach
@@ -420,13 +420,13 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Estado:<span class="required">*</span></label>
-                                                <select class="form-control" name="state" id="state" required></select>
+                                                <select class="form-control" name="state" id="state" required autocomplete="off"></select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Ciudad:<span class="required">*</span></label>
-                                                <select class="form-control" name="city" id="city" required>
+                                                <select class="form-control" name="city" id="city" required autocomplete="off">
                                                     <option value="">Selecciona una ciudad</option>
                                                 </select>
                                             </div>
@@ -436,7 +436,7 @@
                                                 <label class="mb-10 form-label">Instagram:</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">https://instagram.com/</span>
-                                                    <input class="form-control" type="text" name="instagram" value="{{ old('instagram', $user->instagram) }}">
+                                                    <input class="form-control" type="text" name="instagram" value="{{ old('instagram', $user->instagram) }}" autocomplete="off" data-form-type="other">
                                                 </div>
                                             </div>
                                         </div>
@@ -445,14 +445,14 @@
                                                 <label class="mb-10 form-label">Linkedin:</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">https://linkedin.com/</span>
-                                                    <input class="form-control" type="text" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}">
+                                                    <input class="form-control" type="text" name="linkedin" value="{{ old('linkedin', $user->linkedin) }}" autocomplete="off" data-form-type="other">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Página Web:</label>
-                                                <input class="form-control" type="url" name="website" value="{{ old('website', $user->website) }}">
+                                                <input class="form-control" type="url" name="website" value="{{ old('website', $user->website) }}" autocomplete="off" data-form-type="other">
                                             </div>
                                         </div>
                                     </div>
@@ -461,7 +461,7 @@
                             </div>
                             <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
                                 <!-- Contenido de Sobre mí -->
-                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form">
+                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form" autocomplete="off" data-form-type="other">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="form_tab" value="about">
@@ -469,13 +469,13 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Bio corta:<span class="required">*</span></label>
-                                                <textarea name="about_me" rows="5" required maxlength="1000" class="form-control @error('amout_me') is-invalid border-danger @enderror">{{ old('about_me', $user->about_me) }}</textarea>
+                                                <textarea name="about_me" rows="5" required maxlength="1000" class="form-control @error('amout_me') is-invalid border-danger @enderror" autocomplete="off" data-form-type="other">{{ old('about_me', $user->about_me) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Soy increíble en (mis habilidades):<span class="required">*</span></label>
-                                                <select required name="abilities[]" id="selectSkills" class="form-control" multiple="multiple" style="width: 100%;">
+                                                <select required name="abilities[]" id="selectSkills" class="form-control" multiple="multiple" style="width: 100%;" autocomplete="off">
                                                     @isset($userSkills)
                                                         @if(count($userSkills) > 0)
                                                             @foreach($skills as $skill)
@@ -497,7 +497,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Tus intereses/hobbies?:</label>
-                                                <select required name="interests[]" id="selectInterests" class="selectInterests form-control" multiple="multiple" style="width: 100%;">
+                                                <select required name="interests[]" id="selectInterests" class="selectInterests form-control" multiple="multiple" style="width: 100%;" autocomplete="off">
                                                     @isset($userInterests)
                                                         @if(count($userInterests) > 0)
                                                             @foreach($interests as $interest)
@@ -519,25 +519,25 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Soy una Creída muy:</label>
-                                                <textarea class="form-control" name="how_vain">{{ old('how_vain', @$user->additional->how_vain) }}</textarea>
+                                                <textarea class="form-control" name="how_vain" autocomplete="off" data-form-type="other">{{ old('how_vain', @$user->additional->how_vain) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Te atreves a contarnos tu sueño más grande? #manifiestababy:</label>
-                                                <textarea class="form-control" name="biggest_dream">{{ old('biggest_dream', @$user->additional->biggest_dream) }}</textarea>
+                                                <textarea class="form-control" name="biggest_dream" autocomplete="off" data-form-type="other">{{ old('biggest_dream', @$user->additional->biggest_dream) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Qué te hace bien o te trae felicidad?</label>
-                                                <textarea class="form-control" name="brings_you_happiness">{{ old('brings_you_happiness', @$user->additional->brings_you_happiness) }}</textarea>
+                                                <textarea class="form-control" name="brings_you_happiness" autocomplete="off" data-form-type="other">{{ old('brings_you_happiness', @$user->additional->brings_you_happiness) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Entré a Créetelo buscando:</label>
-                                                <textarea class="form-control" name="looking_for_in_creelo">{{ old('looking_for_in_creelo', @$user->additional->looking_for_in_creelo) }}</textarea>
+                                                <textarea class="form-control" name="looking_for_in_creelo" autocomplete="off" data-form-type="other">{{ old('looking_for_in_creelo', @$user->additional->looking_for_in_creelo) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -546,7 +546,7 @@
                             </div>
                             <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
                                 <!-- Contenido de Sobre Mi Trabajo -->
-                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form">
+                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form" autocomplete="off" data-form-type="other">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="form_tab" value="work">
@@ -554,55 +554,55 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Ocupación:<span class="required">*</span></label>
-                                                <input class="form-control @error('ocupation') is-invalid border-danger @enderror" type="text" name="ocupation" value="{{ old('ocupation', $user->ocupation) }}" required>
+                                                <input class="form-control @error('ocupation') is-invalid border-danger @enderror" type="text" name="ocupation" value="{{ old('ocupation', $user->ocupation) }}" required autocomplete="off" data-form-type="other">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Mi emprendimiento/negocio/trabajo trata sobre: <span class="required">*</span></label>
-                                                <textarea class="form-control @error('business_about') is-invalid border-danger @enderror" name="business_about" required>{{ old('business_about', @$user->additional->business_about) }}</textarea>
+                                                <textarea class="form-control @error('business_about') is-invalid border-danger @enderror" name="business_about" required autocomplete="off" data-form-type="other">{{ old('business_about', @$user->additional->business_about) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Mi audiencia IDEAL es:</label>
-                                                <textarea class="form-control" name="ideal_audience">{{ old('ideal_audience', @$user->additional->ideal_audience) }}</textarea>
+                                                <textarea class="form-control" name="ideal_audience" autocomplete="off" data-form-type="other">{{ old('ideal_audience', @$user->additional->ideal_audience) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Mis valores más importantes son:</label>
-                                                <textarea class="form-control" name="values">{{ old('values', @$user->additional->values) }}</textarea>
+                                                <textarea class="form-control" name="values" autocomplete="off" data-form-type="other">{{ old('values', @$user->additional->values) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Mi tono es:</label>
-                                                <textarea class="form-control" name="tone">{{ old('tone', @$user->additional->tone) }}</textarea>
+                                                <textarea class="form-control" name="tone" autocomplete="off" data-form-type="other">{{ old('tone', @$user->additional->tone) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Mi misión es ayudar a que más personas:</label>
-                                                <textarea class="form-control" name="mission">{{ old('mission', @$user->additional->mission) }}</textarea>
+                                                <textarea class="form-control" name="mission" autocomplete="off" data-form-type="other">{{ old('mission', @$user->additional->mission) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Prefiero no trabajar con personas que:</label>
-                                                <textarea class="form-control" name="dont_work_with">{{ old('dont_work_with', @$user->additional->dont_work_with) }}</textarea>
+                                                <textarea class="form-control" name="dont_work_with" autocomplete="off" data-form-type="other">{{ old('dont_work_with', @$user->additional->dont_work_with) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Algún LOGRO que nos quieras compartir importante para ti?:</label>
-                                                <textarea class="form-control" name="achievement">{{ old('achievement', @$user->additional->achievement) }}</textarea>
+                                                <textarea class="form-control" name="achievement" autocomplete="off" data-form-type="other">{{ old('achievement', @$user->additional->achievement) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">Trabajo en el corporativo, me dedico a:</label>
-                                                <textarea class="form-control" name="corporate_job">{{ old('corporate_job', @$user->additional->corporate_job) }}</textarea>
+                                                <textarea class="form-control" name="corporate_job" autocomplete="off" data-form-type="other">{{ old('corporate_job', @$user->additional->corporate_job) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -611,7 +611,7 @@
                             </div>
                             <div class="tab-pane fade" id="know-me" role="tabpanel" aria-labelledby="know-me-tab">
                                 <!-- Contenido de Conóceme Más -->
-                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form">
+                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form" autocomplete="off" data-form-type="other">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="form_tab" value="know-me">
@@ -619,13 +619,13 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Dónde naciste y creciste?:</label>
-                                                <textarea class="form-control" name="birthplace">{{ old('birthplace', @$user->additional->birthplace) }}</textarea>
+                                                <textarea class="form-control" name="birthplace" autocomplete="off" data-form-type="other">{{ old('birthplace', @$user->additional->birthplace) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Qué signo eres?:</label>
-                                                <select class="form-select" name="sign" aria-label="Selecciona tu signo zodiacal">
+                                                <select class="form-select" name="sign" aria-label="Selecciona tu signo zodiacal" autocomplete="off">
                                                     <option selected>Selecciona tu signo</option>
                                                     <option value="Aries" {{ old('sign', @$user->additional->sign) == 'Aries'? 'selected':'' }}>Aries</option>
                                                     <option value="Tauro" {{ old('sign', @$user->additional->sign) == 'Tauro'? 'selected':'' }}>Tauro</option>
@@ -645,13 +645,13 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Bebida favorita?:</label>
-                                                <textarea class="form-control" name="favorite_drink">{{ old('favorite_drink', @$user->additional->favorite_drink) }}</textarea>
+                                                <textarea class="form-control" name="favorite_drink" autocomplete="off" data-form-type="other">{{ old('favorite_drink', @$user->additional->favorite_drink) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Tienes hijos?:</label>
-                                                <select name="has_children" class="form-control">
+                                                <select name="has_children" class="form-control" autocomplete="off">
                                                     <option value="si" {{ old('has_children', @$user->additional->has_children) == 'si'? 'selected':'' }}>Sí</option>
                                                     <option value="no" {{ old('has_children', @$user->additional->has_children) == 'no'? 'selected':'' }}>No</option>
                                                 </select>
@@ -660,25 +660,25 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Tu viaje favorito que has hecho?:</label>
-                                                <textarea class="form-control" name="favorite_trip">{{ old('favorite_trip', @$user->additional->favorite_trip) }}</textarea>
+                                                <textarea class="form-control" name="favorite_trip" autocomplete="off" data-form-type="other">{{ old('favorite_trip', @$user->additional->favorite_trip) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿A dónde te gustaría viajar next?:</label>
-                                                <textarea class="form-control" name="next_trip">{{ old('next_trip', @$user->additional->next_trip) }}</textarea>
+                                                <textarea class="form-control" name="next_trip" autocomplete="off" data-form-type="other">{{ old('next_trip', @$user->additional->next_trip) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Postre favorito?:</label>
-                                                <textarea class="form-control" name="favorite_dessert">{{ old('favorite_dessert', @$user->additional->favorite_dessert) }}</textarea>
+                                                <textarea class="form-control" name="favorite_dessert" autocomplete="off" data-form-type="other">{{ old('favorite_dessert', @$user->additional->favorite_dessert) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Estás casada?:</label>
-                                                <select name="is_married" class="form-control">
+                                                <select name="is_married" class="form-control" autocomplete="off">
                                                     <option value="si" {{ old('is_married', @$user->additional->is_married) == 'si'? 'selected':'' }}>Sí</option>
                                                     <option value="no" {{ old('is_married', @$user->additional->is_married) == 'no'? 'selected':'' }}>No</option>
                                                 </select>
@@ -687,25 +687,25 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Comida favorita?:</label>
-                                                <textarea class="form-control" name="favorite_food">{{ old('favorite_food', @$user->additional->favorite_food) }}</textarea>
+                                                <textarea class="form-control" name="favorite_food" autocomplete="off" data-form-type="other">{{ old('favorite_food', @$user->additional->favorite_food) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Qué serie o película recomiendas mucho?:</label>
-                                                <textarea class="form-control" name="movie_recommendation">{{ old('movie_recommendation', @$user->additional->movie_recommendation) }}</textarea>
+                                                <textarea class="form-control" name="movie_recommendation" autocomplete="off" data-form-type="other">{{ old('movie_recommendation', @$user->additional->movie_recommendation) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Qué libro recomiendas? (Aparte de Hello Fears, obvio):</label>
-                                                <textarea class="form-control" name="book_recommendation">{{ old('book_recommendation', @$user->additional->book_recommendation) }}</textarea>
+                                                <textarea class="form-control" name="book_recommendation" autocomplete="off" data-form-type="other">{{ old('book_recommendation', @$user->additional->book_recommendation) }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="mb-10 form-label">¿Qué PODCAST amas?:</label>
-                                                <textarea class="form-control" name="podcast_recommendation">{{ old('podcast_recommendation', @$user->additional->podcast_recommendation) }}</textarea>
+                                                <textarea class="form-control" name="podcast_recommendation" autocomplete="off" data-form-type="other">{{ old('podcast_recommendation', @$user->additional->podcast_recommendation) }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -715,7 +715,7 @@
 
                             <div class="tab-pane fade" id="gift" role="tabpanel" aria-labelledby="gift-tab">
                                 <!-- Contenido de Te Regalo -->
-                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form">
+                                <form action="{{route('dashboard.account.update')}}" method="post" enctype="multipart/form-data" id="form" autocomplete="off" data-form-type="other">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="form_tab" value="gift">
@@ -724,13 +724,13 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label class="mb-10 form-label">¿Qué te gustaría regalar? (Una guía, una meditación, un producto, una mentoría, una sesión, una clase...):</label>
-                                                    <textarea class="form-control" name="gift">{{ old('gift', @$user->additional->gift) }}</textarea>
+                                                    <textarea class="form-control" name="gift" autocomplete="off" data-form-type="other">{{ old('gift', @$user->additional->gift) }}</textarea>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label class="mb-10 form-label">Comparte un link:</label>
-                                                    <input type="text" class="form-control" name="gift_link" value="{{ old('gift_link', @$user->additional->gift_link) }}">
+                                                    <input type="text" class="form-control" name="gift_link" value="{{ old('gift_link', @$user->additional->gift_link) }}" autocomplete="off" data-form-type="other">
                                                 </div>
                                             </div>
                                         </div>
@@ -748,319 +748,369 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    // Check for active tab in session and activate it
+    // Prevent form clearing and add additional protection
     $(document).ready(function() {
-        // If there is an active tab from the session data, activate it
-        var activeTab = "{{ session('active_tab') ?? 'profile' }}";
-        if(activeTab) {
-            var tabId = activeTab.replace('_', '-');
-            $('#profileTabs button[data-bs-target="#' + tabId + '"]').tab('show');
+        // Disable form autocomplete globally
+        $('form').attr('autocomplete', 'off');
+        
+        // Prevent browser from clearing form data
+        $('input, textarea, select').attr('autocomplete', 'off');
+        
+        // Store form data in sessionStorage to prevent loss
+        function saveFormData() {
+            $('input, textarea, select').each(function() {
+                if ($(this).attr('name') && $(this).val()) {
+                    sessionStorage.setItem('form_' + $(this).attr('name'), $(this).val());
+                }
+            });
         }
+        
+        // Restore form data from sessionStorage
+        function restoreFormData() {
+            $('input, textarea, select').each(function() {
+                if ($(this).attr('name')) {
+                    var storedValue = sessionStorage.getItem('form_' + $(this).attr('name'));
+                    if (storedValue && !$(this).val()) {
+                        $(this).val(storedValue);
+                    }
+                }
+            });
+        }
+        
+        // Save form data on input change
+        $('input, textarea, select').on('change input', function() {
+            saveFormData();
+        });
+        
+        // Restore form data on page load
+        restoreFormData();
+        
+        // Clear stored data on successful form submission
+        $('form').on('submit', function() {
+            setTimeout(function() {
+                sessionStorage.clear();
+            }, 1000);
+        });
+        
+        // Additional protection against form reset
+        $(window).on('beforeunload', function() {
+            saveFormData();
+        });
 
-        // Initialize Select2 with loading state
-        $('#country, #state, #city').select2({
-            theme: 'bootstrap-5',
-            placeholder: "Selecciona una opción",
-            allowClear: true,
-            width: '100%',
-            language: {
-                searching: function() {
-                    return "Buscando...";
-                },
-                noResults: function() {
-                    return "No se encontraron resultados";
-                },
-                loadingMore: function() {
-                    return "Cargando más resultados...";
+        // Check for active tab in session and activate it
+        $(document).ready(function() {
+            // If there is an active tab from the session data, activate it
+            var activeTab = "{{ session('active_tab') ?? 'profile' }}";
+            if(activeTab) {
+                var tabId = activeTab.replace('_', '-');
+                $('#profileTabs button[data-bs-target="#' + tabId + '"]').tab('show');
+            }
+
+            // Initialize Select2 with loading state
+            $('#country, #state, #city').select2({
+                theme: 'bootstrap-5',
+                placeholder: "Selecciona una opción",
+                allowClear: true,
+                width: '100%',
+                language: {
+                    searching: function() {
+                        return "Buscando...";
+                    },
+                    noResults: function() {
+                        return "No se encontraron resultados";
+                    },
+                    loadingMore: function() {
+                        return "Cargando más resultados...";
+                    }
+                }
+            });
+        
+            // Function to load initial state and city values
+            function loadInitialStateAndCity() {
+                if ($('#country').val()) {
+                    $.ajax({
+                        url: '{{route('api.new.states')}}',
+                        type: 'POST',
+                        data: {
+                            country: $('#country').val(),
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            $('#state').empty();
+                            $('#state').append('<option value="">Selecciona un estado</option>');
+                            $.each(response, function(key, value) {
+                                let selected = value.name === '{{$user->state}}' ? 'selected' : '';
+                                $('#state').append('<option value="' + value.name + '" ' + selected + '>' + value.name + '</option>');
+                            });
+
+                            // Load cities after state is loaded
+                            if ('{{$user->state}}') {
+                                $.ajax({
+                                    url: '{{route('api.new.cities')}}',
+                                    type: 'POST',
+                                    data: {
+                                        country: $('#country').val(),
+                                        state: '{{$user->state}}',
+                                        _token: '{{ csrf_token() }}'
+                                    },
+                                    success: function(response) {
+                                        $('#city').empty();
+                                        $('#city').append('<option value="">Selecciona una ciudad</option>');
+                                        $.each(response, function(key, value) {
+                                            let selected = value.name === '{{$user->city}}' ? 'selected' : '';
+                                            $('#city').append('<option value="' + value.name + '" ' + selected + '>' + value.name + '</option>');
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             }
-        });
-    
-        // Function to load initial state and city values
-        function loadInitialStateAndCity() {
-            if ($('#country').val()) {
+
+            // Load initial values when document is ready
+            $(document).ready(function() {
+                loadInitialStateAndCity();
+            });
+
+            // Event handlers for dropdown changes
+            $('#country').on('change', function(){
                 $.ajax({
                     url: '{{route('api.new.states')}}',
                     type: 'POST',
                     data: {
-                        country: $('#country').val(),
+                        country: $(this).val(),
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
                         $('#state').empty();
                         $('#state').append('<option value="">Selecciona un estado</option>');
                         $.each(response, function(key, value) {
-                            let selected = value.name === '{{$user->state}}' ? 'selected' : '';
-                            $('#state').append('<option value="' + value.name + '" ' + selected + '>' + value.name + '</option>');
+                            $('#state').append('<option value="' + value.name + '">' + value.name + '</option>');
                         });
-
-                        // Load cities after state is loaded
-                        if ('{{$user->state}}') {
-                            $.ajax({
-                                url: '{{route('api.new.cities')}}',
-                                type: 'POST',
-                                data: {
-                                    country: $('#country').val(),
-                                    state: '{{$user->state}}',
-                                    _token: '{{ csrf_token() }}'
-                                },
-                                success: function(response) {
-                                    $('#city').empty();
-                                    $('#city').append('<option value="">Selecciona una ciudad</option>');
-                                    $.each(response, function(key, value) {
-                                        let selected = value.name === '{{$user->city}}' ? 'selected' : '';
-                                        $('#city').append('<option value="' + value.name + '" ' + selected + '>' + value.name + '</option>');
-                                    });
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        }
-
-        // Load initial values when document is ready
-        $(document).ready(function() {
-            loadInitialStateAndCity();
-        });
-
-        // Event handlers for dropdown changes
-        $('#country').on('change', function(){
-            $.ajax({
-                url: '{{route('api.new.states')}}',
-                type: 'POST',
-                data: {
-                    country: $(this).val(),
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    $('#state').empty();
-                    $('#state').append('<option value="">Selecciona un estado</option>');
-                    $.each(response, function(key, value) {
-                        $('#state').append('<option value="' + value.name + '">' + value.name + '</option>');
-                    });
-                },
-                error: function(xhr) {
-                    console.log('Error:', xhr);
-                }
-            });
-        });
-
-        $('#state').on('change', function(){
-            $.ajax({
-                url: '{{route('api.new.cities')}}',
-                type: 'POST',
-                data: {
-                    country: $('#country').val(),
-                    state: $(this).val(),
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    $('#city').empty();
-                    $('#city').append('<option value="">Selecciona una ciudad</option>');
-                    $.each(response, function(key, value) {
-                        $('#city').append('<option value="' + value.name + '">' + value.name + '</option>');
-                    });
-                },
-                error: function(xhr) {
-                    console.log('Error:', xhr);
-                }
-            });
-        });
-
-        // Skills
-        $('#selectSkills').select2({
-            tags: true,
-            createTag: function (params) {
-                var term = $.trim(params.term);
-
-                if (term === '') {
-                    return null;
-                }
-
-                return {
-                    id: term,
-                    text: term,
-                    newTag: true
-                };
-            }
-        });
-
-        $('#selectSkills').on('select2:select', function(e) {
-            var selectedData = e.params.data;
-
-            // Verifica si es un nuevo tag
-            if (selectedData.newTag) {
-                console.log('Nuevo tag detectado:', selectedData.text);
-
-                // Guarda los valores actuales seleccionados
-                var currentValues = $('#selectSkills').val();
-
-                // Envía el nuevo tag al backend mediante AJAX
-                $.ajax({
-                    url: '{{ route("api.skill.create") }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        name: selectedData.text
-                    },
-                    success: function(response) {
-                        console.log('Tag creado:', response);
-
-                        // Elimina el tag temporal de los valores actuales
-                        var updatedValues = currentValues.filter(function(value) {
-                            return value !== selectedData.id; // Elimina el ID temporal
-                        });
-
-                        // Agrega el nuevo tag con el ID devuelto por el backend
-                        updatedValues.push(response.id);
-
-                        // Actualiza el Select2 con los valores actualizados
-                        $('#selectSkills').val(updatedValues).trigger('change');
-
-                        // Agrega la opción al Select2 (si no está ya presente)
-                        var newOption = new Option(response.name, response.id, true, true);
-                        $('#selectSkills').append(newOption).trigger('change');
                     },
                     error: function(xhr) {
-                        console.error('Error al crear el tag:', xhr.responseText);
-
-                        // Si hay un error, elimina solo el tag temporal
-                        var updatedValues = currentValues.filter(function(value) {
-                            return value !== selectedData.id; // Elimina el ID temporal
-                        });
-
-                        // Actualiza el Select2 con los valores actualizados
-                        $('#selectSkills').val(updatedValues).trigger('change');
+                        console.log('Error:', xhr);
                     }
                 });
-            }
-        });
+            });
 
-        // Hobbies
-        $('#selectInterests').select2({
-            tags: true,
-            createTag: function (params) {
-                var term = $.trim(params.term);
-
-                if (term === '') {
-                    return null;
-                }
-
-                return {
-                    id: term,
-                    text: term,
-                    newTag: true
-                };
-            }
-        });
-
-        $('#selectInterests').on('select2:select', function(e) {
-            var selectedData = e.params.data;
-
-            // Verifica si es un nuevo tag
-            if (selectedData.newTag) {
-                console.log('Nuevo tag detectado:', selectedData.text);
-
-                // Guarda los valores actuales seleccionados
-                var currentValues = $('#selectInterests').val();
-
-                // Envía el nuevo tag al backend mediante AJAX
+            $('#state').on('change', function(){
                 $.ajax({
-                    url: '{{ route("api.interest.create") }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        name: selectedData.text
-                    },
-                    success: function(response) {
-                        console.log('Tag creado:', response);
-
-                        // Elimina el tag temporal de los valores actuales
-                        var updatedValues = currentValues.filter(function(value) {
-                            return value !== selectedData.id; // Elimina el ID temporal
-                        });
-
-                        // Agrega el nuevo tag con el ID devuelto por el backend
-                        updatedValues.push(response.id);
-
-                        // Actualiza el Select2 con los valores actualizados
-                        $('#selectInterests').val(updatedValues).trigger('change');
-
-                        // Agrega la opción al Select2 (si no está ya presente)
-                        var newOption = new Option(response.name, response.id, true, true);
-                        $('#selectInterests').append(newOption).trigger('change');
-                    },
-                    error: function(xhr) {
-                        console.error('Error al crear el tag:', xhr.responseText);
-
-                        // Si hay un error, elimina solo el tag temporal
-                        var updatedValues = currentValues.filter(function(value) {
-                            return value !== selectedData.id; // Elimina el ID temporal
-                        });
-
-                        // Actualiza el Select2 con los valores actualizados
-                        $('#selectInterests').val(updatedValues).trigger('change');
-                    }
-                });
-            }
-        });
-
-        // Add social
-        $('#add-row-btn').click(function() {
-            $('#your-container-id').append(`
-                <div class="row" style="position:relative;">
-                    <div class="col-lg-12">
-                        <a class="btn btn-danger btn-sm delete-row">X</a>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Red social:</label>
-                            <select name="social[]" class="form-control">
-                                <option value="email">Email</option>
-                                <option value="whatsapp">Whatsapp</option>
-                                <option value="instagram">Instagram</option>
-                                <option value="linkedin">Linkedin</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="mb-10 form-label">Url:</label>
-                            <input type="text" name="url[]" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            `);
-        });
-
-        $(document).on('click', '.delete-row', function() {
-            $(this).closest('.row').remove();
-        });
-
-        // Delete social
-        $('.delete-save').click(function() {
-            var id = $(this).data('id');
-
-            // Confirmar la eliminación
-            if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
-                $.ajax({
-                    url: '{{route('dashboard.social.delete')}}',
+                    url: '{{route('api.new.cities')}}',
                     type: 'POST',
                     data: {
-                        id: id,
+                        country: $('#country').val(),
+                        state: $(this).val(),
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        alert(response.message);
-                        location.reload();
+                        $('#city').empty();
+                        $('#city').append('<option value="">Selecciona una ciudad</option>');
+                        $.each(response, function(key, value) {
+                            $('#city').append('<option value="' + value.name + '">' + value.name + '</option>');
+                        });
                     },
-                    error: function(error) {
-                        console.error(error);
-                        alert('Ocurrió un error al eliminar el registro');
+                    error: function(xhr) {
+                        console.log('Error:', xhr);
                     }
                 });
-            }
+            });
+
+            // Skills
+            $('#selectSkills').select2({
+                tags: true,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                }
+            });
+
+            $('#selectSkills').on('select2:select', function(e) {
+                var selectedData = e.params.data;
+
+                // Verifica si es un nuevo tag
+                if (selectedData.newTag) {
+                    console.log('Nuevo tag detectado:', selectedData.text);
+
+                    // Guarda los valores actuales seleccionados
+                    var currentValues = $('#selectSkills').val();
+
+                    // Envía el nuevo tag al backend mediante AJAX
+                    $.ajax({
+                        url: '{{ route("api.skill.create") }}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            name: selectedData.text
+                        },
+                        success: function(response) {
+                            console.log('Tag creado:', response);
+
+                            // Elimina el tag temporal de los valores actuales
+                            var updatedValues = currentValues.filter(function(value) {
+                                return value !== selectedData.id; // Elimina el ID temporal
+                            });
+
+                            // Agrega el nuevo tag con el ID devuelto por el backend
+                            updatedValues.push(response.id);
+
+                            // Actualiza el Select2 con los valores actualizados
+                            $('#selectSkills').val(updatedValues).trigger('change');
+
+                            // Agrega la opción al Select2 (si no está ya presente)
+                            var newOption = new Option(response.name, response.id, true, true);
+                            $('#selectSkills').append(newOption).trigger('change');
+                        },
+                        error: function(xhr) {
+                            console.error('Error al crear el tag:', xhr.responseText);
+
+                            // Si hay un error, elimina solo el tag temporal
+                            var updatedValues = currentValues.filter(function(value) {
+                                return value !== selectedData.id; // Elimina el ID temporal
+                            });
+
+                            // Actualiza el Select2 con los valores actualizados
+                            $('#selectSkills').val(updatedValues).trigger('change');
+                        }
+                    });
+                }
+            });
+
+            // Hobbies
+            $('#selectInterests').select2({
+                tags: true,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+
+                    if (term === '') {
+                        return null;
+                    }
+
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true
+                    };
+                }
+            });
+
+            $('#selectInterests').on('select2:select', function(e) {
+                var selectedData = e.params.data;
+
+                // Verifica si es un nuevo tag
+                if (selectedData.newTag) {
+                    console.log('Nuevo tag detectado:', selectedData.text);
+
+                    // Guarda los valores actuales seleccionados
+                    var currentValues = $('#selectInterests').val();
+
+                    // Envía el nuevo tag al backend mediante AJAX
+                    $.ajax({
+                        url: '{{ route("api.interest.create") }}',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            name: selectedData.text
+                        },
+                        success: function(response) {
+                            console.log('Tag creado:', response);
+
+                            // Elimina el tag temporal de los valores actuales
+                            var updatedValues = currentValues.filter(function(value) {
+                                return value !== selectedData.id; // Elimina el ID temporal
+                            });
+
+                            // Agrega el nuevo tag con el ID devuelto por el backend
+                            updatedValues.push(response.id);
+
+                            // Actualiza el Select2 con los valores actualizados
+                            $('#selectInterests').val(updatedValues).trigger('change');
+
+                            // Agrega la opción al Select2 (si no está ya presente)
+                            var newOption = new Option(response.name, response.id, true, true);
+                            $('#selectInterests').append(newOption).trigger('change');
+                        },
+                        error: function(xhr) {
+                            console.error('Error al crear el tag:', xhr.responseText);
+
+                            // Si hay un error, elimina solo el tag temporal
+                            var updatedValues = currentValues.filter(function(value) {
+                                return value !== selectedData.id; // Elimina el ID temporal
+                            });
+
+                            // Actualiza el Select2 con los valores actualizados
+                            $('#selectInterests').val(updatedValues).trigger('change');
+                        }
+                    });
+                }
+            });
+
+            // Add social
+            $('#add-row-btn').click(function() {
+                $('#your-container-id').append(`
+                    <div class="row" style="position:relative;">
+                        <div class="col-lg-12">
+                            <a class="btn btn-danger btn-sm delete-row">X</a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Red social:</label>
+                                <select name="social[]" class="form-control">
+                                    <option value="email">Email</option>
+                                    <option value="whatsapp">Whatsapp</option>
+                                    <option value="instagram">Instagram</option>
+                                    <option value="linkedin">Linkedin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-10 form-label">Url:</label>
+                                <input type="text" name="url[]" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+
+            $(document).on('click', '.delete-row', function() {
+                $(this).closest('.row').remove();
+            });
+
+            // Delete social
+            $('.delete-save').click(function() {
+                var id = $(this).data('id');
+
+                // Confirmar la eliminación
+                if (confirm('¿Estás seguro de que deseas eliminar este registro?')) {
+                    $.ajax({
+                        url: '{{route('dashboard.social.delete')}}',
+                        type: 'POST',
+                        data: {
+                            id: id,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            alert(response.message);
+                            location.reload();
+                        },
+                        error: function(error) {
+                            console.error(error);
+                            alert('Ocurrió un error al eliminar el registro');
+                        }
+                    });
+                }
+            });
         });
     });
 </script>

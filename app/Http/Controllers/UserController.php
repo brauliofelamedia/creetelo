@@ -115,22 +115,24 @@ class UserController extends Controller
             'business_about.required' => 'El campo sobre mi negocio es obligatorio.',
         ];
     
-        // Validar los datos del formulario
+        // Validar los datos del formulario ANTES de hacer cualquier cambio
         $validator = Validator::make($request->all(), $tabValidations, $messages);
-
-        //Update slug
-        $fullName = $request->name . ' ' . $request->last_name . '-' . rand(1000,9999);
-        if (!$user->slug) {
-            $user->slug = Str::slug($fullName);
-        }
-        $user->save();
     
-        // Si la validación falla, redirigir con errores
+        // Si la validación falla, redirigir con errores SIN guardar cambios
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
                 ->with('active_tab', $request->form_tab); // Pass the active tab to highlight it after redirect
+        }
+
+        // Update slug SOLO después de que la validación pase
+        if ($request->has('name') && $request->has('last_name')) {
+            $fullName = $request->name . ' ' . $request->last_name . '-' . rand(1000,9999);
+            if (!$user->slug) {
+                $user->slug = Str::slug($fullName);
+                $user->save();
+            }
         }
 
         // Continue with the rest of your update logic based on the tab
@@ -334,8 +336,8 @@ class UserController extends Controller
             $user->save();
         }
 
-        // Update abilities (skills)
-        if ($request->has('abilities')) {
+        // Update abilities (skills) - SOLO si se envían abilities en el request
+        if ($request->has('abilities') && is_array($request->abilities)) {
             $user->abilities()->delete();
             foreach ($request->abilities as $skillId) {
                 $skill = new UserSkill;
@@ -345,8 +347,8 @@ class UserController extends Controller
             }
         }
 
-        // Update interests
-        if ($request->has('interests')) {
+        // Update interests - SOLO si se envían interests en el request
+        if ($request->has('interests') && is_array($request->interests)) {
             UserInterest::where('user_id', $user->id)->delete();
             foreach ($request->interests as $interestId) {
                 UserInterest::create([
@@ -413,16 +415,22 @@ class UserController extends Controller
             $additional = new Additional();
             $additional->user_id = $user->id;
             $additional->save();
+            // Recargar la relación para asegurar que esté disponible
+            $user->load('additional');
         }
 
         $updateData = [];
         foreach ($fields as $field) {
+            // Solo actualizar si el campo viene en el request y no está vacío
             if ($request->has($field)) {
                 $updateData[$field] = $request->$field;
             }
         }
 
-        $user->additional()->update($updateData);
+        // Solo actualizar si hay datos para actualizar
+        if (!empty($updateData)) {
+            $user->additional()->update($updateData);
+        }
     }
 
     /**
@@ -446,96 +454,101 @@ class UserController extends Controller
         }
         $user->save();
 
-        // Update abilities
-        if (! $request->abilities) {
-            $user->abilities()->delete();
-        } else {
-            $currentSkills = $user->abilities->pluck('id')->toArray();
-            $skillsToAdd = array_diff($request->abilities, $currentSkills);
-            $skillsToRemove = array_diff($currentSkills, $request->abilities);
-            $user->abilities()->whereIn('id', $skillsToRemove)->delete();
+        // Update abilities - SOLO si se envían abilities en el request
+        if ($request->has('abilities')) {
+            if (is_array($request->abilities) && !empty($request->abilities)) {
+                // Si vienen abilities, actualizar
+                $currentSkills = $user->abilities->pluck('skill_id')->toArray();
+                $skillsToAdd = array_diff($request->abilities, $currentSkills);
+                $skillsToRemove = array_diff($currentSkills, $request->abilities);
+                
+                // Eliminar skills que ya no están seleccionadas
+                $user->abilities()->whereIn('skill_id', $skillsToRemove)->delete();
 
-            foreach ($skillsToAdd as $skillId) {
-                $skill = new UserSkill;
-                $skill->user_id = $user->id;
-                $skill->skill_id = $skillId;
-                $skill->save();
+                // Agregar nuevas skills
+                foreach ($skillsToAdd as $skillId) {
+                    $skill = new UserSkill;
+                    $skill->user_id = $user->id;
+                    $skill->skill_id = $skillId;
+                    $skill->save();
+                }
+            } else {
+                // Si viene el campo pero está vacío, eliminar todas
+                $user->abilities()->delete();
             }
         }
+        // Si no viene el campo abilities en el request, NO hacer nada (mantener las existentes)
 
-        // Update interests
-        UserInterest::where('user_id', $user->id)->delete();
-        
-        if ($request->interests) {
-            foreach ($request->interests as $interestId) {
-                UserInterest::create([
-                    'user_id' => $user->id,
-                    'interests_id' => $interestId
-                ]);
+        // Update interests - SOLO si se envían interests en el request
+        if ($request->has('interests')) {
+            UserInterest::where('user_id', $user->id)->delete();
+            
+            if (is_array($request->interests) && !empty($request->interests)) {
+                foreach ($request->interests as $interestId) {
+                    UserInterest::create([
+                        'user_id' => $user->id,
+                        'interests_id' => $interestId
+                    ]);
+                }
             }
         }
+        // Si no viene el campo interests en el request, NO hacer nada (mantener los existentes)
 
-        // Update services
-        if (! $request->services) {
-            $user->services()->delete();
-        } else {
-            if (! is_null($user->services)) {
-                $currentServices = $user->services->pluck('id')->toArray();
+        // Update services - SOLO si se envían services en el request
+        if ($request->has('services')) {
+            if (is_array($request->services) && !empty($request->services)) {
+                // Si vienen services, actualizar
+                $currentServices = $user->services->pluck('service_id')->toArray();
                 $servicesToAdd = array_diff($request->services, $currentServices);
                 $servicesToRemove = array_diff($currentServices, $request->services);
-                $user->services()->whereIn('id', $servicesToRemove)->delete();
-            } else {
-                foreach ($request->services as $serviceId) {
-                    // Crear una nueva instancia de Service
+                
+                // Eliminar services que ya no están seleccionados
+                $user->services()->whereIn('service_id', $servicesToRemove)->delete();
+
+                // Agregar nuevos services
+                foreach ($servicesToAdd as $serviceId) {
                     $service = new UserService;
                     $service->user_id = $user->id;
                     $service->service_id = $serviceId;
                     $service->save();
                 }
+            } else {
+                // Si viene el campo pero está vacío, eliminar todos
+                $user->services()->delete();
             }
         }
+        // Si no viene el campo services en el request, NO hacer nada (mantener los existentes)
 
-        // Update additional fields
-        $updateData = [
-            'how_vain' => $request->how_vain ?? null,
-            'skills' => $request->skills ?? null, 
-            'business_about' => $request->business_about ?? null,
-            'corporate_job' => $request->corporate_job ?? null,
-            'mission' => $request->mission ?? null,
-            'ideal_audience' => $request->ideal_audience ?? null,
-            'dont_work_with' => $request->dont_work_with ?? null,
-            'values' => $request->values ?? null,
-            'tone' => $request->tone ?? null,
-            'looking_for_in_creelo' => $request->looking_for_in_creelo ?? null,
-            'birthplace' => $request->birthplace ?? null,
-            'sign' => $request->sign ?? null, 
-            'hobbies' => $request->hobbies ?? null,
-            'favorite_drink' => $request->favorite_drink ?? null,
-            'has_children' => $request->has_children ?? null,
-            'is_married' => $request->is_married ?? null,
-            'favorite_trip' => $request->favorite_trip ?? null,
-            'next_trip' => $request->next_trip ?? null,
-            'favorite_dessert' => $request->favorite_dessert ?? null,
-            'favorite_food' => $request->favorite_food ?? null,
-            'movie_recommendation' => $request->movie_recommendation ?? null,
-            'book_recommendation' => $request->book_recommendation ?? null,
-            'podcast_recommendation' => $request->podcast_recommendation ?? null,
-            'irreplaceable' => $request->irreplaceable ?? null,
-            'achievement' => $request->achievement ?? null,
-            'biggest_dream' => $request->biggest_dream ?? null,
-            'gift' => $request->gift ?? null,
-            'gift_link' => $request->gift_link ?? null,
-            'like_to_receive' => $request->like_to_receive ?? null,
-            'brings_you_happiness' => $request->brings_you_happiness ?? null,
+        // Update additional fields - Solo actualizar campos que vengan en el request
+        $updateData = [];
+        $additionalFields = [
+            'how_vain', 'skills', 'business_about', 'corporate_job', 'mission',
+            'ideal_audience', 'dont_work_with', 'values', 'tone', 'looking_for_in_creelo',
+            'birthplace', 'sign', 'hobbies', 'favorite_drink', 'has_children',
+            'is_married', 'favorite_trip', 'next_trip', 'favorite_dessert',
+            'favorite_food', 'movie_recommendation', 'book_recommendation',
+            'podcast_recommendation', 'irreplaceable', 'achievement', 'biggest_dream',
+            'gift', 'gift_link', 'like_to_receive', 'brings_you_happiness'
         ];
+
+        foreach ($additionalFields as $field) {
+            if ($request->has($field)) {
+                $updateData[$field] = $request->$field;
+            }
+        }
 
         if (!$user->additional) {
             $additional = new Additional();
             $additional->user_id = $user->id;
             $additional->save();
+            // Recargar la relación
+            $user->load('additional');
         }
         
-        $user->additional()->update($updateData);
+        // Solo actualizar si hay datos para actualizar
+        if (!empty($updateData)) {
+            $user->additional()->update($updateData);
+        }
     }
 
     /**

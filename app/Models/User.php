@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Nnjeim\World\Models\Country;
 use Nnjeim\World\Models\State;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, HasRoles, Notifiable, SoftDeletes;
+    use HasFactory, HasRoles, Notifiable, SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'name',
@@ -44,6 +46,11 @@ class User extends Authenticatable implements FilamentUser
         'company_or_venture',
         'contact_id',
     ];
+
+     public function getActivitylogOptions(): LogOptions
+     {
+        return LogOptions::defaults()->logOnly($this->fillable);
+     }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -1,11 +1,15 @@
 <?php
 
 namespace App\Models;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Additional extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'how_vain',
         'skills',
@@ -39,4 +43,10 @@ class Additional extends Model
         'brings_you_happiness',
         'user_id',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly($this->fillable);
+    }
 }
