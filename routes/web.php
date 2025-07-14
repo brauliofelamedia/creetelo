@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\UserInterest;
 use Illuminate\Support\Str;
+use Nnjeim\World\Models\Country;
 
 Route::get('/clear-cache', function (Request $request) {
     Artisan::call('optimize:clear');
@@ -65,6 +66,24 @@ Route::get('update-users-status', function () {
         ->orWhere('email', 'like', '%creetelo.club%')
         ->update(['status' => 1]);
     return 'Users status updated successfully';
+})->middleware('auth');
+
+Route::get('update-contacts-country', function () {
+    $contacts = User::all();
+    $updated = 0;   
+
+    foreach ($contacts as $contact) {
+        if ($contact->country) {
+            $country = Country::where('id', $contact->country)->first();
+            if ($country) {
+                $contact->country = $country->iso2;
+                $contact->save();
+                $updated++;
+            }
+        }
+    }
+
+    return "Se actualizaron {$updated} contactos con el nombre del país.";
 })->middleware('auth');
 
 //Sync contacts

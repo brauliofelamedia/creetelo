@@ -314,6 +314,13 @@ class UserController extends Controller
             'name', 'last_name', 'whatsapp', 'country', 'state', 'city', 'instagram', 'linkedin', 'website'
         ];
 
+        if ($request->has('country')) {
+            $country = Country::find($request->country);
+            if ($country) {
+                $request->merge(['country' => $country->iso2]);
+            }
+        }
+
         foreach ($fieldsToUpdate as $field) {
             if ($request->has($field)) {
                 $user->$field = $request->$field;
